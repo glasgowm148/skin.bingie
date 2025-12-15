@@ -20,6 +20,7 @@
             <height>430</height>
             <texture background="true" colordiffuse="88000000">bingie/line.png</texture>
         </control>
+        <!-- First Row -->
         <!-- Layout -->
         <control type="button" id="309">
             <top>325</top>
@@ -63,24 +64,6 @@
             <left>90</left>
             <orientation>vertical</orientation>
             <itemgap>0</itemgap>
-            <!-- First Row -->
-            <control type="grouplist" id="1000">
-              <visible>false</visible>
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <!-- Layout -->
-                <control type="button" id="309">
-                    <width>290</width>
-                    <height>search_key_size</height>
-                    <onleft>312</onleft>
-                    <onright>312</onright>
-                    <onup>8</onup>
-                    <ondown>109</ondown>
-                    <include>KeyBoardKeyRadio</include>
-                    <label>20177</label>
-                </control>
-            </control>
             <!-- Second Row-->
             <control type="grouplist" id="2000">
                 <height>search_key_size</height>
@@ -127,7 +110,6 @@
                     <param name="id" value="106" />
                     <param name="onup" value="309" />
                     <param name="ondown" value="126" />
-                    
                 </include>
                 <!-- 8 -->
                 <include content="SearchKey">
