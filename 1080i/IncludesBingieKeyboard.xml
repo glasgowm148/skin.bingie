@@ -3,464 +3,358 @@
 <includes>
     <!-- ######## Bingie Search Mini Keyboard ######## -->
     <include name="BingieSearchMiniKeyboard">
+      <!-- Dim background when keyboard is visible -->
+        <control type="image" id="9201">
+            <left>0</left>
+            <top>0</top>
+            <width>1920</width>
+            <height>1080</height>
+            <texture background="true" colordiffuse="aa000000">bingie/line.png</texture>
+            <visible>Control.IsVisible(9999)</visible>
+        </control>
+        <!-- Keyboard Background Panel -->
+        <control type="image" id="9001">
+            <left>137</left>
+            <top>360</top>
+            <width>695</width>
+            <height>430</height>
+            <texture background="true" colordiffuse="88000000">bingie/line.png</texture>
+        </control>
+        <!-- Layout -->
+        <control type="button" id="309">
+            <top>325</top>
+            <left>560</left>
+            <width>276</width>
+            <height>70</height>
+            <onleft>312</onleft>
+            <onright>312</onright>
+            <ondown>109</ondown>
+            <onup>8</onup>
+            <include>KeyBoardKeyRadio</include>
+            <label>20177</label>
+        </control>
         <!-- Keyboard Edit -->
         <control type="edit" id="312">
-            <left>652</left>
-            <top>29</top>
+            <top>325</top>
+            <left>140</left>
             <height>70</height>
-            <width>1200</width>
+            <width>414</width>
             <textoffsetx>0</textoffsetx>
-            <font>Reg42</font>
-            <align>left</align>
-            <aligny>top</aligny>
+            <label>$INFO[Control.GetLabel(311)]</label>
+            <font>Reg36</font>
+            <include>KeyBoardKeyRadio</include>
+            <align>right</align>
+            <aligny>bottom</aligny>
             <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
             <focusedcolor/>
             <disabledcolor/>
             <pulseonselect>false</pulseonselect>
             <texturefocus/>
             <texturenofocus/>
-            <ondown>9999</ondown>
-            <onleft>9999</onleft>
+            <onup>300</onup>
+            <ondown>100</ondown>
+            <onleft>309</onleft>
+            <onright>309</onright>
         </control>
-
         <!-- keyboard  -->
         <control type="grouplist" id="9999">
-            <top>80</top>
+            <top>395</top>
             <include>No_Circular_Left</include>
             <left>90</left>
             <orientation>vertical</orientation>
-            <itemgap>-10</itemgap>
-
+            <itemgap>0</itemgap>
             <!-- First Row -->
             <control type="grouplist" id="1000">
+              <visible>false</visible>
                 <height>search_key_size</height>
                 <itemgap>-10</itemgap>
                 <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>312</onup>
-                <ondown>2000</ondown>
-                <!-- SPACE -->
-                <control type="radiobutton" id="32">
+                <!-- Layout -->
+                <control type="button" id="309">
+                    <width>290</width>
                     <height>search_key_size</height>
-                    <width>search_radiokey_width</width>
-                    <label/>
-                    <radioposx>60</radioposx>
-                    <radioposy>20</radioposy>
-                    <radiowidth>100</radiowidth>
-                    <radioheight>40</radioheight>
-                    <textureradioonfocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">bingie/keyboard/space.png</textureradioonfocus>
-                    <textureradioofffocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">bingie/keyboard/space.png</textureradioofffocus>
-                    <textureradioonnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">bingie/keyboard/space.png</textureradioonnofocus>
-                    <textureradiooffnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">bingie/keyboard/space.png</textureradiooffnofocus>
-                    <include>SearchKeyDefs</include>
-                    <onup>312</onup>
-                    <ondown>2000</ondown>
+                    <onleft>312</onleft>
+                    <onright>312</onright>
+                    <onup>8</onup>
+                    <ondown>109</ondown>
+                    <include>KeyBoardKeyRadio</include>
+                    <label>20177</label>
                 </control>
-                <!-- BACKSPACE -->
+            </control>
+            <!-- Second Row-->
+            <control type="grouplist" id="2000">
+                <height>search_key_size</height>
+                <itemgap>-10</itemgap>
+                <orientation>horizontal</orientation>
+                <!-- 1 -->
+                <include content="SearchKey">
+                    <param name="id" value="100" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="120" />
+                </include>
+                <!-- 2 -->
+                <include content="SearchKey">
+                    <param name="id" value="101" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="121" />
+                </include>
+                <!-- 3 -->
+                <include content="SearchKey">
+                    <param name="id" value="102" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="122" />
+                </include>
+                <!-- 4 -->
+                <include content="SearchKey">
+                    <param name="id" value="103" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="123" />
+                </include>
+                <!-- 5 -->
+                <include content="SearchKey">
+                    <param name="id" value="104" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="124" />
+                </include>
+                <!-- 6 -->
+                <include content="SearchKey">
+                    <param name="id" value="105" />
+                    <param name="onup" value="312" />
+                    <param name="ondown" value="125" />
+                </include>
+                <!-- 7 -->
+                <include content="SearchKey">
+                    <param name="id" value="106" />
+                    <param name="onup" value="309" />
+                    <param name="ondown" value="126" />
+                    
+                </include>
+                <!-- 8 -->
+                <include content="SearchKey">
+                    <param name="id" value="107" />
+                    <param name="onup" value="309" />
+                    <param name="ondown" value="127" />
+                </include>
+                <!-- 9 -->
+                <include content="SearchKey">
+                    <param name="id" value="108" />
+                    <param name="onup" value="309" />
+                    <param name="ondown" value="128" />
+                </include>
+                <!-- 0 -->
+                <include content="SearchKey">
+                    <param name="id" value="109" />
+                    <param name="onup" value="309" />
+                    <param name="ondown" value="129" />
+                </include>  
+            </control>
+            <!-- Third Row -->
+            <control type="grouplist" id="3000">
+              <height>search_key_size</height>
+                <itemgap>-10</itemgap>
+                <orientation>horizontal</orientation>
+                <!-- START OF QWERTY -->
+                <include content="SearchKey">
+                    <param name="id" value="120" />
+                    <param name="onup" value="100" />
+                    <param name="ondown" value="140" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="121" />
+                    <param name="onup" value="101" />
+                    <param name="ondown" value="141" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="122" />
+                    <param name="onup" value="102" />
+                    <param name="ondown" value="142" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="123" />
+                    <param name="onup" value="103" />
+                    <param name="ondown" value="143" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="124" />
+                    <param name="onup" value="104" />
+                    <param name="ondown" value="144" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="125" />
+                    <param name="onup" value="105" />
+                    <param name="ondown" value="145" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="126" />
+                    <param name="onup" value="106" />
+                    <param name="ondown" value="146" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="127" />
+                    <param name="onup" value="107" />
+                    <param name="ondown" value="147" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="128" />
+                    <param name="onup" value="108" />
+                    <param name="ondown" value="148" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="129" />
+                    <param name="onup" value="109" />
+                    <param name="ondown" value="168" />
+                </include>
+            </control>
+            <!-- Fourth Row -->
+            <control type="grouplist" id="4000">
+                <itemgap>-10</itemgap>
+                <height>search_key_size</height>
+                <orientation>horizontal</orientation>
+                <include content="SearchKey">
+                    <param name="id" value="140" />
+                    <param name="onup" value="120" />
+                    <param name="ondown" value="160" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="141" />
+                    <param name="onup" value="121" />
+                    <param name="ondown" value="161" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="142" />
+                    <param name="onup" value="122" />
+                    <param name="ondown" value="162" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="143" />
+                    <param name="onup" value="123" />
+                    <param name="ondown" value="163" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="144" />
+                    <param name="onup" value="124" />
+                    <param name="ondown" value="164" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="145" />
+                    <param name="onup" value="125" />
+                    <param name="ondown" value="165" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="146" />
+                    <param name="onup" value="126" />
+                    <param name="ondown" value="166" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="147" />
+                    <param name="onup" value="127" />
+                    <param name="ondown" value="305" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="148" />
+                    <param name="onup" value="128" />
+                    <param name="ondown" value="306" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="168" />
+                    <param name="onup" value="129" />
+                    <param name="ondown" value="167" />
+                </include>
+            </control>
+            <!-- Fifth Row -->
+            <control type="grouplist" id="5000">
+                <height>search_key_size</height>
+                <itemgap>-10</itemgap>
+                <ondown>6000</ondown>
+                <orientation>horizontal</orientation>
+                <include content="SearchKey">
+                    <param name="id" value="160" />
+                    <param name="onup" value="140" />
+                    <param name="ondown" value="300" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="161" />
+                    <param name="onup" value="141" />
+                    <param name="ondown" value="300" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="162" />
+                    <param name="onup" value="142" />
+                    <param name="ondown" value="300" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="163" />
+                    <param name="onup" value="143" />
+                    <param name="ondown" value="32" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="164" />
+                    <param name="onup" value="144" />
+                    <param name="ondown" value="32" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="165" />
+                    <param name="onup" value="145" />
+                    <param name="ondown" value="32" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="166" />
+                    <param name="onup" value="146" />
+                    <param name="ondown" value="32" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="305" />
+                    <param name="key" value="&lt;" />
+                    <param name="onup" value="147" />
+                    <param name="ondown" value="32" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="306" />
+                    <param name="key" value="&gt;" />
+                    <param name="onup" value="148" />
+                    <param name="ondown" value="8" />
+                </include>
+                <include content="SearchKey">
+                    <param name="id" value="167" />
+                    <param name="onup" value="168" />
+                    <param name="ondown" value="8" />
+                </include>
+            </control>
+            <!-- Sixth Row -->
+            <control type="grouplist" id="6000">
+              <itemgap>-10</itemgap>
+                <orientation>horizontal</orientation>
+            <!-- Done -->
+            <include content="NativeSearchKey">
+                <param name="id" value="300" />
+                <width>220</width>
+                <label>Enter/Exit</label>
+                <param name="onup" value="161" />
+                <param name="ondown" value="100" />
+            </include>
+            <!-- SPACE -->
+            <include content="NativeSearchKey">
+                <param name="id" value="32" />
+                <width>360</width>
+                <label>20182</label>
+                <param name="onup" value="165" />
+                <param name="ondown" value="105" />
+            </include>
+            <!-- BACKSPACE -->
                 <control type="radiobutton" id="8">
                     <height>search_key_size</height>
-                    <width>search_radiokey_width</width>
-                    <label/>
-                    <radioposx>30</radioposx>
-                    <radioposy>20</radioposy>
-                    <radiowidth>160</radiowidth>
-                    <radioheight>40</radioheight>
+                    <width>150</width>
+                    <radioposx>53</radioposx>
+                    <radioposy>0</radioposy>
+                    <radiowidth>45</radiowidth>
+                    <radioheight>60</radioheight>
                     <textureradioonfocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">bingie/keyboard/backspace.png</textureradioonfocus>
                     <textureradioofffocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">bingie/keyboard/backspace.png</textureradioofffocus>
                     <textureradioonnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">bingie/keyboard/backspace.png</textureradioonnofocus>
                     <textureradiooffnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">bingie/keyboard/backspace.png</textureradiooffnofocus>
                     <include>SearchKeyDefs</include>
-                    <onup>312</onup>
-                    <ondown>2000</ondown>
-                </control>
-            </control>
-
-            <!-- Second Row -->
-            <control type="grouplist" id="2000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>1000</onup>
-                <ondown>3000</ondown>
-                <!-- START OF QWERTY -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="120" />
-                    <param name="onup" value="32" />
-                    <param name="ondown" value="126" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="121" />
-                    <param name="onup" value="32" />
-                    <param name="ondown" value="127" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="122" />
-                    <param name="onup" value="32" />
-                    <param name="ondown" value="128" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="123" />
-                    <param name="onup" value="8" />
-                    <param name="ondown" value="129" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="124" />
-                    <param name="onup" value="8" />
-                    <param name="ondown" value="140" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="125" />
-                    <param name="onup" value="8" />
-                    <param name="ondown" value="141" />
-                </include>
-            </control>
-
-            <!-- Third Row -->
-            <control type="grouplist" id="3000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>2000</onup>
-                <ondown>4000</ondown>
-                <include content="NativeSearchKey">
-                    <param name="id" value="126" />
-                    <param name="onup" value="120" />
-                    <param name="ondown" value="142" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="127" />
-                    <param name="onup" value="121" />
-                    <param name="ondown" value="143" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="128" />
-                    <param name="onup" value="122" />
-                    <param name="ondown" value="144" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="129" />
-                    <param name="onup" value="123" />
-                    <param name="ondown" value="145" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="140" />
-                    <param name="onup" value="124" />
-                    <param name="ondown" value="146" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="141" />
-                    <param name="onup" value="125" />
-                    <param name="ondown" value="147" />
-                </include>
-            </control>
-
-            <!-- Fourth Row -->
-            <control type="grouplist" id="4000">
-                <onleft>900</onleft>
-                <onright>77777</onright>
-                <itemgap>-10</itemgap>
-                <height>search_key_size</height>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>3000</onup>
-                <ondown>5000</ondown>
-                <include content="NativeSearchKey">
-                    <param name="id" value="142" />
-                    <param name="onup" value="126" />
-                    <param name="ondown" value="148" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="143" />
-                    <param name="onup" value="127" />
-                    <param name="ondown" value="149" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="144" />
-                    <param name="onup" value="128" />
-                    <param name="ondown" value="160" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="145" />
-                    <param name="onup" value="129" />
-                    <param name="ondown" value="161" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="146" />
-                    <param name="onup" value="140" />
-                    <param name="ondown" value="162" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="147" />
-                    <param name="onup" value="141" />
-                    <param name="ondown" value="163" />
-                </include>
-            </control>
-
-            <!-- Fifth Row -->
-            <control type="grouplist" id="5000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>4000</onup>
-                <ondown>6000</ondown>
-                <include content="NativeSearchKey">
-                    <param name="id" value="148" />
-                    <param name="onup" value="142" />
-                    <param name="ondown" value="164" />
-                </include>
-				<include content="NativeSearchKey">
-                    <param name="id" value="149" />
-                    <param name="onup" value="143" />
-                    <param name="ondown" value="165" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="160" />
-                    <param name="onup" value="144" />
-                    <param name="ondown" value="166" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="161" />
-                    <param name="onup" value="145" />
-                    <param name="ondown" value="130" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="162" />
-                    <param name="onup" value="146" />
-                    <param name="ondown" value="131" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="163" />
-                    <param name="onup" value="147" />
-                    <param name="ondown" value="150" />
-                </include>
-            </control>
-
-            <!-- Sixth Row -->
-            <control type="grouplist" id="6000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>5000</onup>
-                <ondown>7000</ondown>
-				<include content="NativeSearchKey">
-                    <param name="id" value="164" />
-                    <param name="onup" value="148" />
-                    <param name="ondown" value="151" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="165" />
-                    <param name="onup" value="149" />
-                    <param name="ondown" value="167" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="166" />
-                    <param name="onup" value="160" />
-                    <param name="ondown" value="168" />
-                </include>
-                <!-- END OF QWERTY -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="130" />
-                    <param name="onup" value="161" />
-                    <param name="ondown" value="169" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="131" />
-                    <param name="onup" value="162" />
-                    <param name="ondown" value="170" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="150" />
-                    <param name="onup" value="163" />
-                    <param name="ondown" value="171" />
-                </include>
-            </control>
-
-            <!-- Seventh Row -->
-            <control type="grouplist" id="7000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>6000</onup>
-                <ondown>8000</ondown>
-                <include content="NativeSearchKey">
-                    <param name="id" value="151" />
-                    <param name="onup" value="164" />
-                    <param name="ondown" value="100" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="167" />
-                    <param name="onup" value="165" />
-                    <param name="ondown" value="101" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="168" />
-                    <param name="onup" value="166" />
-                    <param name="ondown" value="102" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="169" />
-                    <param name="onup" value="130" />
-                    <param name="ondown" value="103" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="170" />
-                    <param name="onup" value="131" />
-                    <param name="ondown" value="104" />
-                </include>
-                <include content="NativeSearchKey">
-                    <param name="id" value="171" />
-                    <param name="onup" value="150" />
-                    <param name="ondown" value="105" />
-                </include>
-            </control>
-
-            <!-- Eight Row -->
-            <control type="grouplist" id="8000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>7000</onup>
-                <ondown>9000</ondown>
-                <!-- 1 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="100" />
-                    <param name="onup" value="151" />
-                    <param name="ondown" value="106" />
-                </include>
-                <!-- 2 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="101" />
-                    <param name="onup" value="167" />
-                    <param name="ondown" value="107" />
-                </include>
-                <!-- 3 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="102" />
-                    <param name="onup" value="168" />
-                    <param name="ondown" value="108" />
-                </include>
-                <!-- 4 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="103" />
-                    <param name="onup" value="169" />
-                    <param name="ondown" value="109" />
-                </include>
-                <!-- 5 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="104" />
-                    <param name="onup" value="170" />
-                    <param name="ondown" value="305" />
-                </include>
-                <!-- 6 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="105" />
-                    <param name="onup" value="171" />
-                    <param name="ondown" value="306" />
-                </include>
-            </control>
-
-            <!-- Ninth Row -->
-            <control type="grouplist" id="9000">
-                <height>search_key_size</height>
-                <onleft>900</onleft>
-                <onright>77777</onright>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>8000</onup>
-                <ondown>10000</ondown>
-                <!-- 7 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="106" />
-                    <param name="onup" value="100" />
-                    <param name="ondown" value="301" />
-                </include>
-                <!-- 8 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="107" />
-                    <param name="onup" value="101" />
-                    <param name="ondown" value="300" />
-                </include>
-                <!-- 9 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="108" />
-                    <param name="onup" value="102" />
-                    <param name="ondown" value="309" />
-                </include>
-                <!-- 0 -->
-                <include content="NativeSearchKey">
-                    <param name="id" value="109" />
-                    <param name="onup" value="103" />
-                    <param name="ondown" value="309" />
-                </include>
-                <!-- Previous -->
-                <include content="NativeSearchKey">
-                    <label>&lt;</label>
-                    <param name="id" value="305" />
-                    <param name="onup" value="104" />
-                    <param name="ondown" value="309" />
-                </include>
-                <!-- Next -->
-                <include content="NativeSearchKey">
-                    <label>&gt;</label>
-                    <param name="id" value="306" />
-                    <param name="onup" value="105" />
-                    <param name="ondown" value="309" />
-                </include>
-            </control>
-
-            <!-- Tenth Row -->
-            <control type="grouplist" id="10000">
-                <height>search_key_size</height>
-                <itemgap>-10</itemgap>
-                <orientation>horizontal</orientation>
-                <onright>312</onright>
-                <onup>9000</onup>
-                <!-- Cancel Button -->
-                <control type="radiobutton" id="301">
-                    <height>search_key_size</height>
-                    <width>search_key_size</width>
-                    <radioposx>25</radioposx>
-                    <radioposy>25</radioposy>
-                    <radiowidth>30</radiowidth>
-                    <radioheight>30</radioheight>
-                    <textureradioonfocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">dialogs/keyboard/remove.png</textureradioonfocus>
-                    <textureradioofffocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">dialogs/keyboard/remove.png</textureradioofffocus>
-                    <textureradioonnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">dialogs/keyboard/remove.png</textureradioonnofocus>
-                    <textureradiooffnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">dialogs/keyboard/remove.png</textureradiooffnofocus>
-                    <label/>
-                    <onup>106</onup>
-                    <include>SearchKeyDefs</include>
-                </control>
-                <!-- Done -->
-                <control type="radiobutton" id="300">
-                    <height>search_key_size</height>
-                    <width>search_key_size</width>
-                    <radioposx>25</radioposx>
-                    <radioposy>25</radioposy>
-                    <radiowidth>30</radiowidth>
-                    <radioheight>30</radioheight>
-                    <textureradioonfocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">dialogs/keyboard/done.png</textureradioonfocus>
-                    <textureradioofffocus colordiffuse="$INFO[Skin.String(BingieButtonFocusTextColor)]">dialogs/keyboard/done.png</textureradioofffocus>
-                    <textureradioonnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">dialogs/keyboard/done.png</textureradioonnofocus>
-                    <textureradiooffnofocus colordiffuse="$INFO[Skin.String(BingieButtonTextColor)]">dialogs/keyboard/done.png</textureradiooffnofocus>
-                    <label/>
-                    <include>SearchKeyDefs</include>
-                    <onup>107</onup>
-                </control>
-                <!-- Layout -->
-                <control type="button" id="309">
-                    <height>search_key_size</height>
-                    <width>290</width>
-                    <include>SearchKeyDefs2</include>
-                    <label>20177</label>
-                    <onup>9000</onup>
+                    <onup>167</onup>
+                    <ondown>109</ondown>
                 </control>
             </control>
         </control>
@@ -470,7 +364,7 @@
     <include name="DefaultKeyboard">
         <!--Dialog Overlay-->
         <control type="group">
-            <visible>!Window.IsActive(Videos)</visible>
+            <visible>!Window.IsActive(Videos) + !Window.IsVisible(numericinput)</visible>
             <include>DialogOverlayExtra</include>
             <animation effect="fade" time="250" start="0" end="100" reversible="false">WindowOpen</animation>
         </control>
@@ -538,7 +432,7 @@
                         <selectedcolor>$INFO[Skin.String(ButtonFocusTextColor)]</selectedcolor>
                         <visible>Control.HasFocus(8000)</visible>
                     </control>
-                    <control type="label"> <!--label-->
+                    <control type="label"> 
                         <left>20</left>
                         <width>320</width>
                         <label>$INFO[ListItem.Label]</label>
@@ -594,6 +488,8 @@
                 <top>120</top>
                 <width>390</width>
                 <height>660</height>
+                <onleft>111</onleft>
+                <onright>9000</onright>
                 <itemgap>10</itemgap>
                 <onup>8000</onup>
                 <ondown>312</ondown>
@@ -602,29 +498,30 @@
 
                 <!-- Layout -->
                 <control type="button" id="309">
-                    <width>100%</width>
+                    <width>250</width>
                     <height>70</height>
                     <onleft>111</onleft>
                     <onright>100</onright>
+                    <onup>312</onup>
                     <include>KeyBoardKeyRadio</include>
                     <label>20177</label>
                 </control>
 
                 <!-- Shift -->
                 <control type="radiobutton" id="302">
-                    <width>100%</width>
+                    <width>250</width>
                     <height>70</height>
-                    <onleft>131</onleft>
+                    <onleft>110</onleft>
                     <onright>120</onright>
                     <include>KeyBoardKeyRadio</include>
                     <label>20178</label>
                 </control>
 
-                <!-- Caps lock -->
+                <!-- Caps Lock -->
                 <control type="radiobutton" id="303">
-                    <width>100%</width>
+                    <width>250</width>
                     <height>70</height>
-                    <onleft>151</onleft>
+                    <onleft>150</onleft>
                     <onright>140</onright>
                     <include>KeyBoardKeyRadio</include>
                     <label>20179</label>
@@ -632,19 +529,19 @@
 
                 <!-- Symbols -->
                 <control type="radiobutton" id="304">
-                    <width>100%</width>
+                    <width>250</width>
                     <height>70</height>
-                    <onleft>171</onleft>
+                    <onleft>131</onleft>
                     <onright>160</onright>
                     <include>KeyBoardKeyRadio</include>
                     <label>20180</label>
                 </control>
 
-                <!-- IP address -->
+                <!-- IP -->
                 <control type="button" id="307">
-                    <width>100%</width>
+                    <width>250</width>
                     <height>70</height>
-                    <onleft>306</onleft>
+                    <onleft>130</onleft>
                     <onright>32</onright>
                     <include>KeyBoardKeyRadio</include>
                     <label>1006</label>
@@ -677,12 +574,13 @@
                 <!-- First row -->
                 <control type="grouplist" id="1000">
                     <right>0</right>
+                    <left>-140</left>
                     <top>0</top>
-                    <width>100%</width>
+                    <width>125%</width>
                     <height>70</height>
                     <itemgap>10</itemgap>
+                    <onright>100</onright>
                     <onleft>309</onleft>
-                    <onright>309</onright>
                     <onup>312</onup>
                     <orientation>horizontal</orientation>
 
@@ -734,26 +632,27 @@
                     <control type="button" id="109">
                         <!-- (0,9) key button -->
                         <ondown>129</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="110">
-                        <!-- (0,10) key button -->
-                        <ondown>130</ondown>
+                        <onup>300</onup>
+                        <onright>111</onright>
                         <include>KeyBoardKey</include>
                     </control>
                     <control type="button" id="111">
-                        <!-- (0,11) key button -->
-                        <ondown>131</ondown>
+                        <!-- (0,10) key button -->
+                        <onup>300</onup>
+                        <ondown>110</ondown>
+                        <onright>100</onright>
+                        <onleft>109</onleft>
                         <include>KeyBoardKey</include>
-                    </control>
-
+                    </control>        
+            
                 </control>
 
                 <!-- Second row -->
                 <control type="grouplist" id="2000">
                     <right>0</right>
+                    <left>-140</left>
                     <top>80</top>
-                    <width>100%</width>
+                    <width>125%</width>
                     <height>70</height>
                     <itemgap>10</itemgap>
                     <onleft>302</onleft>
@@ -818,28 +717,24 @@
                         <!-- (1,9) key button -->
                         <onup>109</onup>
                         <ondown>149</ondown>
+                        <onright>302</onright>
+                        <onleft>129</onleft>
                         <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="130">
-                        <!-- (1,10) key button -->
-                        <onup>110</onup>
+                    </control>             
+                    <control type="button" id="110">
+                        <!-- (1,12) key button -->
+                        <onup>111</onup>
                         <ondown>150</ondown>
                         <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="131">
-                        <!-- (1,11) key button -->
-                        <onup>111</onup>
-                        <ondown>151</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-
+                    </control>       
                 </control>
 
                 <!-- Third row -->
                 <control type="grouplist" id="3000">
                     <right>0</right>
+                    <left>-140</left>
                     <top>160</top>
-                    <width>100%</width>
+                    <width>125%</width>
                     <height>70</height>
                     <itemgap>10</itemgap>
                     <onleft>303</onleft>
@@ -908,24 +803,19 @@
                     </control>
                     <control type="button" id="150">
                         <!-- (2,10) key button -->
-                        <onup>130</onup>
-                        <ondown>170</ondown>
+                        <onup>110</onup>
+                        <ondown>131</ondown>
+                        <onleft>149</onleft>
                         <include>KeyBoardKey</include>
                     </control>
-                    <control type="button" id="151">
-                        <!-- (2,11) key button -->
-                        <onup>131</onup>
-                        <ondown>171</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-
                 </control>
 
                 <!-- Forth row -->
                 <control type="grouplist" id="4000">
                     <right>0</right>
+                    <left>-140</left>
                     <top>240</top>
-                    <width>100%</width>
+                    <width>125%</width>
                     <height>70</height>
                     <itemgap>10</itemgap>
                     <onleft>304</onleft>
@@ -983,35 +873,35 @@
                     <control type="button" id="168">
                         <!-- (3,8) key button -->
                         <onup>148</onup>
-                        <ondown>8</ondown>
+                        <ondown>305</ondown>
+                        <onright>130</onright>
                         <include>KeyBoardKey</include>
                     </control>
                     <control type="button" id="169">
                         <!-- (3,9) key button -->
                         <onup>149</onup>
-                        <ondown>8</ondown>
+                        <ondown>306</ondown>
+                        <onleft>168</onleft>
+                        <onright>131</onright>
                         <include>KeyBoardKey</include>
                     </control>
-                    <control type="button" id="170">
+                    <control type="button" id="131">
                         <!-- (3,10) key button -->
                         <onup>150</onup>
-                        <ondown>305</ondown>
+                        <ondown>130</ondown>
+                        <onleft>169</onleft>
+                        <onright>304</onright>
                         <include>KeyBoardKey</include>
                     </control>
-                    <control type="button" id="171">
-                        <!-- (3,11) key button -->
-                        <onup>151</onup>
-                        <ondown>306</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-
+                 
                 </control>
 
                 <!-- Fifth row -->
                 <control type="grouplist" id="5000">
                     <right>0</right>
+                    <left>-140</left>
                     <top>320</top>
-                    <width>100%</width>
+                    <width>125%</width>
                     <height>70</height>
                     <itemgap>10</itemgap>
                     <onleft>307</onleft>
@@ -1035,17 +925,29 @@
                     </control>
                     <!-- Previous -->
                     <control type="button" id="305">
-                        <onup>4000</onup>
+                        <onup>168</onup>
+                        <ondown>108</ondown>
                         <label>&lt;</label>
                         <include>KeyBoardKey</include>
                     </control>
                     <!-- Next -->
                     <control type="button" id="306">
-                        <onup>4000</onup>
+                        <onup>169</onup>
+                        <onright>130</onright>
+                        <ondown>300</ondown>
                         <label>&gt;</label>
                         <include>KeyBoardKey</include>
                     </control>
-
+                    <!-- [ -->
+                    <control type="button" id="130">
+                        <onup>131</onup>
+                        <onleft>306</onleft>
+                        <onright>32</onright>
+                        <ondown>300</ondown>
+                        <label>169</label>
+                        <include>KeyBoardKey</include>
+                    </control>
+                    
                 </control>
 
             </control>
