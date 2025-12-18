@@ -20,52 +20,55 @@
             <height>430</height>
             <texture background="true" colordiffuse="88000000">bingie/line.png</texture>
         </control>
-        <!-- First Row -->
-        <!-- Layout -->
-        <control type="button" id="309">
-            <top>325</top>
-            <left>560</left>
-            <width>276</width>
-            <height>70</height>
-            <onleft>312</onleft>
-            <onright>312</onright>
-            <ondown>109</ondown>
-            <onup>8</onup>
-            <include>KeyBoardKeyRadio</include>
-            <label>20177</label>
-        </control>
-        <!-- Keyboard Edit -->
-        <control type="edit" id="312">
+        <!-- Edit/Layout -->
+        <control type="grouplist" id="1000">
             <top>325</top>
             <left>140</left>
             <height>70</height>
-            <width>414</width>
-            <textoffsetx>0</textoffsetx>
-            <label>$INFO[Control.GetLabel(311)]</label>
-            <font>Reg36</font>
-            <include>KeyBoardKeyRadio</include>
-            <align>right</align>
-            <aligny>bottom</aligny>
-            <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
-            <focusedcolor/>
-            <disabledcolor/>
-            <pulseonselect>false</pulseonselect>
-            <texturefocus/>
-            <texturenofocus/>
-            <onup>300</onup>
-            <ondown>100</ondown>
-            <onleft>309</onleft>
-            <onright>309</onright>
-        </control>
-        <!-- keyboard  -->
-        <control type="grouplist" id="9999">
-            <top>395</top>
-            <include>No_Circular_Left</include>
-            <left>90</left>
-            <orientation>vertical</orientation>
-            <itemgap>0</itemgap>
-            <!-- Second Row-->
-            <control type="grouplist" id="2000">
+            <orientation>horizontal</orientation>
+            <itemgap>6</itemgap>
+            <!-- Keyboard Edit -->
+              <control type="edit" id="312">
+                    <width>414</width>
+                    <height>70</height>
+                    <textoffsetx>0</textoffsetx>
+                    <label>$INFO[Control.GetLabel(311)]</label>
+                    <font>Reg36</font>
+                    <include>KeyBoardKeyRadio</include>
+                    <align>right</align>
+                    <aligny>bottom</aligny>
+                    <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                    <focusedcolor/>
+                    <disabledcolor/>
+                    <pulseonselect>false</pulseonselect>
+                    <texturefocus/>
+                    <texturenofocus/>
+                    <onup>300</onup>
+                    <ondown>100</ondown>
+                    <onleft>309</onleft>
+                    <onright>309</onright>
+                </control>
+            <!-- Layout -->
+                <control type="button" id="309">
+                    <width>276</width>
+                    <height>70</height>
+                    <onleft>312</onleft>
+                    <onright>312</onright>
+                    <onup>8</onup>
+                    <ondown>109</ondown>
+                    <include>KeyBoardKeyRadio</include>
+                    <label>20177</label>
+                </control>
+          </control>
+          <!-- keyboard  -->
+          <control type="grouplist" id="9999">
+                <top>395</top>
+                <include>No_Circular_Left</include>
+                <left>90</left>
+                <orientation>vertical</orientation>
+                <itemgap>0</itemgap>
+          <!-- First Row-->
+          <control type="grouplist" id="2000">
                 <height>search_key_size</height>
                 <itemgap>-10</itemgap>
                 <orientation>horizontal</orientation>
@@ -130,9 +133,9 @@
                     <param name="ondown" value="129" />
                 </include>  
             </control>
-            <!-- Third Row -->
+            <!-- Second Row -->
             <control type="grouplist" id="3000">
-              <height>search_key_size</height>
+                <height>search_key_size</height>
                 <itemgap>-10</itemgap>
                 <orientation>horizontal</orientation>
                 <!-- START OF QWERTY -->
@@ -141,102 +144,121 @@
                     <param name="onup" value="100" />
                     <param name="ondown" value="140" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="121" />
                     <param name="onup" value="101" />
                     <param name="ondown" value="141" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="122" />
                     <param name="onup" value="102" />
                     <param name="ondown" value="142" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="123" />
                     <param name="onup" value="103" />
                     <param name="ondown" value="143" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="124" />
                     <param name="onup" value="104" />
                     <param name="ondown" value="144" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="125" />
                     <param name="onup" value="105" />
                     <param name="ondown" value="145" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="126" />
                     <param name="onup" value="106" />
                     <param name="ondown" value="146" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="127" />
                     <param name="onup" value="107" />
                     <param name="ondown" value="147" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="128" />
                     <param name="onup" value="108" />
                     <param name="ondown" value="148" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="129" />
                     <param name="onup" value="109" />
                     <param name="ondown" value="168" />
                 </include>
             </control>
-            <!-- Fourth Row -->
+            <!-- Third Row -->
             <control type="grouplist" id="4000">
                 <itemgap>-10</itemgap>
                 <height>search_key_size</height>
                 <orientation>horizontal</orientation>
+
                 <include content="SearchKey">
                     <param name="id" value="140" />
                     <param name="onup" value="120" />
                     <param name="ondown" value="160" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="141" />
                     <param name="onup" value="121" />
                     <param name="ondown" value="161" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="142" />
                     <param name="onup" value="122" />
                     <param name="ondown" value="162" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="143" />
                     <param name="onup" value="123" />
                     <param name="ondown" value="163" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="144" />
                     <param name="onup" value="124" />
                     <param name="ondown" value="164" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="145" />
                     <param name="onup" value="125" />
                     <param name="ondown" value="165" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="146" />
                     <param name="onup" value="126" />
                     <param name="ondown" value="166" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="147" />
                     <param name="onup" value="127" />
                     <param name="ondown" value="305" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="148" />
                     <param name="onup" value="128" />
                     <param name="ondown" value="306" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="168" />
                     <param name="onup" value="129" />
@@ -249,53 +271,63 @@
                 <itemgap>-10</itemgap>
                 <ondown>6000</ondown>
                 <orientation>horizontal</orientation>
+
                 <include content="SearchKey">
                     <param name="id" value="160" />
                     <param name="onup" value="140" />
                     <param name="ondown" value="300" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="161" />
                     <param name="onup" value="141" />
                     <param name="ondown" value="300" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="162" />
                     <param name="onup" value="142" />
                     <param name="ondown" value="300" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="163" />
                     <param name="onup" value="143" />
                     <param name="ondown" value="32" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="164" />
                     <param name="onup" value="144" />
                     <param name="ondown" value="32" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="165" />
                     <param name="onup" value="145" />
                     <param name="ondown" value="32" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="166" />
                     <param name="onup" value="146" />
                     <param name="ondown" value="32" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="305" />
                     <param name="key" value="&lt;" />
                     <param name="onup" value="147" />
                     <param name="ondown" value="32" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="306" />
                     <param name="key" value="&gt;" />
                     <param name="onup" value="148" />
                     <param name="ondown" value="8" />
                 </include>
+
                 <include content="SearchKey">
                     <param name="id" value="167" />
                     <param name="onup" value="168" />
@@ -304,24 +336,24 @@
             </control>
             <!-- Sixth Row -->
             <control type="grouplist" id="6000">
-              <itemgap>-10</itemgap>
+                <itemgap>-10</itemgap>
                 <orientation>horizontal</orientation>
-            <!-- Done -->
-            <include content="NativeSearchKey">
-                <param name="id" value="300" />
-                <width>220</width>
-                <label>Enter/Exit</label>
-                <param name="onup" value="161" />
-                <param name="ondown" value="100" />
-            </include>
-            <!-- SPACE -->
-            <include content="NativeSearchKey">
-                <param name="id" value="32" />
-                <width>360</width>
-                <label>20182</label>
-                <param name="onup" value="165" />
-                <param name="ondown" value="105" />
-            </include>
+                <!-- Done -->
+                <include content="NativeSearchKey">
+                    <param name="id" value="300" />
+                    <width>220</width>
+                    <label>Enter/Exit</label>
+                    <param name="onup" value="161" />
+                    <param name="ondown" value="100" />
+                </include>
+                <!-- SPACE -->
+                <include content="NativeSearchKey">
+                    <param name="id" value="32" />
+                    <width>360</width>
+                    <label>20182</label>
+                    <param name="onup" value="165" />
+                    <param name="ondown" value="105" />
+                </include>
             <!-- BACKSPACE -->
                 <control type="radiobutton" id="8">
                     <height>search_key_size</height>
@@ -548,7 +580,7 @@
                 <include>KeyBoardKeyRadio</include>
             </control>
             <!-- keyboard keys -->
-            <control type="group">
+        <control type="group">
                 <right>65</right>
                 <top>120</top>
                 <width>1390</width>
@@ -625,10 +657,8 @@
                         <onright>100</onright>
                         <onleft>109</onleft>
                         <include>KeyBoardKey</include>
-                    </control>        
-            
+                    </control>
                 </control>
-
                 <!-- Second row -->
                 <control type="grouplist" id="2000">
                     <right>0</right>
@@ -779,18 +809,18 @@
                     </control>
                     <control type="button" id="149">
                         <!-- (2,9) key button -->
-                        <onup>129</onup>
-                        <ondown>169</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="150">
-                        <!-- (2,10) key button -->
-                        <onup>110</onup>
-                        <ondown>131</ondown>
-                        <onleft>149</onleft>
-                        <include>KeyBoardKey</include>
-                    </control>
+                    <onup>129</onup>
+                    <ondown>169</ondown>
+                    <include>KeyBoardKey</include>
                 </control>
+                <control type="button" id="150">
+                        <!-- (2,10) key button -->
+                    <onup>110</onup>
+                    <ondown>131</ondown>
+                    <onleft>149</onleft>
+                    <include>KeyBoardKey</include>
+                </control>
+            </control>
 
                 <!-- Forth row -->
                 <control type="grouplist" id="4000">
@@ -804,82 +834,80 @@
                     <onright>304</onright>
                     <orientation>horizontal</orientation>
 
-                    <control type="button" id="160">
+                <control type="button" id="160">
                         <!-- (3,0) key button -->
-                        <onup>140</onup>
-                        <ondown>32</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="161">
-                        <!-- (3,1) key button -->
-                        <onup>141</onup>
-                        <ondown>32</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="162">
-                        <!-- (3,2) key button -->
-                        <onup>142</onup>
-                        <ondown>32</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="163">
-                        <!-- (3,3) key button -->
-                        <onup>143</onup>
-                        <ondown>32</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="164">
-                        <!-- (3,4) key button -->
-                        <onup>144</onup>
-                        <ondown>32</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="165">
-                        <!-- (3,5) key button -->
-                        <onup>145</onup>
-                        <ondown>8</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="166">
-                        <!-- (3,6) key button -->
-                        <onup>146</onup>
-                        <ondown>8</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="167">
-                        <!-- (3,7) key button -->
-                        <onup>147</onup>
-                        <ondown>8</ondown>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="168">
-                        <!-- (3,8) key button -->
-                        <onup>148</onup>
-                        <ondown>305</ondown>
-                        <onright>130</onright>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="169">
-                        <!-- (3,9) key button -->
-                        <onup>149</onup>
-                        <ondown>306</ondown>
-                        <onleft>168</onleft>
-                        <onright>131</onright>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <control type="button" id="131">
-                        <!-- (3,10) key button -->
-                        <onup>150</onup>
-                        <ondown>130</ondown>
-                        <onleft>169</onleft>
-                        <onright>304</onright>
-                        <include>KeyBoardKey</include>
-                    </control>
-                 
+                    <onup>140</onup>
+                    <ondown>32</ondown>
+                    <include>KeyBoardKey</include>
                 </control>
-
+                <control type="button" id="161">
+                        <!-- (3,1) key button -->
+                    <onup>141</onup>
+                    <ondown>32</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="162">
+                        <!-- (3,2) key button -->
+                    <onup>142</onup>
+                    <ondown>32</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="163">
+                        <!-- (3,3) key button -->
+                    <onup>143</onup>
+                    <ondown>32</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="164">
+                        <!-- (3,4) key button -->
+                    <onup>144</onup>
+                    <ondown>32</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="165">
+                        <!-- (3,5) key button -->
+                    <onup>145</onup>
+                    <ondown>8</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="166">
+                <!-- (3,6) key button -->
+                    <onup>146</onup>
+                    <ondown>8</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="167">
+                <!-- (3,7) key button -->
+                    <onup>147</onup>
+                    <ondown>8</ondown>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="168">
+                <!-- (3,8) key button -->
+                    <onup>148</onup>
+                    <ondown>305</ondown>
+                    <onright>130</onright>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="169">
+                <!-- (3,9) key button -->
+                    <onup>149</onup>
+                    <ondown>306</ondown>
+                    <onleft>168</onleft>
+                    <onright>131</onright>
+                    <include>KeyBoardKey</include>
+                </control>
+                <control type="button" id="131">
+                <!-- (3,10) key button -->
+                    <onup>150</onup>
+                    <ondown>130</ondown>
+                    <onleft>169</onleft>
+                    <onright>304</onright>
+                    <include>KeyBoardKey</include>
+                </control>
+            </control>
                 <!-- Fifth row -->
-                <control type="grouplist" id="5000">
+            <control type="grouplist" id="5000">
                     <right>0</right>
                     <left>-140</left>
                     <top>320</top>
@@ -890,61 +918,57 @@
                     <onright>307</onright>
                     <ondown>312</ondown>
                     <orientation>horizontal</orientation>
-
                     <!-- SPACE -->
-                    <control type="button" id="32">
-                        <onup>4000</onup>
-                        <width>690</width>
-                        <label>20182</label>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <!-- BACKSPACE -->
-                    <control type="button" id="8">
-                        <onup>4000</onup>
-                        <width>410</width>
-                        <label>20181</label>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <!-- Previous -->
-                    <control type="button" id="305">
-                        <onup>168</onup>
-                        <ondown>108</ondown>
-                        <label>&lt;</label>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <!-- Next -->
-                    <control type="button" id="306">
-                        <onup>169</onup>
-                        <onright>130</onright>
-                        <ondown>300</ondown>
-                        <label>&gt;</label>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    <!-- [ -->
-                    <control type="button" id="130">
-                        <onup>131</onup>
-                        <onleft>306</onleft>
-                        <onright>32</onright>
-                        <ondown>300</ondown>
-                        <label>169</label>
-                        <include>KeyBoardKey</include>
-                    </control>
-                    
+                <control type="button" id="32">
+                    <onup>4000</onup>
+                    <width>690</width>
+                    <label>20182</label>
+                    <include>KeyBoardKey</include>
                 </control>
-
+                    <!-- BACKSPACE -->
+                <control type="button" id="8">
+                    <onup>4000</onup>
+                    <width>410</width>
+                    <label>20181</label>
+                    <include>KeyBoardKey</include>
+                </control>
+                    <!-- Previous -->
+                <control type="button" id="305">
+                    <onup>168</onup>
+                    <ondown>108</ondown>
+                    <label>&lt;</label>
+                    <include>KeyBoardKey</include>
+                </control>
+                    <!-- Next -->
+                <control type="button" id="306">
+                    <onup>169</onup>
+                    <onright>130</onright>
+                    <ondown>300</ondown>
+                    <label>&gt;</label>
+                    <include>KeyBoardKey</include>
+                </control>
+                    <!-- [ -->
+                <control type="button" id="130">
+                    <onup>131</onup>
+                    <onleft>306</onleft>
+                    <onright>32</onright>
+                    <ondown>300</ondown>
+                    <label>169</label>
+                    <include>KeyBoardKey</include>
+                </control>
             </control>
-
+        </control>
             <!-- Button grouplist -->
             <control type="grouplist" id="9001">
-                <right>55</right>
-                <top>20</top>
-                <width>280</width>
-                <itemgap>10</itemgap>
-                <onleft>312</onleft>
-                <onright>312</onright>
-                <onup>8000</onup>
-                <ondown>1000</ondown>
-                <orientation>horizontal</orientation>
+                    <right>55</right>
+                    <top>20</top>
+                    <width>280</width>
+                    <itemgap>10</itemgap>
+                    <onleft>312</onleft>
+                    <onright>312</onright>
+                    <onup>8000</onup>
+                    <ondown>1000</ondown>
+                    <orientation>horizontal</orientation>
                 <!-- Done -->
                 <control type="button" id="300">
                     <align>center</align>
