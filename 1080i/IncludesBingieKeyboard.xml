@@ -7,8 +7,8 @@
         <control type="image" id="9201">
             <left>0</left>
             <top>0</top>
-            <width>1920</width>
-            <height>1080</height>
+            <width>100%</width>
+            <height>100%</height>
             <texture background="true" colordiffuse="aa000000">bingie/line.png</texture>
             <visible>Control.IsVisible(9999)</visible>
         </control>
@@ -20,7 +20,7 @@
             <height>430</height>
             <texture background="true" colordiffuse="88000000">bingie/line.png</texture>
         </control>
-        <!-- Edit/Layout -->
+        <!-- First Row -->
         <control type="grouplist" id="1000">
             <top>325</top>
             <left>140</left>
@@ -67,7 +67,7 @@
                 <left>90</left>
                 <orientation>vertical</orientation>
                 <itemgap>0</itemgap>
-          <!-- First Row-->
+          <!-- Second Row-->
           <control type="grouplist" id="2000">
                 <height>search_key_size</height>
                 <itemgap>-10</itemgap>
@@ -133,7 +133,7 @@
                     <param name="ondown" value="129" />
                 </include>  
             </control>
-            <!-- Second Row -->
+            <!-- Third Row -->
             <control type="grouplist" id="3000">
                 <height>search_key_size</height>
                 <itemgap>-10</itemgap>
@@ -199,7 +199,7 @@
                     <param name="ondown" value="168" />
                 </include>
             </control>
-            <!-- Third Row -->
+            <!-- Fourth Row -->
             <control type="grouplist" id="4000">
                 <itemgap>-10</itemgap>
                 <height>search_key_size</height>
@@ -822,7 +822,7 @@
                 </control>
             </control>
 
-                <!-- Forth row -->
+                <!-- Fourth row -->
                 <control type="grouplist" id="4000">
                     <right>0</right>
                     <left>-140</left>
