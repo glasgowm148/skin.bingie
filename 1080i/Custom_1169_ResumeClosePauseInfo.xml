@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Close auto-opened pause information as soon as playback resumes. -->
+<window type="dialog" id="1169">
+    <visible>Window.IsVisible(videoosd) + Player.HasVideo + Player.Paused + String.IsEqual(Window(Home).Property(KM_AutoPauseInfo),true)</visible>
+    <onunload condition="Player.HasVideo + Player.Playing + !Player.Paused + String.IsEqual(Window(Home).Property(KM_AutoPauseInfo),true)">Dialog.Close(videoosd)</onunload>
+    <controls />
+</window>

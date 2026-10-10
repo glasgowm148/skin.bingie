@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- BINGIE -->
 <window>
-	<onload>SetFocus(203)</onload>
+    <onload>SetFocus(203)</onload>
+    <onload>ClearProperty(KM_AutoPauseInfo,home)</onload>
     <onload condition="!Player.Paused + !VideoPlayer.Content(livetv) + Skin.HasSetting(EnableAutoPauseOnOSD) + !Skin.HasSetting(EnableOSDInfo)">Pause</onload>
-	<onload condition="Player.Forwarding | Player.Rewinding">Play</onload>
-	<onload>ClearProperty(DialogMPAATopBar,home)</onload>
-	<onload>ClearProperty(DisableOSDCast,Home)</onload>
-	<onload>CancelAlarm(OpenMPAATopBar,silent)</onload>
-	<onunload>AlarmClock(OpenMPAATopBar,SetProperty(DialogMPAATopBar,1,home),00:00,silent)</onunload>
-	<onunload>AlarmClock(HideMPAATopBar,SetProperty(HideDialogMPAATopBar,1,home),00:00,silent)</onunload>
-	<onunload>AlarmClock(FocusPlayButton,SetProperty(OSDPlayButtonFocused,1,home),00:00,silent)</onunload>
-	<onload condition="Skin.HasSetting(OSDShowInfoOnPause) + !Skin.HasSetting(EnableOSDInfo)">Skin.ToggleSetting(EnableOSDInfo)</onload>
-    <controls>		
+    <onload condition="Player.Forwarding | Player.Rewinding">Play</onload>
+    <onload>ClearProperty(DialogMPAATopBar,home)</onload>
+    <onload>ClearProperty(DisableOSDCast,Home)</onload>
+    <onload>CancelAlarm(OpenMPAATopBar,silent)</onload>
+    <onunload>AlarmClock(OpenMPAATopBar,SetProperty(DialogMPAATopBar,1,home),00:00,silent)</onunload>
+    <onunload>AlarmClock(HideMPAATopBar,SetProperty(HideDialogMPAATopBar,1,home),00:00,silent)</onunload>
+    <onunload>AlarmClock(FocusPlayButton,SetProperty(OSDPlayButtonFocused,1,home),00:00,silent)</onunload>
+    <!-- Only auto-opened pause info is dismissed when playback resumes. -->
+    <onload condition="Skin.HasSetting(OSDShowInfoOnPause) + !Skin.HasSetting(EnableOSDInfo) + [Player.Paused | [Skin.HasSetting(EnableAutoPauseOnOSD) + !VideoPlayer.Content(livetv)]]">SetProperty(KM_AutoPauseInfo,true,home)</onload>
+    <onload condition="Skin.HasSetting(OSDShowInfoOnPause) + !Skin.HasSetting(EnableOSDInfo)">Skin.SetBool(EnableOSDInfo)</onload>
+    <onunload condition="String.IsEqual(Window(Home).Property(KM_AutoPauseInfo),true)">Skin.Reset(EnableOSDInfo)</onunload>
+    <onunload>ClearProperty(KM_AutoPauseInfo,home)</onunload>
+    <controls>
         <control type="group">
             <include>OSDButtonsModern</include>
             <include>HideOsdConditions</include>
-		</control>
+        </control>
     </controls>
 </window>

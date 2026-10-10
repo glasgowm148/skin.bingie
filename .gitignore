@@ -1,0 +1,10 @@
+dist/
+__pycache__/
+*.pyc
+*.db
+*.log
+*.key
+*.apk
+*.dex
+.private/
+userdata/

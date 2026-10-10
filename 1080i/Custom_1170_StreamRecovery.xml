@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog" modality="modal" id="1170">
+    <defaultcontrol always="true">201</defaultcontrol>
+    <visible>Window.IsVisible(fullscreenvideo) + Player.HasVideo + !Player.Paused + String.IsEqual(Window(Home).Property(pov_recovery_prompt),true) + !String.IsEmpty(Window(Home).Property(pov_recovery_session))</visible>
+    <onunload>SetProperty(pov_recovery_dismissed,$INFO[Window(Home).Property(pov_recovery_session)],home)</onunload>
+    <controls>
+        <control type="group">
+            <left>410</left>
+            <top>730</top>
+            <control type="image">
+                <width>1100</width><height>265</height>
+                <texture colordiffuse="F0181818">colors/color_white.png</texture>
+            </control>
+            <control type="label">
+                <left>35</left><top>20</top><width>1030</width><height>50</height>
+                <font>Bold45</font><textcolor>white</textcolor>
+                <label>Stream is buffering</label>
+            </control>
+            <control type="label">
+                <left>35</left><top>80</top><width>1030</width><height>45</height>
+                <font>Reg30</font><textcolor>white</textcolor>
+                <label>Keep waiting, or try another stream from where you left off.</label>
+            </control>
+            <control type="button" id="201">
+                <left>35</left><top>165</top><width>430</width><height>65</height>
+                <font>Reg30</font><textcolor>white</textcolor><focusedcolor>black</focusedcolor>
+                <texturefocus colordiffuse="white">colors/color_white.png</texturefocus>
+                <texturenofocus colordiffuse="FF383838">colors/color_white.png</texturenofocus>
+                <align>center</align><aligny>center</aligny><label>Keep waiting</label>
+                <onleft>202</onleft><onright>202</onright><onup>201</onup><ondown>201</ondown>
+                <onclick>ClearProperty(pov_recovery_prompt,home)</onclick>
+                <onclick>Dialog.Close(1170)</onclick>
+            </control>
+            <control type="button" id="202">
+                <left>490</left><top>165</top><width>575</width><height>65</height>
+                <font>Reg30</font><textcolor>white</textcolor><focusedcolor>black</focusedcolor>
+                <texturefocus colordiffuse="white">colors/color_white.png</texturefocus>
+                <texturenofocus colordiffuse="FF383838">colors/color_white.png</texturenofocus>
+                <align>center</align><aligny>center</aligny><label>Try another stream</label>
+                <onleft>201</onleft><onright>201</onright><onup>202</onup><ondown>202</ondown>
+                <onclick>SetProperty(pov_recovery_request,$INFO[Window(Home).Property(pov_recovery_session)],home)</onclick>
+                <onclick>ClearProperty(pov_recovery_prompt,home)</onclick>
+                <onclick>Dialog.Close(1170)</onclick>
+            </control>
+        </control>
+    </controls>
+</window>

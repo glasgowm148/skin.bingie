@@ -1,0 +1,417 @@
+<?xml version='1.0' encoding='utf-8'?>
+<includes>
+    <include name="Experience_PVR_Guide">
+        <control type="image">
+            <width>1920</width>
+            <height>1080</height>
+            <texture colordiffuse="FF0D0F14">diffuse/panel2.png</texture>
+        </control>
+        <control type="label">
+            <left>70</left>
+            <top>42</top>
+            <width>700</width>
+            <height>64</height>
+            <font>Reg48</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <label>[B]Live TV[/B]</label>
+        </control>
+        <control type="label">
+            <right>70</right>
+            <top>42</top>
+            <width>900</width>
+            <height>55</height>
+            <font>Reg31</font>
+            <align>right</align>
+            <textcolor>FFFFFFFF</textcolor>
+            <label>$INFO[System.Time]   $INFO[System.Date]</label>
+        </control>
+        <control type="label">
+            <left>70</left>
+            <top>110</top>
+            <width>1400</width>
+            <height>40</height>
+            <font>Reg24</font>
+            <textcolor>FFABB2C1</textcolor>
+            <label>Find something on now, or browse what’s coming next.</label>
+        </control>
+        <control type="button" id="28">
+            <description>Native channel group selector</description>
+            <left>70</left>
+            <top>168</top>
+            <width>430</width>
+            <height>56</height>
+            <label>Channel group</label>
+            <font>Reg26</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <focusedcolor>FFFFFFFF</focusedcolor>
+            <texturefocus colordiffuse="FF0066FF" border="10">diffuse/panel.png</texturefocus>
+            <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
+            <textoffsetx>22</textoffsetx>
+            <align>left</align>
+            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <ondown>10</ondown>
+            <onleft>35</onleft>
+            <onright>33</onright>
+        </control>
+        <control type="button" id="33">
+            <left>520</left>
+            <top>168</top>
+            <width>230</width>
+            <height>56</height>
+            <label>Search guide</label>
+            <font>Reg26</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <focusedcolor>FFFFFFFF</focusedcolor>
+            <texturefocus colordiffuse="FF0066FF" border="10">diffuse/panel.png</texturefocus>
+            <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
+            <textoffsetx>22</textoffsetx>
+            <align>left</align>
+            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <ondown>10</ondown>
+            <onclick>ActivateWindow(tvsearch)</onclick>
+            <onleft>28</onleft>
+            <onright>34</onright>
+        </control>
+        <control type="group" id="5000">
+            <control type="epggrid" id="10">
+                <description>Live programme guide</description>
+                <left>70</left>
+                <top>258</top>
+                <width>1780</width>
+                <height>595</height>
+                <pagecontrol>60</pagecontrol>
+                <timeblocks>32</timeblocks>
+                <rulerunit>6</rulerunit>
+                <scrolltime>150</scrolltime>
+                <onup>28</onup>
+                <ondown>10</ondown>
+                <onleft>28</onleft>
+                <onright>10</onright>
+                <onback>RunScript(script.kodi.live.tv,home)</onback>
+                <include>EpgProgressIndicatorNormal</include>
+                <rulerlayout height="35" width="60">
+                    <control type="label" id="2">
+                        <width>60</width>
+                        <height>30</height>
+                        <font>Reg24</font>
+                        <textcolor>FFABB2C1</textcolor>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </rulerlayout>
+                <channellayout height="70" width="360">
+                    <include content="PVRGuideChannelItemLayout">
+                        <param name="panelcolor" value="FF1D2028" />
+                        <param name="textcolor" value="FFFFFFFF" />
+                        <param name="font" value="Reg26" />
+                    </include>
+                </channellayout>
+                <focusedchannellayout height="70" width="360">
+                    <include content="PVRGuideChannelItemLayout">
+                        <param name="panelcolor" value="FF0066FF" />
+                        <param name="textcolor" value="FFFFFFFF" />
+                        <param name="font" value="Reg26" />
+                    </include>
+                </focusedchannellayout>
+                <itemlayout height="70" width="60">
+                    <include>PVRGuideItemLayout</include>
+                </itemlayout>
+                <focusedlayout height="70" width="60">
+                    <include>PVRGuideItemLayoutFocus</include>
+                </focusedlayout>
+            </control>
+        </control>
+        <control type="button" id="35">
+            <left>960</left>
+            <top>168</top>
+            <width>220</width>
+            <height>56</height>
+            <label>Choose day</label>
+            <font>Reg26</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <focusedcolor>FFFFFFFF</focusedcolor>
+            <texturefocus colordiffuse="FF0066FF" border="10">diffuse/panel.png</texturefocus>
+            <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
+            <textoffsetx>22</textoffsetx>
+            <align>left</align>
+            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <ondown>10</ondown>
+            <onclick>RunScript(script.kodi.live.tv,day)</onclick>
+            <onclick>SetFocus(10)</onclick>
+            <onleft>34</onleft>
+            <onright>28</onright>
+        </control>
+        <control type="button" id="34">
+            <left>770</left>
+            <top>168</top>
+            <width>170</width>
+            <height>56</height>
+            <label>Now</label>
+            <font>Reg26</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <focusedcolor>FFFFFFFF</focusedcolor>
+            <texturefocus colordiffuse="FF0066FF" border="10">diffuse/panel.png</texturefocus>
+            <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
+            <textoffsetx>22</textoffsetx>
+            <align>left</align>
+            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <ondown>10</ondown>
+            <onclick>PVR.EpgGridControl(currentprogramme)</onclick>
+            <onclick>SetFocus(10)</onclick>
+            <onleft>33</onleft>
+            <onright>35</onright>
+        </control>
+        <control type="scrollbar" id="60">
+            <left>1870</left>
+            <top>292</top>
+            <width>6</width>
+            <height>560</height>
+            <orientation>vertical</orientation>
+            <texturesliderbackground colordiffuse="FF20232B">diffuse/panel2.png</texturesliderbackground>
+            <texturesliderbar colordiffuse="FF0066FF">diffuse/panel2.png</texturesliderbar>
+            <showonepage>false</showonepage>
+        </control>
+        <control type="image">
+            <left>70</left>
+            <top>884</top>
+            <width>150</width>
+            <height>108</height>
+            <texture background="true" fallback="defaultaddonpvrclient.png">$INFO[ListItem.Icon]</texture>
+            <aspectratio>keep</aspectratio>
+        </control>
+        <control type="label">
+            <left>250</left>
+            <top>874</top>
+            <width>1580</width>
+            <height>48</height>
+            <font>Reg31</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <label>[B]$INFO[ListItem.Label][/B]</label>
+        </control>
+        <control type="label">
+            <left>250</left>
+            <top>924</top>
+            <width>1580</width>
+            <height>32</height>
+            <font>Reg24</font>
+            <textcolor>FFABB2C1</textcolor>
+            <label>$INFO[ListItem.ChannelName]   $INFO[ListItem.StartTime] – $INFO[ListItem.EndTime]</label>
+        </control>
+        <control type="textbox">
+            <left>250</left>
+            <top>964</top>
+            <width>1580</width>
+            <height>64</height>
+            <font>Reg24</font>
+            <textcolor>FFABB2C1</textcolor>
+            <label>$INFO[ListItem.Plot]</label>
+        </control>
+        <control type="label">
+            <left>70</left>
+            <top>1040</top>
+            <width>1780</width>
+            <height>30</height>
+            <font>Reg20</font>
+            <textcolor>FF808A9E</textcolor>
+            <label>OK  Watch channel     ↑  Channel groups     Hold OK  Programme options     Back  Home</label>
+        </control>
+    </include>
+    <include name="Stock_PVR_Guide">
+        <include>Defs_TMDbBingieHelper_Loader</include>
+        <include>GlobalBackground</include>
+        <include>NowPlayingBackground</include>
+        <include condition="Skin.String(ClearLogoLocation) + ![!String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))]">ClearLogo</include>
+        <control type="image">
+            <animation effect="fade" time="250" condition="[Skin.HasSetting(EnableOSDInfo) + Window.IsActive(videoosd)]">Visible</animation>
+            <animation effect="fade" end="0" time="350" condition="[Skin.HasSetting(EnableOSDInfo) + Window.IsActive(videoosd)]">Hidden</animation>
+            <animation effect="fade" time="350" condition="[Skin.HasSetting(EnableOSDInfo) + Window.IsActive(videoosd)]">WindowOpen</animation>
+            <width>100%</width>
+            <height>100%</height>
+            <texture background="true">diffuse/panel2.png</texture>
+            <colordiffuse>b3000000</colordiffuse>
+            <visible>!String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))</visible>
+        </control>
+        <control type="group" id="5000">
+            <include>animation_window_open_close</include>
+            <posx>10</posx>
+            <posy>-70</posy>
+            <animation effect="slide" end="0,-40" time="0" condition="Skin.HasSetting(GuideShowInfo)">Conditional</animation>
+            <control type="group">
+                <include>animation_view_change_pvr</include>
+                <control type="image">
+                    <posy>770</posy>
+                    <posx>-10</posx>
+                    <width>1920</width>
+                    <height>500</height>
+                    <texture border="15">diffuse/panel2.png</texture>
+                    <colordiffuse>$INFO[Skin.String(OSDPanelColor)]</colordiffuse>
+                    <aspectratio>stretch</aspectratio>
+                    <visible>!String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))</visible>
+                </control>
+                <control type="image">
+                    <posy>304</posy>
+                    <posx>50</posx>
+                    <width>1800</width>
+                    <height>10</height>
+                    <align>left</align>
+                    <texture border="10">common/menu-separator2.png</texture>
+                    <visible>String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))</visible>
+                </control>
+                <control type="image">
+                    <posy>940</posy>
+                    <posx>50</posx>
+                    <width>1800</width>
+                    <height>10</height>
+                    <align>left</align>
+                    <texture border="10">common/menu-separator2.png</texture>
+                    <visible>String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))</visible>
+                </control>
+                <control type="group">
+                    <posx>50</posx>
+                    <posy>965</posy>
+                    <visible>Skin.HasSetting(GuideShowInfo) + String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))</visible>
+                    <control type="image">
+                        <right>60</right>
+                        <posy>14</posy>
+                        <width>316</width>
+                        <height>178</height>
+                        <texture fallback="DefaultAddonTvInfo.png">$VAR[PVRThumb]</texture>
+                        <aspectratio align="right" aligny="center">keep</aspectratio>
+                        <fadetime>350</fadetime>
+                    </control>
+                    <control type="grouplist">
+                        <visible>!String.IsEmpty(ListItem.Label)</visible>
+                        <posy>6</posy>
+                        <width>1455</width>
+                        <height>190</height>
+                        <orientation>vertical</orientation>
+                        <usecontrolcoords>true</usecontrolcoords>
+                        <itemgap>20</itemgap>
+                        <control type="label">
+                            <width>1455</width>
+                            <height>20</height>
+                            <font>Reg28</font>
+                            <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                            <label>[B]$VAR[GetPVRTimings]$INFO[ListItem.Label, • ]$VAR[PVRBullet]$INFO[ListItem.Season,$LOCALIZE[31000],:]$INFO[ListItem.Episode,$LOCALIZE[31001],]$VAR[PVRBullet2]$INFO[ListItem.EpisodeName][/B]</label>
+                            <aligny>top</aligny>
+                            <wrapmultiline>false</wrapmultiline>
+                        </control>
+                        <control type="label">
+                            <visible>!String.IsEmpty(Container(17195).ListItem.Genre)</visible>
+                            <width>1455</width>
+                            <height>20</height>
+                            <font>Reg28</font>
+                            <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                            <label>$INFO[Container(17195).ListItem.Genre]</label>
+                            <aligny>top</aligny>
+                        </control>
+                        <control type="textbox">
+                            <height>auto</height>
+                            <width>1455</width>
+                            <font>Reg28</font>
+                            <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                            <label fallback="161">$VAR[BingiePlot]</label>
+                        </control>
+                    </control>
+                </control>
+            </control>
+            <control type="group">
+                <control type="epggrid" id="10">
+                    <description>EPG Grid</description>
+                    <include>animation_view_change_pvr</include>
+                    <include condition="!String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo)) + Skin.string(GuideRows, 7)">altEpgOnScreen7</include>
+                    <include condition="!String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo)) + Skin.string(GuideRows, 9)">altEpgOnScreen9</include>
+                    <top>276</top>
+                    <height>665</height>
+                    <left>50</left>
+                    <width>1800</width>
+                    <pagecontrol>10</pagecontrol>
+                    <timeblocks>40</timeblocks>
+                    <rulerunit>6</rulerunit>
+                    <onleft>9000</onleft>
+                    <scrolltime tween="quadratic">300</scrolltime>
+                    <onback>9000</onback>
+                    <include condition="!Skin.HasSetting(UseAltEpgProgress)">EpgProgressIndicatorNormal</include>
+                    <include condition="Skin.HasSetting(UseAltEpgProgress)">EpgProgressIndicatorAlt</include>
+                    <onleft>31</onleft>
+                    <onright>31</onright>
+                    <onup>10</onup>
+                    <ondown>10</ondown>
+                    <rulerlayout height="35" width="60">
+                        <control type="label" id="2">
+                            <posx>-1</posx>
+                            <posy>-5</posy>
+                            <width>60</width>
+                            <height>30</height>
+                            <align>left</align>
+                            <font>Reg24</font>
+                            <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                    </rulerlayout>
+                    <channellayout height="90" width="500" condition="Skin.String(GuideRows, 7)">
+                        <include content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$VAR[PVRGuideItemColor]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorUnfocus)]" />
+                            <param name="font" value="Reg31" />
+                        </include>
+                    </channellayout>
+                    <focusedchannellayout height="90" width="500" condition="Skin.String(GuideRows, 7)">
+                        <include name="PVRGuideChannelItemLayout" content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$INFO[Skin.String(PVRGuideItemColorFocus)]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorFocus)]" />
+                            <param name="font" value="Reg31" />
+                        </include>
+                    </focusedchannellayout>
+                    <itemlayout height="90" width="60" condition="Skin.String(GuideRows, 7)">
+                        <include>PVRGuideItemLayout</include>
+                    </itemlayout>
+                    <focusedlayout height="90" width="60" condition="Skin.String(GuideRows, 7)">
+                        <include>PVRGuideItemLayoutFocus</include>
+                    </focusedlayout>
+                    <channellayout height="79" width="500" condition="Skin.String(GuideRows, 8)">
+                        <include content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$VAR[PVRGuideItemColor]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorUnfocus)]" />
+                            <param name="font" value="Reg26" />
+                        </include>
+                    </channellayout>
+                    <focusedchannellayout height="79" width="500" condition="Skin.String(GuideRows, 8)">
+                        <include name="PVRGuideChannelItemLayout" content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$INFO[Skin.String(PVRGuideItemColorFocus)]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorFocus)]" />
+                            <param name="font" value="Reg26" />
+                        </include>
+                    </focusedchannellayout>
+                    <itemlayout height="79" width="60" condition="Skin.String(GuideRows, 8)">
+                        <include>PVRGuideItemLayout</include>
+                    </itemlayout>
+                    <focusedlayout height="79" width="60" condition="Skin.String(GuideRows, 8)">
+                        <include>PVRGuideItemLayoutFocus</include>
+                    </focusedlayout>
+                    <channellayout height="70" width="400" condition="Skin.String(GuideRows, 9)">
+                        <include content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$VAR[PVRGuideItemColor]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorUnfocus)]" />
+                            <param name="font" value="Reg26" />
+                        </include>
+                    </channellayout>
+                    <focusedchannellayout height="70" width="400" condition="Skin.String(GuideRows, 9)">
+                        <include name="PVRGuideChannelItemLayout" content="PVRGuideChannelItemLayout">
+                            <param name="panelcolor" value="$INFO[Skin.String(PVRGuideItemColorFocus)]" />
+                            <param name="textcolor" value="$INFO[Skin.String(PVRGuideItemTextColorFocus)]" />
+                            <param name="font" value="Reg26" />
+                        </include>
+                    </focusedchannellayout>
+                    <itemlayout height="70" width="60" condition="Skin.String(GuideRows, 9)">
+                        <include>PVRGuideItemLayout</include>
+                    </itemlayout>
+                    <focusedlayout height="70" width="60" condition="Skin.String(GuideRows, 9)">
+                        <include>PVRGuideItemLayoutFocus</include>
+                    </focusedlayout>
+                </control>
+            </control>
+        </control>
+        <include condition="String.IsEmpty(Window(Home).Property(pvrGuideOnFullscreenVideo))">PVRsideblade</include>
+        <include condition="Skin.HasSetting(DebugGrid) | Skin.HasSetting(DebugInfo)">DebugInfo</include>
+    </include>
+</includes>

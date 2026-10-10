@@ -6,30 +6,36 @@
 
     <!-- Defaults -->
     <include>DefaultSkinSettings</include>
-    
-	<!-- BINGIE -->
+
+    <!-- BINGIE -->
     <onload condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.Reset(CustomSearchTerm)</onload>
     <onload>Skin.SetString(TMDbBingieHelper.MonitorContainer,17195)</onload>
-	<onload condition="!Skin.HasSetting(EnableRatings)">Skin.SetBool(TMDbBingieHelper.DisableRatings)</onload>
+    <onload condition="!Skin.HasSetting(EnableRatings)">Skin.SetBool(TMDbBingieHelper.DisableRatings)</onload>
     <onload condition="Skin.HasSetting(EnableRatings)">Skin.Reset(TMDbBingieHelper.DisableRatings)</onload>
-	
-	<!-- Build Menu -->
-    <onload>RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=900&amp;levels=1&amp;group=mainmenu|powermenu|searchmenu|tmdbsearchmenu|moviehub|tvshowhub|newhub|musichub|customhub|somethinghub|mylisthub)</onload>
+
+    <!-- Build Menu -->
+    <onload condition="!System.HasAlarm(KodiNavigationSwitch)">RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=900&amp;levels=1&amp;group=mainmenu|powermenu|searchmenu|tmdbsearchmenu|moviehub|tvshowhub|newhub|musichub|customhub|somethinghub|mylisthub)</onload>
     <onload condition="String.IsEmpty(Window(Home).Property(widgetstyle))">SetProperty(widgetstyle,$INFO[Skin.String(widgetstyle)])</onload>
-	<onload>Skin.TimerStart(spotlightanimation)</onload>
+    <onload>Skin.TimerStart(spotlightanimation)</onload>
 
     <!-- First Run -->
-	<onload condition="$EXP[IsFirstRun]">ReplaceWindow($VAR[StartUpWindow])</onload>
+    <onload condition="$EXP[IsFirstRun]">ReplaceWindow($VAR[StartUpWindow])</onload>
     <onunload>SetProperty(SectionBackground,$ESCINFO[Control.GetLabel(99004)])</onunload>
     <onunload condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunload>
     <onunload>ClearProperty(submenu,Home)</onunload>
     <onunload>ClearProperty(ShowViewSubMenu,Home)</onunload>
     <include>BingieViews_WindowOpen_Fade</include>
 
-	<controls>
-		<include>Defs_TMDbBingieHelper_Loader</include>
-		<!-- Global Background -->
-        <include>GlobalBackground</include>     
+    <controls>
+        <include>Defs_TMDbBingieHelper_Loader</include>
+        <!-- A next-frame acknowledgement for safe profile service shutdown. -->
+        <control type="button" id="94871">
+            <include>HiddenObject</include>
+            <onfocus condition="System.HasAddon(script.kodi.live.tv) + System.HasAlarm(KodiNavigationSwitch)">RunScript(script.kodi.live.tv,finish-profile-switch)</onfocus>
+            <onback>40000</onback>
+        </control>
+        <!-- Global Background -->
+        <include>GlobalBackground</include>
         <control type="button" id="1000">
             <include>HiddenObject</include>
             <onfocus condition="String.IsEmpty(Window(Home).Property(LastFocusWidget))">SetFocus(77777)</onfocus>
@@ -46,12 +52,30 @@
         </control>
 
         <!-- Preload submenu for count calculations -->
-        <include condition="!Skin.HasSetting(DisableAllSubmenus)">hiddenSubmenu</include>    
-	
-		<!-- Home Screen -->
+        <include condition="!Skin.HasSetting(DisableAllSubmenus)">hiddenSubmenu</include>
+
+        <!-- Home Screen -->
         <include>HomeBingie</include>
 
-		<!-- Debug -->
+        <!-- Debug -->
         <include condition="Skin.HasSetting(DebugGrid) | Skin.HasSetting(DebugInfo)">DebugInfo</include>
-	</controls>
+        <!-- Informational only: never capture navigation or alter the switch barrier. -->
+        <control type="group">
+            <visible>!String.IsEmpty(Window(Home).Property(KodiNavigation.ProfileSwitch)) | System.HasAlarm(KodiNavigationSwitch)</visible>
+            <control type="image">
+                <left>0</left><top>0</top><width>1920</width><height>1080</height>
+                <texture colordiffuse="E6000000">colors/color_white.png</texture>
+            </control>
+            <control type="label">
+                <left>400</left><top>460</top><width>1120</width><height>60</height>
+                <font>Bold45</font><textcolor>FFFFFFFF</textcolor><align>center</align>
+                <label>Switching account$INFO[Window(Home).Property(KodiNavigation.SwitchTarget), to ]…</label>
+            </control>
+            <control type="label">
+                <left>400</left><top>530</top><width>1120</width><height>50</height>
+                <font>Reg30</font><textcolor>FFBDBDBD</textcolor><align>center</align>
+                <label>$INFO[Window(Home).Property(KodiNavigation.SwitchStage)]</label>
+            </control>
+        </control>
+    </controls>
 </window>
