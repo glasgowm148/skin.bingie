@@ -14,6 +14,39 @@ from build_skin import build
 import build_skin
 
 
+def pvr_hub_paths(root, livetv, addon, kids):
+    """Widget paths the PVR hub include tree resolves to for one profile/setting combination."""
+    atoms = {'Skin.HasSetting(KM_EnableLiveTV)': livetv,
+             'System.HasAddon(script.kodi.live.tv)': addon,
+             'String.IsEqual(System.ProfileName,Kids)': kids}
+    includes = {n.get('name'): n for n in root.findall('include') if n.get('name')}
+
+    def holds(condition):
+        if not condition:
+            return True
+        for atom, value in atoms.items():
+            condition = condition.replace(atom, ' %s ' % value)
+        expression = condition.replace('[', ' ( ').replace(']', ' ) ').replace('!', ' not ')
+        expression = expression.replace('+', ' and ').replace('|', ' or ')
+        if not set(expression.split()) <= {'True', 'False', 'not', 'and', 'or', '(', ')'}:
+            raise AssertionError('unknown condition ' + condition)
+        return eval(expression)  # Kodi precedence (! > + > |) matches Python's not/and/or
+
+    def walk(node):
+        paths = []
+        for child in node.findall('include'):
+            if not holds(child.get('condition')):
+                continue
+            if child.get('content'):
+                paths += [p.get('value') for p in child.findall('param')
+                          if p.get('name') == 'widgetPath' and p.get('value')]
+            else:
+                paths += walk(includes[child.text.strip()])
+        return paths
+
+    return walk(includes['bingie_items_pvr'])
+
+
 class SkinTests(unittest.TestCase):
     def test_complete_xml_and_include_tree(self):
         check()
@@ -97,14 +130,28 @@ class SkinTests(unittest.TestCase):
         root = ET.parse(ROOT / '1080i/IncludesHomeWidgets.xml').getroot()
         wrapper = next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr')
         branches = wrapper.findall('include')
-        self.assertEqual(len(branches), 2)
         self.assertIn('Skin.HasSetting(KM_EnableLiveTV)', branches[0].get('condition'))
-        self.assertEqual(branches[1].get('condition'), '![' + branches[0].get('condition') + ']')
-        self.assertEqual(branches[1].text, 'bingie_items_pvr_Stock')
+        self.assertEqual(branches[0].text, 'bingie_items_pvr_Experience')
         stock = ET.tostring(next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr_Stock')).decode()
         self.assertNotIn('System.ProfileName', stock)
         self.assertIn('pvr://channels/tv/*', stock)
         self.assertNotRegex(stock, r'pvr://channels/tv/[^*"]+@')
+        for livetv in (True, False):
+            for addon in (True, False):
+                adult = pvr_hub_paths(root, livetv, addon, kids=False)
+                self.assertTrue(adult)
+                if not (livetv and addon):
+                    self.assertIn('pvr://channels/tv/*', adult)
+
+    def test_kids_pvr_hub_never_lists_all_channels(self):
+        root = ET.parse(ROOT / '1080i/IncludesHomeWidgets.xml').getroot()
+        for livetv in (True, False):
+            for addon in (True, False):
+                paths = pvr_hub_paths(root, livetv, addon, kids=True)
+                for path in paths:
+                    self.assertFalse(path.startswith('pvr://channels/tv/*'), (livetv, addon, path))
+                    self.assertNotIn('lastplayed', path)
+                    self.assertNotIn('recordings', path)
 
     def test_provider_hint_in_context_menu_is_opt_in(self):
         for node in ET.parse(ROOT / '1080i/IncludesContextMenu.xml').iter('control'):

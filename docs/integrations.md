@@ -5,8 +5,10 @@ The toggles under Configure Skin → Experience options default off. Each reload
 | Setting | Additional requirement | Missing/off behavior |
 | --- | --- | --- |
 | `KM_EnableProviderActions` | Patched POV with `manager_watchlist_status`, `manager_watchlist`, `manager_show`, `manager_seen`, `manager_rating_status`, `manager_rating` | Stock Bingie information controls; no manager-route initializers |
-| `KM_EnableLiveTV` | `script.kodi.live.tv` supporting `home` and `day`, configured PVR client; the PVR hub rows expect channel groups `TV Guide`, `Sky Sports` and `TNT Sports` (`Little Ones` and `Cartoons` for a profile named `Kids`) | Stock guide and stock PVR hub rows (Recently Watched, Channels, Recordings, Live & Radio) |
+| `KM_EnableLiveTV` | `script.kodi.live.tv` supporting `home` and `day`, configured PVR client; the PVR hub rows expect channel groups `TV Guide`, `Sky Sports` and `TNT Sports` (`Little Ones` and `Cartoons` for a profile named `Kids`) | Stock guide and stock PVR hub rows (Recently Watched, Channels, Recordings, Live & Radio); a profile named `Kids` gets only the `Little Ones` and `Cartoons` group rows (hidden when the group is absent), never all channels, recordings or Recently Watched |
 | `KM_EnableDirectSwitch` | `script.kodi.live.tv` supporting `switch-account` and its guarded two-profile restart integration where needed | Native profile picker |
+
+Skin settings are stored per profile. When an installation that ran the earlier patched overlay (where these features were always on) is upgraded to this build, switch `KM_EnableProviderActions`, `KM_EnableLiveTV` and `KM_EnableDirectSwitch` on in **every** profile, including `Kids`, then reload the skin; otherwise the Trakt actions, integrated guide and PVR hub rows, and direct profile switching revert to stock. With Experience Live TV enabled, the `Kids` PVR hub hides Recently Watched.
 
 BBC items also require the helper's `browse-bbc-show` and `mark-bbc-watched` actions. Their experience buttons are disabled if the helper is absent. This skin does not copy cloud history or authorize an account.
 

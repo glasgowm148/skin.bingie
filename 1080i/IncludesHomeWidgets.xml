@@ -772,7 +772,37 @@
     <include name="bingie_items_pvr">
         <!-- Household channel-group rows are opt-in; stock Bingie rows remain the default. -->
         <include condition="Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)">bingie_items_pvr_Experience</include>
-        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)]">bingie_items_pvr_Stock</include>
+        <!-- The Kids profile never falls back to all-channel or unfiltered recently watched rows. -->
+        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)] + String.IsEqual(System.ProfileName,Kids)">bingie_items_pvr_Kids</include>
+        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)] + !String.IsEqual(System.ProfileName,Kids)">bingie_items_pvr_Stock</include>
+    </include>
+
+    <!-- Curated channel groups only; a row stays hidden when its group does not exist. -->
+    <include name="bingie_items_pvr_Kids">
+        <include content="widget_header_multi">
+            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
+        </include>
+        <include content="widget_base_normal">
+            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
+            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
+            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
+            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
+            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Little%20Ones@1/"/>
+            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
+            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
+        </include>
+        <include content="widget_header_multi">
+            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
+        </include>
+        <include content="widget_base_normal">
+            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
+            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
+            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
+            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
+            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Cartoons@1/"/>
+            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
+            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
+        </include>
     </include>
 
     <include name="bingie_items_pvr_Experience">
@@ -848,10 +878,10 @@
             <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
         </include>
-        <include content="widget_header_multi">
+        <include content="widget_header_multi" condition="!String.IsEqual(System.ProfileName,Kids)">
             <param name="widgetid" value="1550"/><param name="widgetName" value="Recently Watched"/>
         </include>
-        <include content="widget_base_normal">
+        <include content="widget_base_normal" condition="!String.IsEqual(System.ProfileName,Kids)">
             <param name="widgetid" value="1550"/><param name="widgetName" value="Recently Watched"/>
             <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
