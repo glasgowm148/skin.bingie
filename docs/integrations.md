@@ -14,7 +14,7 @@ Playback recovery is a separate provider integration. It owns `pov_recovery_prom
 
 The pause cleanup only closes an overlay marked `KM_AutoPauseInfo`; it preserves an overlay opened deliberately.
 
-The source validator permits the inherited include references recorded in `tests/upstream-unresolved.json`, including generated Skin Shortcuts templates and existing upstream legacy references. It rejects newly introduced unresolved names; it is not a substitute for Kodi's runtime/visual checks.
+The source validator permits the inherited include references recorded in `tests/upstream-unresolved.json`, including generated Skin Shortcuts templates and existing upstream legacy references. It rejects newly introduced unresolved names, and also undefined `$VAR`/`$EXP` names, missing skin strings (31000–32999), fonts absent from a fontset, missing custom windows, textures absent from `media/Textures.xbt` (two upstream textures are listed in the same file) and focus-triggered trailer previews without the `KM_PreviewMayStart` playback guard. It is not a substitute for Kodi's runtime/visual checks.
 
 Changes to Kodi, POV, iPlayer, TMDb Bingie Helper, PVR or the Android helper stay outside this repository. Do not enable an optional integration solely because an addon with the same ID is installed: confirm its required routes are implemented.
 

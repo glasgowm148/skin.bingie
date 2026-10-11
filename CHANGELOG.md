@@ -7,6 +7,7 @@
 - Dismissing the stream-recovery prompt with Back keeps it closed for that session instead of reopening immediately.
 - Restore the stock PVR hub rows by default; the household channel-group rows now follow the Live TV Experience option.
 - Show the context-menu Trakt/Favourites hint only when provider actions are enabled.
+- Validator also checks variables, expressions, skin strings, fonts, custom windows and packed textures.
 - Reject symlinked, hidden and private runtime artifacts during packaging; failed builds preserve the previous ZIP.
 
 - Preserve BigMoco history and keyboard layout; merge reviewed Matke omega updates.

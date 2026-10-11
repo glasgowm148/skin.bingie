@@ -1,3 +1,4 @@
+import struct
 import sys
 import tempfile
 import unittest
@@ -8,7 +9,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import check, unguarded_autoplay
+from check_skin import broken_references, check, unguarded_autoplay
 from build_skin import build
 import build_skin
 
@@ -82,6 +83,28 @@ class SkinTests(unittest.TestCase):
         for node in ET.parse(ROOT / '1080i/IncludesContextMenu.xml').iter('control'):
             if 'Trakt' in (node.findtext('label') or ''):
                 self.assertIn('Skin.HasSetting(KM_EnableProviderActions)', node.findtext('visible') or '')
+
+    def test_reference_checker_reports_missing_names(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / '1080i').mkdir()
+            (root / 'media').mkdir()
+            (root / 'language/resource.language.en_gb').mkdir(parents=True)
+            (root / 'language/resource.language.en_gb/strings.po').write_text('msgctxt "#31000"\nmsgid "Ok"\n')
+            entry = b'ok.png'.ljust(256, b'\0') + struct.pack('<II', 0, 0)
+            (root / 'media/Textures.xbt').write_bytes(b'XBTF2' + struct.pack('<I', 1) + entry)
+            (root / '1080i/Font.xml').write_text('<fonts><fontset id="Default"><font><name>Reg30</name></font></fontset></fonts>')
+            (root / '1080i/Custom_1150_Ok.xml').write_text('<window id="1150"/>')
+            (root / '1080i/Home.xml').write_text(
+                '<window><onload>ActivateWindow(1150)</onload><onload>ActivateWindow(1199)</onload><controls>'
+                '<control type="label"><font>reg30</font><label>$LOCALIZE[31000]</label><texture>ok.png</texture></control>'
+                '<control type="label"><font>Bold99</font><label>$LOCALIZE[31999] $VAR[Nope] $EXP[Gone]</label>'
+                '<texture>missing.png</texture></control></controls></window>')
+            errors = '\n'.join(broken_references(root))
+            for expected in ('$VAR[Nope]', '$EXP[Gone]', 'string 31999', 'font Bold99', 'window 1199', 'missing.png'):
+                self.assertIn(expected, errors)
+            self.assertEqual(len(broken_references(root)), 6)
+            self.assertNotIn('missing.png', '\n'.join(broken_references(root, ['missing.png'])))
 
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:

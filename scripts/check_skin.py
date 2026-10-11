@@ -1,6 +1,7 @@
-"""Validate all XML and reject unresolved includes introduced by this fork."""
+"""Validate all XML and reject unresolved includes and broken references introduced by this fork."""
 import json
 import re
+import struct
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -29,10 +30,58 @@ def unguarded_autoplay(folder=ROOT / '1080i'):
     found = []
     for path in sorted(folder.glob('*.xml')):
         for node in ET.parse(path).iter():
-            if node.tag in HANDLERS and AUTOPLAY.search(node.text or ''):
-                if '$EXP[KM_PreviewMayStart]' not in (node.get('condition') or ''):
-                    found.append('%s: %s' % (path.name, (node.text or '').strip()[:60]))
+            guarded = '$EXP[KM_PreviewMayStart]' in (node.get('condition') or '')
+            if node.tag in HANDLERS and AUTOPLAY.search(node.text or '') and not guarded:
+                found.append('%s: %s' % (path.name, (node.text or '').strip()[:60]))
     return found
+
+
+def xbt_names(path):
+    """Texture paths packed in a Textures.xbt (XBTF v2) bundle, lower-cased as Kodi looks them up."""
+    data = path.read_bytes()
+    if data[:4] != b'XBTF':
+        raise ValueError('Not an XBT texture bundle: ' + str(path))
+    count, offset, names = struct.unpack_from('<I', data, 5)[0], 9, set()
+    for _ in range(count):
+        names.add(data[offset:offset + 256].split(b'\0')[0].decode('utf-8').lower())
+        frames = struct.unpack_from('<I', data, offset + 260)[0]
+        offset += 264 + frames * 40
+    return names
+
+
+def broken_references(root=ROOT, allowed_textures=()):
+    """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist."""
+    folder = root / '1080i'
+    texts = {path.name: path.read_text(encoding='utf-8') for path in sorted(folder.glob('*.xml'))}
+    po = (root / 'language/resource.language.en_gb/strings.po').read_text(encoding='utf-8')
+    strings = {int(i) for i in re.findall(r'^msgctxt "#(\d+)"', po, re.M)}
+    fontsets = [{(f.findtext('name') or '').strip().lower() for f in fontset.iter('font')}
+                for fontset in ET.parse(folder / 'Font.xml').getroot().iter('fontset')]
+    windows = {int(m) for text in texts.values() for m in re.findall(r'<window[^>]*\bid="(\d+)"', text)}
+    textures = xbt_names(root / 'media/Textures.xbt') | {t.lower() for t in allowed_textures}
+    defined = {kind: {n for text in texts.values() for n in re.findall(r'<%s name="([^"]+)"' % kind, text)}
+               for kind in ('variable', 'expression')}
+    errors = set()
+    for name, text in texts.items():
+        for kind, token in (('variable', 'VAR'), ('expression', 'EXP')):
+            for ref in re.findall(r'\$%s\[([^\],$]+)' % token, text):
+                if ref.strip() not in defined[kind]:
+                    errors.add('%s: undefined $%s[%s]' % (name, token, ref))
+        ids = re.findall(r'\$LOCALIZE\[(\d+)\]', text) + re.findall(r'<(?:label|label2|altlabel|hinttext)>(\d+)</', text)
+        for ref in ids:
+            if 31000 <= int(ref) < 33000 and int(ref) not in strings:
+                errors.add('%s: skin string %s missing from en_gb strings.po' % (name, ref))
+        if name != 'Font.xml':
+            for ref in re.findall(r'<font>\s*([^<$\s]+)\s*</font>', text):
+                if any(ref.lower() not in fontset for fontset in fontsets):
+                    errors.add('%s: font %s missing from a fontset' % (name, ref))
+        for ref in re.findall(r'(?:ActivateWindow|ReplaceWindow|Dialog\.Close|Window\.Is\w+)\((11\d\d)\b', text, re.I):
+            if int(ref) not in windows:
+                errors.add('%s: custom window %s does not exist' % (name, ref))
+        for ref in re.findall(r'[>"]\s*([\w\-/ ]+\.(?:png|jpg|gif))\s*[<"]', text, re.I):
+            if ref.lower() not in textures:
+                errors.add('%s: texture %s missing from Textures.xbt' % (name, ref))
+    return sorted(errors)
 
 
 def check():
@@ -40,17 +89,20 @@ def check():
     for path in files:
         if '.git' not in path.parts:
             ET.parse(path)
-    allowed = set(json.loads((ROOT / 'tests/upstream-unresolved.json').read_text()))
-    missing = unresolved(ROOT / '1080i') - allowed
+    known = json.loads((ROOT / 'tests/upstream-unresolved.json').read_text())
+    missing = unresolved(ROOT / '1080i') - set(known['includes'])
     if missing:
         raise ValueError('New unresolved includes: ' + ', '.join(sorted(missing)))
+    broken = broken_references(allowed_textures=known['textures'])
+    if broken:
+        raise ValueError('Broken references: ' + '; '.join(broken))
     autoplay = unguarded_autoplay()
     if autoplay:
         raise ValueError('Auto-preview without playback guard: ' + '; '.join(autoplay))
     for path in (ROOT / '1080i').glob('*.xml'):
         if re.search(r'markglasgow@|8k-pro-iptvstore|192\.168\.', path.read_text(), re.I):
             raise ValueError('Household configuration in ' + path.name)
-    print('Validated %d XML files; no new unresolved includes or household identifiers' % len(files))
+    print('Validated %d XML files; no new unresolved includes, broken references or household identifiers' % len(files))
 
 
 if __name__ == '__main__':
