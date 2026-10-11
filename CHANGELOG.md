@@ -2,6 +2,9 @@
 
 ## 2.0.2.1 — development
 
+- Allow enabled integrations to be turned off after their dependency is removed.
+- Reject symlinked, hidden and private runtime artifacts during packaging; failed builds preserve the previous ZIP.
+
 - Preserve BigMoco history and keyboard layout; merge reviewed Matke omega updates.
 - Import skin navigation, watchlist icons, ratings controls, episode/season view, pause-overlay, guide, profile-switch overlay and stream-recovery presentation changes.
 - Make patched provider, custom guide and direct-switch integrations opt-in with standard Bingie fallbacks.

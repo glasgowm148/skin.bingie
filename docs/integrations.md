@@ -17,3 +17,5 @@ The pause cleanup only closes an overlay marked `KM_AutoPauseInfo`; it preserves
 The source validator permits the inherited include references recorded in `tests/upstream-unresolved.json`, including generated Skin Shortcuts templates and existing upstream legacy references. It rejects newly introduced unresolved names; it is not a substitute for Kodi's runtime/visual checks.
 
 Changes to Kodi, POV, iPlayer, TMDb Bingie Helper, PVR or the Android helper stay outside this repository. Do not enable an optional integration solely because an addon with the same ID is installed: confirm its required routes are implemented.
+
+An enabled Experience option can always be turned off, including after its helper add-on is removed. Enabling an inactive option still requires its dependency.

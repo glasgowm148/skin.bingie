@@ -4,11 +4,13 @@ import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from zipfile import ZipFile
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from check_skin import check
 from build_skin import build
+import build_skin
 
 
 class SkinTests(unittest.TestCase):
@@ -42,6 +44,36 @@ class SkinTests(unittest.TestCase):
         for node in ET.parse(ROOT / '1080i/DialogVideoInfo.xml').iter('onload'):
             if 'mode=manager_' in (node.text or ''):
                 self.assertIn('Skin.HasSetting(KM_EnableProviderActions)', node.get('condition'))
+
+    def test_missing_addon_still_allows_disabling_active_integration(self):
+        root = ET.parse(ROOT / '1080i/Custom_1171_ExperienceSettings.xml').getroot()
+        for control in root.iter('control'):
+            action = control.findtext('onclick', '')
+            if action.startswith('Skin.ToggleSetting(KM_'):
+                setting = action[len('Skin.ToggleSetting('):-1]
+                self.assertIn('Skin.HasSetting(' + setting + ') | ', control.findtext('enable'))
+
+    def test_bad_runtime_artifacts_preserve_previous_build(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'addon.xml').write_text('<addon id="skin.test" version="1"/>')
+            (root / 'media').mkdir()
+            target = root / 'dist/skin.test-1.zip'
+            target.parent.mkdir()
+            target.write_bytes(b'previous release')
+            outside = root / 'private.txt'
+            outside.write_text('private data')
+            for kind in ('link', 'hidden', 'log'):
+                bad = root / 'media' / {'link': 'poster.png', 'hidden': '.env', 'log': 'debug.LOG'}[kind]
+                if kind == 'link':
+                    bad.symlink_to(outside)
+                else:
+                    bad.write_text('private data')
+                with patch.object(build_skin, 'ROOT', root):
+                    with self.assertRaises(ValueError):
+                        build()
+                self.assertEqual(target.read_bytes(), b'previous release')
+                bad.unlink()
 
     def test_archive_is_deterministic_and_has_no_profiles(self):
         with tempfile.TemporaryDirectory() as folder:
