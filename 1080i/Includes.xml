@@ -89,6 +89,8 @@
 
     <!-- KM_PreviewActive (Window(Home)) is set when the skin arms an auto-preview and cleared when video
          enters fullscreen, so user-started playback (which always goes fullscreen) never counts as a preview. -->
+    <!-- Video (playing or paused) that is not library, music-video, live TV or recording content. -->
+    <expression name="KM_UnrecognizedVideo">Player.HasVideo + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv) | Pvr.IsPlayingRecording]</expression>
     <expression name="KM_PreviewPlaying">$EXP[IsPlayingUnrecognizedContent] + !String.IsEmpty(Window(Home).Property(KM_PreviewActive))</expression>
 
     <!-- Auto-previews may replace an idle player or a skin-started preview, never user playback or audio. -->
@@ -804,10 +806,10 @@
                 <texturefocus />
 
                 <onback>$PARAM[onback]</onback>
-                <onback condition="Player.HasVideo">Stop</onback>
+                <onback condition="$EXP[KM_UnrecognizedVideo]">Stop</onback>
 
                 <onunfocus>SetFocus($PARAM[onback])</onunfocus>
-                <onunfocus condition="Player.HasVideo">Stop</onunfocus>
+                <onunfocus condition="$EXP[KM_UnrecognizedVideo]">Stop</onunfocus>
 
                 <onclick condition="!Player.HasVideo">SetFocus($PARAM[onback])</onclick>
                 <onclick condition="Player.HasVideo + Skin.HasSetting(EnableAutoPauseOnOSD)">PlayerControl(Play)</onclick>

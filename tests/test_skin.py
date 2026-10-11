@@ -1,4 +1,5 @@
 import hashlib
+import shutil
 import struct
 import sys
 import tempfile
@@ -11,7 +12,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from check_skin import (RUNTIME_DIRS, broken_references, check, household_identifiers, top_level_and_terms,
-                        unguarded_autoplay)
+                        unguarded_autoplay, unguarded_playback_actions)
 from build_skin import build
 import build_skin
 
@@ -165,6 +166,46 @@ class SkinTests(unittest.TestCase):
         terms = top_level_and_terms(builds[0].get('condition') or '')
         self.assertIn('!Player.HasMedia', terms)
         self.assertIn('!System.HasAlarm(KodiNavigationSwitch)', terms)
+
+    def test_automatic_stop_and_play_require_guards(self):
+        stop, play = 'PlayerControl(Stop)', 'PlayMedia(x,1)'
+        cases = [  # (file, xml, flagged)
+            ('View.xml', '<onunfocus condition="$EXP[IsPlayingUnrecognizedContent] + A">%s</onunfocus>' % stop, True),
+            ('View.xml', '<onunfocus condition="$EXP[KM_PreviewPlaying] + A">%s</onunfocus>' % stop, False),
+            ('View.xml', '<onunfocus condition="$EXP[KM_PreviewPlaying] | A">%s</onunfocus>' % stop, True),
+            ('View.xml', '<onfocus condition="!$EXP[KM_PreviewPlaying]">%s</onfocus>' % stop, True),
+            ('View.xml', '<onback condition="Player.HasVideo">Stop</onback>', True),
+            ('View.xml', '<onunload>AlarmClock(StopPlayback,PlayerControl(Stop),00:00,silent)</onunload>', True),
+            ('View.xml', '<onunload>CancelAlarm(StopPlayback,silent)</onunload>', False),
+            ('View.xml', '<onclick>%s</onclick>' % stop, False),
+            ('View.xml', '<onload condition="A">%s</onload>' % play, True),
+            ('View.xml', '<onload condition="A + !Player.HasMedia">%s</onload>' % play, False),
+            ('View.xml', '<onfocus>AlarmClock(p,RunScript(script.bingie.helper,action=playtrailer),00:03)</onfocus>', True),
+            ('VideoFullScreen.xml', '<onunload condition="Skin.HasSetting(ForceVideoPlaybackStop) + A">%s</onunload>' % stop, False),
+            ('VideoFullScreen.xml', '<onunload condition="A">%s</onunload>' % stop, True),
+            ('Other.xml', '<onunload condition="Skin.HasSetting(ForceVideoPlaybackStop)">%s</onunload>' % stop, True),
+            ('Includes.xml', '<control id="70011"><onunfocus condition="$EXP[KM_UnrecognizedVideo]">Stop</onunfocus></control>', False),
+            ('Includes.xml', '<control id="70011"><onunfocus condition="Player.HasVideo">Stop</onunfocus></control>', True),
+            ('Includes.xml', '<control id="70012"><onunfocus condition="$EXP[KM_UnrecognizedVideo]">Stop</onunfocus></control>', True),
+        ]
+        for name, xml, flagged in cases:
+            with tempfile.TemporaryDirectory() as folder:
+                (Path(folder) / name).write_text('<window>%s</window>' % xml)
+                self.assertEqual(bool(unguarded_playback_actions(Path(folder))), flagged, (name, xml))
+
+    def test_unguarded_stop_paths_fail_validation(self):
+        self.assertEqual(unguarded_playback_actions(), [])
+        with tempfile.TemporaryDirectory() as folder:
+            copy = Path(folder) / '1080i'
+            shutil.copytree(ROOT / '1080i', copy)
+            for path in copy.glob('*.xml'):
+                text = path.read_text(encoding='utf-8')
+                reverted = text.replace('$EXP[KM_PreviewPlaying]', '$EXP[IsPlayingUnrecognizedContent]')
+                reverted = reverted.replace('"$EXP[KM_UnrecognizedVideo]">Stop<', '"Player.HasVideo">Stop<')
+                reverted = reverted.replace(' + !Player.HasMedia">PlayMedia(', '">PlayMedia(')
+                path.write_text(reverted, encoding='utf-8')
+            found = unguarded_playback_actions(copy)
+        self.assertEqual(len(found), 19, found)  # the stop/play paths guarded in 2.0.2.3
 
     def test_recovery_prompt_stays_closed_after_back(self):
         visible = ET.parse(ROOT / '1080i/Custom_1170_StreamRecovery.xml').getroot().findtext('visible')

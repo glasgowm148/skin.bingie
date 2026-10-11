@@ -76,6 +76,47 @@ def unguarded_autoplay(folder=ROOT / '1080i'):
     return found
 
 
+STOP = re.compile(r'PlayerControl\(\s*Stop\s*\)|Action\(\s*Stop\s*\)|(?:^|[(,])\s*Stop\s*(?:$|[),])', re.I)
+PLAY = re.compile(r'PlayMedia\(|RunScript\(script\.bingie\.helper,action=playtrailer', re.I)
+# Handlers that run without the user choosing to play or stop (focus moves, window changes, Back
+# out of a view); AlarmClock commands inside them run later and are checked the same way.
+AUTOMATIC = HANDLERS + ('onback',)
+STOP_GUARDS = {'$EXP[KM_PreviewPlaying]'}
+PLAY_GUARDS = {PREVIEW_GUARD, '!Player.HasMedia'}
+# Intentional stops that are not previews: (file, handler, control id or None) -> required top-level term.
+STOP_ALLOWED = {
+    # Configure Skin "Stop playback when leaving fullscreen" (ForceVideoPlaybackStop).
+    ('VideoFullScreen.xml', 'onunload', None): 'Skin.HasSetting(ForceVideoPlaybackStop)',
+    # Leaving the information dialog's trailer viewer stops the trailer, never library or live video.
+    ('Includes.xml', 'onunfocus', '70011'): '$EXP[KM_UnrecognizedVideo]',
+    ('Includes.xml', 'onback', '70011'): '$EXP[KM_UnrecognizedVideo]',
+    # Boot window: Kodi has already stopped playback before it loads a profile.
+    ('Startup.xml', 'onunload', None): 'Player.HasVideo',
+}
+
+
+def unguarded_playback_actions(folder=ROOT / '1080i'):
+    """Stops and plays fired by focus, window or Back handlers must prove they only touch previews."""
+    found = []
+    for path in sorted(folder.glob('*.xml')):
+        root = ET.parse(path).getroot()
+        parents = {child: parent for parent in root.iter() for child in parent}
+        for node in root.iter():
+            text = node.text or ''
+            if node.tag not in AUTOMATIC or not (STOP.search(text) or PLAY.search(text)):
+                continue
+            terms = set(top_level_and_terms(node.get('condition') or ''))
+            control = parents.get(node)
+            while control is not None and control.tag != 'control':
+                control = parents.get(control)
+            site = (path.name, node.tag, control.get('id') if control is not None else None)
+            stop_ok = terms & STOP_GUARDS or STOP_ALLOWED.get(site) in terms
+            play_ok = terms & PLAY_GUARDS
+            if STOP.search(text) and not stop_ok or PLAY.search(text) and not play_ok:
+                found.append('%s %s: %s' % (path.name, node.tag, text.strip()[:60]))
+    return found
+
+
 def xbt_names(path):
     """Texture paths packed in a Textures.xbt (XBTF v2) bundle, lower-cased as Kodi looks them up."""
     data = path.read_bytes()
@@ -157,6 +198,9 @@ def check():
     autoplay = unguarded_autoplay()
     if autoplay:
         raise ValueError('Auto-preview without playback guard: ' + '; '.join(autoplay))
+    playback = unguarded_playback_actions()
+    if playback:
+        raise ValueError('Automatic stop/play without preview or playback guard: ' + '; '.join(playback))
     private = household_identifiers()
     if private:
         raise ValueError('Household configuration in ' + ', '.join(private))
