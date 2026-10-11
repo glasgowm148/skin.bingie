@@ -42,6 +42,8 @@
         </control>
 
             <control type="label">
+                <!-- Describes the patched-POV watchlist, so only shown with that integration. -->
+                <visible>Skin.HasSetting(KM_EnableProviderActions) + System.HasAddon(plugin.video.pov)</visible>
                 <posx>39</posx><posy>108</posy>
                 <width>422</width><height>48</height>
                 <font>Reg18</font><textcolor>$INFO[Skin.String(HeaderTextColor)]</textcolor>

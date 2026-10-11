@@ -78,6 +78,11 @@ class SkinTests(unittest.TestCase):
         self.assertIn('pvr://channels/tv/*', stock)
         self.assertNotRegex(stock, r'pvr://channels/tv/[^*"]+@')
 
+    def test_provider_hint_in_context_menu_is_opt_in(self):
+        for node in ET.parse(ROOT / '1080i/IncludesContextMenu.xml').iter('control'):
+            if 'Trakt' in (node.findtext('label') or ''):
+                self.assertIn('Skin.HasSetting(KM_EnableProviderActions)', node.findtext('visible') or '')
+
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
