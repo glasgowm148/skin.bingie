@@ -1,3 +1,4 @@
+import hashlib
 import struct
 import sys
 import tempfile
@@ -230,6 +231,21 @@ class SkinTests(unittest.TestCase):
                         build()
                 self.assertEqual(target.read_bytes(), b'previous release')
                 bad.unlink()
+
+    def test_changed_tree_never_overwrites_same_version_release(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'addon.xml').write_text('<addon id="skin.test" version="1"/>')
+            (root / 'media').mkdir()
+            (root / 'media/a.txt').write_text('first')
+            with patch.object(build_skin, 'ROOT', root):
+                released = build().read_bytes()
+                self.assertEqual(build().read_bytes(), released)
+                (root / 'media/a.txt').write_text('second')
+                with self.assertRaisesRegex(ValueError, 'version'):
+                    build()
+            self.assertEqual((root / 'dist/skin.test-1.zip').read_bytes(), released)
+            self.assertIn(hashlib.sha256(released).hexdigest(), (root / 'dist/skin.test-1.zip.sha256').read_text())
 
     def test_archive_is_deterministic_and_has_no_profiles(self):
         with tempfile.TemporaryDirectory() as folder:

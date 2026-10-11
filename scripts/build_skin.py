@@ -36,6 +36,9 @@ def build(destination=None):
                 info.compress_type = ZIP_DEFLATED
                 info.external_attr = 0o100644 << 16
                 archive.writestr(info, path.read_bytes())
+        # A published version number must always name the same bytes.
+        if target.exists() and target.read_bytes() != staged.read_bytes():
+            raise ValueError('%s already exists with different contents; bump the addon.xml version' % target.name)
         os.replace(staged, target)
     target.with_suffix('.zip.sha256').write_text(hashlib.sha256(target.read_bytes()).hexdigest() + '  ' + target.name + '\n')
     return target
