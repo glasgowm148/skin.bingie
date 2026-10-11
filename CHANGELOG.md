@@ -5,6 +5,7 @@
 - Allow enabled integrations to be turned off after their dependency is removed.
 - Auto-preview trailers no longer start while a paused or recognised video, live TV or music is playing; only an idle player or another preview is replaced.
 - Dismissing the stream-recovery prompt with Back keeps it closed for that session instead of reopening immediately.
+- Restore the stock PVR hub rows by default; the household channel-group rows now follow the Live TV Experience option.
 - Reject symlinked, hidden and private runtime artifacts during packaging; failed builds preserve the previous ZIP.
 
 - Preserve BigMoco history and keyboard layout; merge reviewed Matke omega updates.

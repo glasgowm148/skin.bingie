@@ -9,11 +9,11 @@ Based on [BigMoco's Bingie](https://github.com/Bigmoco/skin.bingie), with review
 | Episode/season browsing and pause-overlay cleanup | Skin changes |
 | Widget layout and artwork-loading adjustments | Skin changes; no claim of universal speed improvement |
 | Clear Add/Remove Watchlist controls, `+` icon, Browse Show and rating actions | Opt-in; requires compatible patched POV |
-| Integrated Live TV guide, channel groups, guide search and day navigation | Opt-in; requires the custom Kodi navigation helper and configured PVR |
+| Integrated Live TV guide, channel-group hub rows, guide search and day navigation | Opt-in; requires the custom Kodi navigation helper and configured PVR |
 | Direct two-profile account switch and progress overlay | Opt-in; requires the custom Kodi navigation helper |
 | Try another stream prompt | Dormant unless a compatible playback-recovery addon supplies its properties |
 
-**Standard Bingie controls remain the default.** The fork contains no accounts, playlists, EPG URLs, API keys, profile photos, watched history or household hub configuration. Provider patches and the Android restart helper are separate projects.
+**Standard Bingie controls remain the default.** The fork contains no accounts, playlists, EPG URLs, API keys, profile photos or watched history, and the default branches carry no household hub configuration. Provider patches and the Android restart helper are separate projects.
 
 ## Install or roll back
 

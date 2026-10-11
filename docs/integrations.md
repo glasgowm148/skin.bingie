@@ -5,7 +5,7 @@ The toggles under Configure Skin → Experience options default off. Each reload
 | Setting | Additional requirement | Missing/off behavior |
 | --- | --- | --- |
 | `KM_EnableProviderActions` | Patched POV with `manager_watchlist_status`, `manager_watchlist`, `manager_show`, `manager_seen`, `manager_rating_status`, `manager_rating` | Stock Bingie information controls; no manager-route initializers |
-| `KM_EnableLiveTV` | `script.kodi.live.tv` supporting `home` and `day`, configured PVR client | Stock guide |
+| `KM_EnableLiveTV` | `script.kodi.live.tv` supporting `home` and `day`, configured PVR client; the PVR hub rows expect channel groups `TV Guide`, `Sky Sports` and `TNT Sports` (`Little Ones` and `Cartoons` for a profile named `Kids`) | Stock guide and stock PVR hub rows (Recently Watched, Channels, Recordings, Live & Radio) |
 | `KM_EnableDirectSwitch` | `script.kodi.live.tv` supporting `switch-account` and its guarded two-profile restart integration where needed | Native profile picker |
 
 BBC items also require the helper's `browse-bbc-show` and `mark-bbc-watched` actions. Their experience buttons are disabled if the helper is absent. This skin does not copy cloud history or authorize an account.

@@ -65,6 +65,19 @@ class SkinTests(unittest.TestCase):
         self.assertIn('!String.IsEqual(Window(Home).Property(pov_recovery_dismissed),'
                       'Window(Home).Property(pov_recovery_session))', visible)
 
+    def test_pvr_hub_defaults_to_stock_channel_rows(self):
+        root = ET.parse(ROOT / '1080i/IncludesHomeWidgets.xml').getroot()
+        wrapper = next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr')
+        branches = wrapper.findall('include')
+        self.assertEqual(len(branches), 2)
+        self.assertIn('Skin.HasSetting(KM_EnableLiveTV)', branches[0].get('condition'))
+        self.assertEqual(branches[1].get('condition'), '![' + branches[0].get('condition') + ']')
+        self.assertEqual(branches[1].text, 'bingie_items_pvr_Stock')
+        stock = ET.tostring(next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr_Stock')).decode()
+        self.assertNotIn('System.ProfileName', stock)
+        self.assertIn('pvr://channels/tv/*', stock)
+        self.assertNotRegex(stock, r'pvr://channels/tv/[^*"]+@')
+
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
