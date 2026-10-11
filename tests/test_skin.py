@@ -278,12 +278,26 @@ class SkinTests(unittest.TestCase):
             for folder_name in ('playlists', 'resources', 'fonts', 'media'):
                 (root / folder_name).mkdir()
             (root / 'playlists/kids.m3u').write_text('http://10.0.0.5/stream')
-            (root / 'resources/notes.md').write_text('markglasgow@example')
+            (root / 'resources/notes.md').write_text('fixture-user@example.invalid')
             (root / 'fonts/clean.ttf').write_bytes(b'\0\x01192.168.1.20')
             (root / 'media/clean.png').write_bytes(b'\x89PNG\0')
             self.assertEqual(household_identifiers(root), [
                 'playlists/kids.m3u', 'resources/notes.md', 'shortcuts/mainmenu.DATA.xml'])
             self.assertTrue(set(build_skin.RUNTIME) <= set(RUNTIME_DIRS))
+
+    def test_privacy_scan_is_independent_of_the_maintainers_household(self):
+        for private in ('http://172.16.1.2/stream', 'smb://172.31.2.3/files',
+                        'another-user@example.invalid', 'https://fixture:password@example.invalid/stream'):
+            with self.subTest(private=private), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                (root / 'resources').mkdir()
+                (root / 'resources/notes.txt').write_text(private)
+                self.assertEqual(household_identifiers(root), ['resources/notes.txt'])
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'resources').mkdir()
+            (root / 'resources/notes.txt').write_text('https://example.invalid/stream https://172.32.1.2/')
+            self.assertEqual(household_identifiers(root), [])
 
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:

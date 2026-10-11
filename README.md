@@ -1,45 +1,65 @@
 # Bingie Experience
 
-A private development fork of **Bingie**, focused on a smoother TV experience: clearer watchlists, easier episode navigation, an integrated programme guide and playback controls that get out of the way.
+An independently maintained fork of the Netflix-style **Bingie** skin for Kodi, with improvements to everyday TV navigation, trailer previews and playback.
 
-Based on [BigMoco's Bingie](https://github.com/Bigmoco/skin.bingie), with reviewed [Matke updates](https://github.com/matke-84/skin.bingie). Their Git history, credits and GPL v2 license are retained. This is an independent fork, not an official upstream release.
+Built on [Matke's Bingie](https://github.com/matke-84/skin.bingie) and [BigMoco's fork](https://github.com/Bigmoco/skin.bingie). Their history, attribution and GPL v2 license are preserved.
 
-| Improvement | Availability |
+**Version 2.0.2.4** · [Download](https://github.com/glasgowm148/skin.bingie/releases/latest) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+
+## What we've added
+
+These improvements work with the normal Bingie dependencies:
+
+- **Playback-safe previews.** Moving focus or leaving a hub stops only a trailer preview started by the skin, preserving videos you started yourself. Previews wait while ordinary media is playing or paused.
+- **Pause and information fixes.** Automatically opened pause information closes when playback resumes. Deliberately opened information stays open; opening cast or crew from the pause screen preserves playback.
+- **Episode and season navigation improvements.** Revised views, focus behavior and information presentation.
+- **Widget and artwork refinements.** Layout and artwork-loading adjustments. Skin Shortcuts rebuilds wait until Home is opened with nothing playing.
+- **BigMoco's keyboard layout**, retained alongside reviewed Matke updates.
+
+Optional Experience controls support compatible companion add-ons:
+
+| Addition | Requirement |
 | --- | --- |
-| Episode/season browsing and pause-overlay cleanup | Skin changes |
-| Widget layout and artwork-loading adjustments | Skin changes; no claim of universal speed improvement |
-| Clear Add/Remove Watchlist controls, `+` icon, Browse Show and rating actions | Opt-in; requires compatible patched POV |
-| Integrated Live TV guide, channel-group hub rows, guide search and day navigation | Opt-in; requires the custom Kodi navigation helper and configured PVR |
-| Direct two-profile account switch and progress overlay | Opt-in; requires the custom Kodi navigation helper |
-| Try another stream prompt | Dormant unless a compatible playback-recovery addon supplies its properties |
+| Add/Remove Watchlist controls, `+` indicator, Browse Show and rating actions | POV with the companion `manager_*` routes; ordinary POV does not provide them |
+| Integrated Live TV guide, search, day navigation and channel-group hub rows | Custom `script.kodi.live.tv` navigation helper and configured PVR |
+| Direct two-profile switching with a progress overlay | The same navigation helper and its profile-switch implementation |
+| Keep waiting / Try another stream prompt | Playback-recovery add-on supplying the documented window properties |
 
-**Standard Bingie controls remain the default.** The fork contains no accounts, playlists, EPG URLs, API keys, profile photos or watched history, and the default branches carry no household hub configuration. Provider patches and the Android restart helper are separate projects.
+The three Experience settings **default off** and preserve standard controls when integrations are unavailable. The recovery prompt stays dormant without its integration. **Companion patches, navigation helpers and Android workarounds are not included in this release.** Their skin-side contracts are in [Optional integrations](docs/integrations.md); installing an add-on with the right name alone does not supply them.
 
-## Install or roll back
+![Experience options with unavailable companion integrations disabled](docs/screenshots/experience-options.png)
 
-This development ZIP uses the existing `skin.bingie` ID and **replaces** an installed Bingie. Back up the existing skin, profile settings and Skin Shortcuts data first. Have a copy of the previous skin ZIP available.
+*Generic Kodi 21 CI screenshot with stubbed Bingie helpers; no personal library or household configuration.*
 
-1. Build the ZIP using the commands below, or have your agent build it.
-2. In Kodi, open **Settings → Add-ons → Install from zip file**, select the ZIP and reload the skin.
-3. Check Home, Movies, Shows, an episode view and the guide before enabling optional integrations.
-4. Under **Configure Skin → Experience options**, enable only integrations your installation supports, in every profile (skin settings are per profile). Reload the skin after changing these options; the window's Apply button does this when nothing is playing.
+## Install
 
-For rollback, switch temporarily to Estuary, reinstall the previous Bingie ZIP, then restore the backed-up skin/Skin Shortcuts settings if needed. Reinstalling a skin alone does not restore personal layouts. Do not uninstall Kodi or erase its data.
+This fork uses the existing **`skin.bingie`** ID and replaces another Bingie version.
 
-## Compatibility
+1. Back up your current skin, skin settings and Skin Shortcuts data; keep the previous skin ZIP for rollback.
+2. Configure the repositories supplying Bingie's dependencies. [Matke's Bingie repository](https://github.com/matke-84/repository.bingie) is the upstream starting point. [addon.xml](addon.xml) lists required versions of Bingie Helper, Toolbox, Widgets, TMDb Bingie Helper, Skin Shortcuts, studio artwork and Autocompletion.
+3. Download **`skin.bingie-2.0.2.4.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
+4. In Kodi, allow installation from unknown sources if prompted, then use **Settings → Add-ons → Install from zip file**. Select Bingie Experience under **Settings → Interface → Skin**.
+5. Check Home, Movies, Shows, episode/season views, the guide and playback. Enable supported integrations under **Configure Skin → Experience options**. Settings are per profile; use Apply while playback is idle to reload the skin.
 
-- Base: BigMoco omega `c960cbb`, merged with reviewed Matke omega `9f1c6eb`; BigMoco's keyboard layout is retained.
-- Fork version: **2.0.2.3**. Addon dependencies remain declared in `addon.xml`.
-- The originating skin changes were exercised on a Shield with Kodi 22 beta 2. This newly assembled fork and its optional/default branches have source/build validation; they have **not yet been installed and visually tested as a complete package**.
-- The profile restart workaround applies to the tested Android beta build, not every Kodi version. See [NVIDIA MCP's optional source kit](https://github.com/glasgowm148/nvidia-MCP/tree/main/contrib/profile-relaunch).
-- Stock POV does not implement our `manager_*` routes. Merely installing POV is insufficient: leave the provider toggle off unless those routes are available.
-- BBC browse/watched actions additionally require `script.kodi.live.tv`. PVR Simple setup, playlists and EPG registration are outside the skin.
+Kodi Manager is optional. The package contains skin files and the license; it does not configure accounts, playlists, EPG services, providers or personal layouts.
 
-See [integration details](docs/integrations.md), [upstream merges](docs/upstream.md) and [changes](CHANGELOG.md).
+For future updates, install the next release ZIP using the same steps. This GitHub project does not supply a Kodi automatic-update repository. See Kodi's [official ZIP installation guide](https://kodi.wiki/view/Add-on_manager#How_to_install_from_a_ZIP_file) for the installation screens.
 
-## Validate and build
+To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore backed-up skin/Skin Shortcuts settings if needed. Reinstalling the skin alone does not restore a saved layout.
 
-Python 3.9+; no third-party build dependency required. The agent handles these computer steps.
+## Compatibility and testing
+
+- Requires the **Kodi 21 / Omega skin API** (`xbmc.gui` 5.17.0) and dependencies in `addon.xml`.
+- The 2.0.2.3 shipped runtime files match the skin running on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. Version 2.0.2.4 keeps that runtime XML, updating metadata, documentation and development checks.
+- GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
+- Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.
+- A profile literally named **Kids** uses the curated **Little Ones** and **Cartoons** PVR hub groups. Missing groups leave those rows empty; see [integration details](docs/integrations.md).
+
+Both tracked upstream `omega` branches were fully merged on 2026-10-12: Matke `9f1c6eb` and BigMoco `c960cbb`. [UPSTREAM_BASE](UPSTREAM_BASE) records revisions; [upstream maintenance](docs/upstream.md) describes future reviews.
+
+## Build and contribute
+
+Python 3.9+; the build and unittest suite need no third-party packages:
 
 ```sh
 python scripts/check_skin.py
@@ -47,14 +67,10 @@ python -m unittest discover -s tests -q
 python scripts/build_skin.py
 ```
 
-The deterministic ZIP and SHA-256 file are written to `dist/`. ZIPs contain runtime skin files and the license, never development files or user profiles. GitHub Actions (`.github/workflows/validate.yml`) runs the checker, pytest and unittest on Python 3.9, 3.10 and 3.12 for pushes to `main` and pull requests, and fails if two builds of the ZIP differ; it does not publish releases or automate TV testing.
+The installable ZIP and SHA-256 file go into `dist/`. Development tools, screenshots, user profiles and generated Skin Shortcuts menus are excluded. Checks reject private LAN addresses, emails and URL credentials in shipped text.
 
-`.github/workflows/render.yml` (manual, weekly and on `main` pushes touching `1080i/`) runs the built skin in the Flathub Kodi 21 build under Xvfb, with official or stubbed dependencies, and uploads screenshots of Home and several windows plus `kodi.log`. It fails on skin errors in `kodi.log` that are not listed in `tests/render-known-log-errors.txt`; if Kodi cannot be installed it warns and skips. Stubbed Bingie helpers leave widgets empty, so these screenshots do not replace a TV test.
-
-Upstream Bingie updates are reviewed and merged as described in [docs/upstream.md](docs/upstream.md); `python scripts/upstream_report.py` lists pending upstream commits against the revisions recorded in `UPSTREAM_BASE`.
-
-Before publishing: test the complete package on a backed-up TV, inspect both default and enabled integration views, add generic screenshots and review the remaining upstream include warnings. No household screenshots or personal configuration are committed here.
+Bug reports should include Kodi/device/skin versions, enabled Experience options, reproduction steps and relevant redacted logs. Pull requests are welcome: retain credits, keep integrations optional with stock fallbacks, and run the checks. Provider/account and Android patches belong in separate projects.
 
 ## Credits and license
 
-Bingie by Matke, with BigMoco's modifications and this fork's additions. **GPL v2.0**; see [LICENSE](LICENSE). Preserve upstream attribution when sharing or contributing patches. [Original README](README.upstream.md).
+Bingie by **Matke**, with **BigMoco's** modifications and this fork maintained by **glasgowm148**. Independent community fork. **GPL v2.0**: [LICENSE](LICENSE). [Original README](README.upstream.md).

@@ -167,11 +167,15 @@ def broken_references(root=ROOT, allowed_textures=()):
 
 # Every folder build_skin.py ships (tests assert the two lists stay in step).
 RUNTIME_DIRS = {'1080i', 'colors', 'extras', 'fonts', 'language', 'media', 'playlists', 'resources', 'shortcuts'}
-HOUSEHOLD = re.compile(r'markglasgow@|8k-pro-iptvstore|192\.168\.|\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b', re.I)
+HOUSEHOLD = re.compile(
+    r'\b(?:192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}'
+    r'|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})\b'
+    r'|[\w.%+-]+@[\w.-]+\.[a-z]{2,}'
+    r'|(?:https?|smb|ftp)://[^\s/:]+:[^\s/@]+@', re.I)
 
 
 def household_identifiers(root=ROOT):
-    """Shipped text files (any file without NUL bytes) must not carry household addresses or accounts."""
+    """Shipped text files must not carry private LAN addresses, emails or URL credentials."""
     found = []
     for path in sorted(root.rglob('*')):
         relative = path.relative_to(root)

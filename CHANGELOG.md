@@ -1,9 +1,17 @@
 # Changes
 
-## 2.0.2.3 — development
+## 2.0.2.4 — 2026-10-12
+
+- Prepare Bingie Experience for community distribution: rewritten README with the fork's additions, compatibility evidence, dependency installation, rollback and optional integration requirements.
+- Add a generic Experience options screenshot from the Kodi 21 CI render; no household screenshots or layouts.
+- Generalize the packaged-file privacy check to private LAN addresses, email addresses and URL credentials, with synthetic regression cases.
+- Refresh add-on metadata and package version. Runtime skin XML is unchanged from 2.0.2.3, whose shipped files match the installation on the maintained NVIDIA Shield / Kodi 22 RC1 setup.
+- Fetch and check Matke omega and BigMoco omega on 2026-10-12: no unmerged commits beyond the recorded revisions in UPSTREAM_BASE.
+
+## 2.0.2.3
 
 - Development only (no skin change): `docs/upstream.md` documents reviewing and merging upstream Bingie; `UPSTREAM_BASE` records the merged Matke (`9f1c6eb`) and BigMoco (`c960cbb`) revisions and `scripts/upstream_report.py` lists upstream commits missing from `main`, flagging files the fork also changed.
-- Development only: a separate `render.yml` workflow screenshots the skin in a headless Kodi 21 (Flathub) and fails on new `kodi.log` skin errors; it has not yet run on GitHub.
+- Development only: a separate `render.yml` workflow screenshots the skin in a headless Kodi 21 (Flathub) and fails on new `kodi.log` skin errors; its latest run passed with stubbed Bingie dependencies.
 - Moving focus, leaving a hub or pressing Back in a view no longer stops a YouTube, IPTV or other add-on stream you started; only auto-previews the skin started (tracked with `KM_PreviewActive`, cleared when video goes fullscreen) are stopped or replaced.
 - Home no longer rebuilds the Skin Shortcuts menu while anything is playing; the next Home load with an idle player rebuilds it.
 - Back from the information dialog's trailer viewer stops only the trailer, never live TV or library video; the startup splash only plays with an idle player.
@@ -36,4 +44,4 @@
 - Normalize malformed XML comments/entity escaping inherited from upstream for validation.
 - Add XML/include checks, fallback regression tests and a deterministic skin ZIP builder.
 
-The complete fork has not yet been installed or visually verified on a TV. No credentials, personal layout data or addon/account patches are bundled.
+The 2.0.2.3 runtime is installed on the maintained Shield / Kodi 22 RC1 setup. Headless Kodi 21 rendering and source tests cover additional default/fallback paths; they do not establish compatibility with every device or add-on combination. No credentials, personal layout data or add-on/account patches are bundled.

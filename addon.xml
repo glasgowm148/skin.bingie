@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- BINGIE -->
-<addon id="skin.bingie" version="2.0.2.3" name="Bingie Experience" provider-name="matke, Bigmoco, glasgowm148">
+<addon id="skin.bingie" version="2.0.2.4" name="Bingie Experience" provider-name="matke, Bigmoco, glasgowm148">
     <requires>
         <import version="5.17.0" addon="xbmc.gui"/>
         <import addon="script.bingie.helper" version="1.1.2"/>
@@ -15,12 +15,12 @@
         <res aspect="16:9" default="true" folder="1080i" height="1080" width="1920" />
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">Kodi skin with Netflix layout.</summary>
+        <summary lang="en_GB">Maintained Bingie skin with Netflix layout and playback safety fixes.</summary>
         <summary lang="zh_CN">Netflix 布局 Kodi 皮肤。</summary>
         <summary lang="es_ES">Kodi con diseño Netflix.</summary>
         <summary lang="es_AR">Kodi con diseño Netflix.</summary>
         <summary lang="es_MX">Kodi con diseño Netflix.</summary>
-        <description lang="en_GB">Bingie Experience: navigation, playback and guide improvements, based on BigMoco and Matke Bingie.</description>
+        <description lang="en_GB">Bingie Experience is an independently maintained fork of Matke and BigMoco Bingie. It adds safer trailer previews, episode and season navigation improvements, pause-overlay fixes and optional watchlist, Live TV and profile controls. Optional integrations require compatible companion add-ons; standard controls remain available.</description>
         <description lang="zh_CN">Bingie -你最喜欢的电影和节目的主界面！</description>
         <description lang="es_ES">Bingie - tu hogar de películas y series favoritas!</description>
         <description lang="es_AR">Bingie - tu hogar de películas y series favoritas!</description>
@@ -29,6 +29,7 @@
         <license>GPL v2.0</license>
         <forum></forum>
         <source>https://github.com/glasgowm148/skin.bingie</source>
+        <website>https://github.com/glasgowm148/skin.bingie</website>
         <assets>
             <icon>resources/icon.png</icon>
             <fanart>resources/fanart.jpg</fanart>
