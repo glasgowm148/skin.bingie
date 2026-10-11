@@ -1,6 +1,13 @@
 # Changes
 
-## 2.0.2.2 — development
+## 2.0.2.3 — development
+
+- Moving focus, leaving a hub or pressing Back in a view no longer stops a YouTube, IPTV or other add-on stream you started; only auto-previews the skin started (tracked with `KM_PreviewActive`, cleared when video goes fullscreen) are stopped or replaced.
+- Home no longer rebuilds the Skin Shortcuts menu while anything is playing; the next Home load with an idle player rebuilds it.
+- Back from the information dialog's trailer viewer stops only the trailer, never live TV or library video; the startup splash only plays with an idle player.
+- Validator rejects stops and plays in focus, load, unload and Back handlers (directly or via `AlarmClock`) without a preview or playback guard; only the fullscreen-exit stop, the trailer viewer and the boot window are allowlisted.
+
+## 2.0.2.2
 
 - Opening a cast or crew member from the auto-opened pause information no longer stops playback when "Stop playback when leaving fullscreen" is on.
 - A profile named `Kids` never falls back to all-channel, recordings or Recently Watched PVR hub rows; it keeps the `Little Ones` and `Cartoons` group rows.
