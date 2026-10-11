@@ -124,18 +124,20 @@ def broken_references(root=ROOT, allowed_textures=()):
     return sorted(errors)
 
 
-RUNTIME_TEXT = {'.xml', '.xsp', '.po', '.theme', '.txt', '.json'}
+# Every folder build_skin.py ships (tests assert the two lists stay in step).
+RUNTIME_DIRS = {'1080i', 'colors', 'extras', 'fonts', 'language', 'media', 'playlists', 'resources', 'shortcuts'}
 HOUSEHOLD = re.compile(r'markglasgow@|8k-pro-iptvstore|192\.168\.|\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b', re.I)
 
 
 def household_identifiers(root=ROOT):
-    """Runtime text that would ship in the ZIP must not carry household addresses or accounts."""
+    """Shipped text files (any file without NUL bytes) must not carry household addresses or accounts."""
     found = []
     for path in sorted(root.rglob('*')):
         relative = path.relative_to(root)
-        runtime = relative.parts[0] in {'1080i', 'colors', 'extras', 'language', 'shortcuts'} or relative.name == 'addon.xml'
-        if runtime and path.is_file() and path.suffix.lower() in RUNTIME_TEXT:
-            if HOUSEHOLD.search(path.read_text(encoding='utf-8', errors='replace')):
+        runtime = relative.parts[0] in RUNTIME_DIRS or relative.as_posix() in {'addon.xml', 'LICENSE'}
+        if runtime and path.is_file() and not path.is_symlink():
+            data = path.read_bytes()
+            if b'\0' not in data and HOUSEHOLD.search(data.decode('utf-8', errors='replace')):
                 found.append(relative.as_posix())
     return found
 

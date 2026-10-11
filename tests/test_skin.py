@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import broken_references, check, household_identifiers, unguarded_autoplay
+from check_skin import RUNTIME_DIRS, broken_references, check, household_identifiers, unguarded_autoplay
 from build_skin import build
 import build_skin
 
@@ -199,7 +199,15 @@ class SkinTests(unittest.TestCase):
             (root / 'shortcuts/mainmenu.DATA.xml').write_text('<path>smb://192.168.1.20/films</path>')
             (root / 'extras/clean.xsp').write_text('<smartplaylist/>')
             (root / 'tests/fixture.xml').write_text('192.168.1.20')
-            self.assertEqual(household_identifiers(root), ['shortcuts/mainmenu.DATA.xml'])
+            for folder_name in ('playlists', 'resources', 'fonts', 'media'):
+                (root / folder_name).mkdir()
+            (root / 'playlists/kids.m3u').write_text('http://10.0.0.5/stream')
+            (root / 'resources/notes.md').write_text('markglasgow@example')
+            (root / 'fonts/clean.ttf').write_bytes(b'\0\x01192.168.1.20')
+            (root / 'media/clean.png').write_bytes(b'\x89PNG\0')
+            self.assertEqual(household_identifiers(root), [
+                'playlists/kids.m3u', 'resources/notes.md', 'shortcuts/mainmenu.DATA.xml'])
+            self.assertTrue(set(build_skin.RUNTIME) <= set(RUNTIME_DIRS))
 
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
