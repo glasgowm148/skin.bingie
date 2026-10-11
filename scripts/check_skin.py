@@ -20,6 +20,21 @@ def unresolved(folder):
     return references - definitions
 
 
+AUTOPLAY = re.compile(r'AlarmClock\([^,]+,\s*(?:PlayMedia\(|RunScript\(script\.bingie\.helper,action=playtrailer)', re.I)
+HANDLERS = ('onload', 'onunload', 'onfocus', 'onunfocus')
+
+
+def unguarded_autoplay(folder=ROOT / '1080i'):
+    """Deferred previews must not replace media the user is already watching or listening to."""
+    found = []
+    for path in sorted(folder.glob('*.xml')):
+        for node in ET.parse(path).iter():
+            if node.tag in HANDLERS and AUTOPLAY.search(node.text or ''):
+                if '$EXP[KM_PreviewMayStart]' not in (node.get('condition') or ''):
+                    found.append('%s: %s' % (path.name, (node.text or '').strip()[:60]))
+    return found
+
+
 def check():
     files = list(ROOT.rglob('*.xml'))
     for path in files:
@@ -29,6 +44,9 @@ def check():
     missing = unresolved(ROOT / '1080i') - allowed
     if missing:
         raise ValueError('New unresolved includes: ' + ', '.join(sorted(missing)))
+    autoplay = unguarded_autoplay()
+    if autoplay:
+        raise ValueError('Auto-preview without playback guard: ' + '; '.join(autoplay))
     for path in (ROOT / '1080i').glob('*.xml'):
         if re.search(r'markglasgow@|8k-pro-iptvstore|192\.168\.', path.read_text(), re.I):
             raise ValueError('Household configuration in ' + path.name)

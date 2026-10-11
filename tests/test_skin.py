@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import check
+from check_skin import check, unguarded_autoplay
 from build_skin import build
 import build_skin
 
@@ -52,6 +52,13 @@ class SkinTests(unittest.TestCase):
             if action.startswith('Skin.ToggleSetting(KM_'):
                 setting = action[len('Skin.ToggleSetting('):-1]
                 self.assertIn('Skin.HasSetting(' + setting + ') | ', control.findtext('enable'))
+
+    def test_auto_previews_never_replace_user_playback(self):
+        self.assertEqual(unguarded_autoplay(), [])
+        root = ET.parse(ROOT / '1080i/Includes.xml').getroot()
+        guard = next(n for n in root.iter('expression') if n.get('name') == 'KM_PreviewMayStart').text
+        self.assertIn('!Player.HasMedia', guard)
+        self.assertIn('$EXP[IsPlayingUnrecognizedContent]', guard)
 
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
