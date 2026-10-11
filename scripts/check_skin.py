@@ -25,12 +25,52 @@ AUTOPLAY = re.compile(r'AlarmClock\([^,]+,\s*(?:PlayMedia\(|RunScript\(script\.b
 HANDLERS = ('onload', 'onunload', 'onfocus', 'onunfocus')
 
 
+PREVIEW_GUARD = '$EXP[KM_PreviewMayStart]'
+
+
+def top_level_and_terms(condition):
+    """Terms ANDed at the top level of a Kodi condition, or [] when the top level has an OR.
+
+    Kodi binds ! tighter than + and + tighter than |; only [] groups ($EXP[...] is one operand)."""
+    condition = condition.strip()
+    while True:
+        depth, inner = 0, False
+        if condition.startswith('[') and condition.endswith(']'):
+            inner = True
+            for index, char in enumerate(condition):
+                depth += {'[': 1, ']': -1}.get(char, 0)
+                if depth == 0 and index < len(condition) - 1:
+                    inner = False
+                    break
+        if not inner:
+            break
+        condition = condition[1:-1].strip()
+    terms, depth, current, index = [], 0, '', 0
+    while index < len(condition):
+        if condition.startswith('$EXP[', index):
+            end = condition.index(']', index)
+            current += condition[index:end + 1]
+            index = end + 1
+            continue
+        char = condition[index]
+        depth += {'[': 1, ']': -1}.get(char, 0)
+        if depth == 0 and char == '|':
+            return []
+        if depth == 0 and char == '+':
+            terms.append(current.strip())
+            current = ''
+        else:
+            current += char
+        index += 1
+    return terms + [current.strip()]
+
+
 def unguarded_autoplay(folder=ROOT / '1080i'):
     """Deferred previews must not replace media the user is already watching or listening to."""
     found = []
     for path in sorted(folder.glob('*.xml')):
         for node in ET.parse(path).iter():
-            guarded = '$EXP[KM_PreviewMayStart]' in (node.get('condition') or '')
+            guarded = PREVIEW_GUARD in top_level_and_terms(node.get('condition') or '')
             if node.tag in HANDLERS and AUTOPLAY.search(node.text or '') and not guarded:
                 found.append('%s: %s' % (path.name, (node.text or '').strip()[:60]))
     return found

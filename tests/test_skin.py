@@ -73,6 +73,21 @@ class SkinTests(unittest.TestCase):
             for window in ('1190', '1191'):
                 self.assertIn('!Window.Next(%s)' % window, terms)
 
+    def test_preview_guard_must_be_anded_at_top_level(self):
+        alarm = 'AlarmClock(preview_delay,PlayMedia(x),00:03,silent)'
+        cases = {'A + $EXP[KM_PreviewMayStart]': False,
+                 '[A | B] + $EXP[KM_PreviewMayStart]': False,
+                 'A | B + $EXP[KM_PreviewMayStart]': True,
+                 '[A + $EXP[KM_PreviewMayStart]] | B': True,
+                 '[A + $EXP[KM_PreviewMayStart]]': False,
+                 'A + !$EXP[KM_PreviewMayStart]': True,
+                 'A + $EXP[KM_PreviewMayStartX]': True}
+        for condition, unguarded in cases.items():
+            with tempfile.TemporaryDirectory() as folder:
+                (Path(folder) / 'View.xml').write_text(
+                    '<window><onfocus condition="%s">%s</onfocus></window>' % (condition, alarm))
+                self.assertEqual(bool(unguarded_autoplay(Path(folder))), unguarded, condition)
+
     def test_recovery_prompt_stays_closed_after_back(self):
         visible = ET.parse(ROOT / '1080i/Custom_1170_StreamRecovery.xml').getroot().findtext('visible')
         self.assertIn('!String.IsEqual(Window(Home).Property(pov_recovery_dismissed),'
