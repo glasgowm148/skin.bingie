@@ -1,15 +1,46 @@
 name: Validate skin
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: validate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        # README documents Python 3.9+; test the floor and current releases.
+        python: ['3.9', '3.10', '3.12']
+    name: py${{ matrix.python }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          python-version: '3.11'
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install pytest==8.3.5
+      # XML/includes, references, playback guards and the household-identifier scan.
       - run: python scripts/check_skin.py
+      - run: python -m pytest -q tests
       - run: python -m unittest discover -s tests -q
-      - run: python scripts/build_skin.py
+      - name: Skin ZIP is reproducible
+        shell: bash
+        run: |
+          build() { python -c 'import sys; sys.path.insert(0, "scripts"); from build_skin import build; print(build(sys.argv[1]))' "$1"; }
+          first=$(build "$RUNNER_TEMP/build-a")
+          second=$(build "$RUNNER_TEMP/build-b")
+          a=$(sha256sum "$first" | cut -d' ' -f1)
+          b=$(sha256sum "$second" | cut -d' ' -f1)
+          echo "$(basename "$first"): $a"
+          if [ "$a" != "$b" ]; then
+            echo "::error::Two builds of the skin ZIP differ ($a vs $b)"
+            exit 1
+          fi

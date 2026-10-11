@@ -47,7 +47,7 @@ python -m unittest discover -s tests -q
 python scripts/build_skin.py
 ```
 
-The deterministic ZIP and SHA-256 file are written to `dist/`. ZIPs contain runtime skin files and the license, never development files or user profiles. CI validates XML, conditional fallbacks and package contents on each push; it does not automate TV testing.
+The deterministic ZIP and SHA-256 file are written to `dist/`. ZIPs contain runtime skin files and the license, never development files or user profiles. GitHub Actions (`.github/workflows/validate.yml`) runs the checker, pytest and unittest on Python 3.9, 3.10 and 3.12 for pushes to `main` and pull requests, and fails if two builds of the ZIP differ; it does not publish releases or automate TV testing.
 
 Before publishing: test the complete package on a backed-up TV, inspect both default and enabled integration views, add generic screenshots and review the remaining upstream include warnings. No household screenshots or personal configuration are committed here.
 

@@ -6,6 +6,7 @@
 - Home no longer rebuilds the Skin Shortcuts menu while anything is playing; the next Home load with an idle player rebuilds it.
 - Back from the information dialog's trailer viewer stops only the trailer, never live TV or library video; the startup splash only plays with an idle player.
 - Validator rejects stops and plays in focus, load, unload and Back handlers (directly or via `AlarmClock`) without a preview or playback guard; only the fullscreen-exit stop, the trailer viewer and the boot window are allowlisted.
+- CI runs the validator, pytest and unittest on Python 3.9, 3.10 and 3.12 and checks that two ZIP builds are byte-identical; actions are pinned by commit SHA with read-only permissions.
 
 ## 2.0.2.2
 
