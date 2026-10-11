@@ -344,6 +344,9 @@ def skin_errors(log_text):
         match = LOG_LINE.match(line)
         message = (match.group(2) if match else line).strip()
         message = re.sub(r'\b0x[0-9a-f]+\b', '0x?', message, flags=re.I)
+        # The install folder depends on the machine and Kodi packaging; the baseline names skin files
+        # as special://skin/<path>.
+        message = re.sub(r'\S*/addons/skin\.bingie/', 'special://skin/', message)
         if SKIN_ERROR.search(message) and SKIN_CONTEXT.search(message) and message not in found:
             found.append(message)
     return found

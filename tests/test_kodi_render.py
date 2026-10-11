@@ -133,6 +133,13 @@ class LogTests(TempDir):
             'Skin has invalid include: Header_Align_Left', 'Skin has invalid include: Brand_New',
             'Error loading skin file Custom_9.xml at 0x?'])
 
+    def test_skin_install_folder_is_normalised(self):
+        for folder in ('/home/runner/.var/app/tv.kodi.Kodi/data', '/storage/emulated/0/Android/data/org.xbmc.kodi/files/.kodi'):
+            line = ('2026-10-11 10:00:01.700 T:124    error <general>: Error loading include file '
+                    + folder + '/addons/skin.bingie/1080i/x.xml: Failed to open file (row: 0, col: 0)')
+            self.assertEqual(kr.skin_errors(line), [
+                'Error loading include file special://skin/1080i/x.xml: Failed to open file (row: 0, col: 0)'])
+
     def test_only_new_errors_fail(self):
         log, baseline = self.tmp / 'kodi.log', self.tmp / 'baseline.txt'
         log.write_text(self.LOG)
