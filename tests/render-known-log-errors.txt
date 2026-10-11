@@ -1,0 +1,4 @@
+# Skin errors already present in kodi.log from the render workflow (.github/workflows/render.yml).
+# One normalised message per line, exactly as the "kodi.log skin errors" job summary prints it.
+# "Skin has invalid include: <name>" for names in tests/upstream-unresolved.json is accepted automatically.
+# Remove an entry when the summary reports it as fixed; never add one without reviewing its cause.

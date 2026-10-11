@@ -1,0 +1,114 @@
+name: Render skin
+# Headless screenshots of skin.bingie in a real Kodi, plus a kodi.log skin-error check.
+# Separate from validate.yml on purpose: if Kodi cannot be installed on the runner this workflow
+# warns and stops without failing; validate.yml stays the required check. It fails only when Kodi
+# ran and Bingie/Home did not load, or kodi.log has skin errors missing from
+# tests/render-known-log-errors.txt. Screenshots are not proof of on-TV behaviour.
+#
+# Kodi: addon.xml requires xbmc.gui 5.17.0 (Kodi 21 Omega). Ubuntu 24.04 ships Kodi 20 and the
+# team-xbmc PPA has no Kodi 21 build for it, so the job uses the Flathub tv.kodi.Kodi build
+# (21.3-Omega when this was written; the installed version is printed in the job summary).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'   # Mondays 04:23 UTC: catches Flathub Kodi updates
+  push:
+    branches: [main]
+    paths:
+      - '1080i/**'
+      - 'addon.xml'
+      - 'scripts/kodi_render.py'
+      - 'scripts/render_kodi.sh'
+      - '.github/workflows/render.yml'
+permissions:
+  contents: read
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      KODI_FLATPAK: tv.kodi.Kodi
+      DISPLAY: ':99'
+      OUT: ${{ github.workspace }}/render-output
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Install Xvfb, ImageMagick and Kodi from Flathub
+        id: kodi
+        shell: bash
+        run: |
+          # Every failure here only disables the later steps (available=false) with a warning.
+          install() {
+            sudo apt-get update -qq || return 1
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+              flatpak xvfb x11-utils x11-apps imagemagick libgl1-mesa-dri dbus || return 1
+            # Ubuntu 24.04 blocks unprivileged user namespaces, which the Flatpak sandbox needs.
+            sudo sysctl -q -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+            flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || return 1
+            # Idempotent: an existing install is updated instead of failing.
+            flatpak install --user -y --noninteractive flathub "$KODI_FLATPAK" || return 1
+          }
+          if install; then
+            version=$(flatpak info --user "$KODI_FLATPAK" | awk -F': *' '$1 ~ /Version/ {print $2; exit}')
+            case "$version" in
+              21.*|22.*) available=true ;;
+              *) available=false; echo "::warning::Flathub Kodi $version does not provide xbmc.gui 5.17 (Kodi 21/22)" ;;
+            esac
+          else
+            available=false; version=none
+            echo "::warning::Kodi could not be installed on this runner; screenshots skipped"
+          fi
+          echo "available=$available" >> "$GITHUB_OUTPUT"
+          { echo "### Kodi"; echo; echo "- Flathub \`$KODI_FLATPAK\`: **${version}** (render: $available)"; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build skin ZIP
+        if: steps.kodi.outputs.available == 'true'
+        id: build
+        shell: bash
+        run: |
+          python3 scripts/check_skin.py
+          zip=$(python3 -c 'import sys; sys.path.insert(0, "scripts"); from build_skin import build; print(build(sys.argv[1]))' "$RUNNER_TEMP/dist")
+          echo "zip=$zip" >> "$GITHUB_OUTPUT"
+
+      - name: Run Kodi and take screenshots
+        if: steps.kodi.outputs.available == 'true'
+        id: render
+        shell: bash
+        env:
+          ZIP: ${{ steps.build.outputs.zip }}
+        run: scripts/render_kodi.sh "$ZIP"
+
+      - name: Check kodi.log for skin errors
+        if: always() && steps.kodi.outputs.available == 'true' && steps.build.outcome == 'success'
+        shell: bash
+        run: python3 scripts/kodi_render.py check-log --log "$OUT/phase2-kodi.log"
+
+      - name: Summarise
+        if: always() && steps.kodi.outputs.available == 'true'
+        shell: bash
+        env:
+          RENDER: ${{ steps.render.outcome }}
+        run: |
+          {
+            echo "### Render"
+            echo
+            echo "- Bingie/Home: $RENDER"
+            if [ -f "$OUT/dependencies.json" ]; then
+              echo "- Dependencies (official repository or stub):"
+              python3 -c 'import json, sys; [print("  - `%s` %s (%s)" % (k, *v)) for k, v in sorted(json.load(open(sys.argv[1])).items())]' "$OUT/dependencies.json"
+            fi
+            echo "- Screenshots: $(cd "$OUT" 2>/dev/null && ls *.png 2>/dev/null | tr '\n' ' ')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always() && steps.kodi.outputs.available == 'true'
+        with:
+          name: render-${{ github.run_number }}
+          path: render-output/
+          if-no-files-found: warn
+          retention-days: 14
