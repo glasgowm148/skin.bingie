@@ -5,7 +5,8 @@
 	<onload condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onload>
 	<onload condition="Player.HasVideo + !Window.IsVisible(videoosd) + !Player.Paused + !Skin.HasSetting(EnableOSDInfo)">AlarmClock(OpenMPAATopBar,SetProperty(DialogMPAATopBar,1,home),00:00,silent)</onload>
 	<onunload condition="![Player.HasVideo + VideoPlayer.Content(livetv)]">ClearProperty(pvrGuideOnFullscreenVideo,Home)</onunload>
-	<onunload condition="!VideoPlayer.Content(livetv) + Skin.HasSetting(ForceVideoPlaybackStop) + ![Skin.HasSetting(EnableOSDInfo)]">AlarmClock(StopPlayback,PlayerControl(Stop),00:00,silent)</onunload>
+	<!-- Cast/crew helper windows replace fullscreen while playback continues behind them. -->
+	<onunload condition="!VideoPlayer.Content(livetv) + Skin.HasSetting(ForceVideoPlaybackStop) + ![Skin.HasSetting(EnableOSDInfo)] + !Window.Next(1191) + !Window.Next(1190)">AlarmClock(StopPlayback,PlayerControl(Stop),00:00,silent)</onunload>
 	<onunload>AlarmClock(LastPlayed,CancelAlarm(preview_delay,silent),00:01,silent)</onunload>
 	<onunload>ClearProperty(DialogMPAATopBar,home)</onunload>
 	<onunload>ClearProperty(HideDialogMPAATopBar,home)</onunload>

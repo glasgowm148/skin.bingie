@@ -61,6 +61,18 @@ class SkinTests(unittest.TestCase):
         self.assertIn('!Player.HasMedia', guard)
         self.assertIn('$EXP[IsPlayingUnrecognizedContent]', guard)
 
+    def test_cast_click_from_pause_info_keeps_playback(self):
+        # VideoOSD resets EnableOSDInfo before the cast helper opens 1191/1190 over playback, so the
+        # fullscreen stop must exempt those helper windows itself.
+        stops = [n for n in ET.parse(ROOT / '1080i/VideoFullScreen.xml').getroot().findall('onunload')
+                 if 'PlayerControl(Stop)' in (n.text or '')]
+        self.assertTrue(stops)
+        for node in stops:
+            terms = [t.strip() for t in node.get('condition').split('+')]
+            self.assertNotIn('|', node.get('condition'))
+            for window in ('1190', '1191'):
+                self.assertIn('!Window.Next(%s)' % window, terms)
+
     def test_recovery_prompt_stays_closed_after_back(self):
         visible = ET.parse(ROOT / '1080i/Custom_1170_StreamRecovery.xml').getroot().findtext('visible')
         self.assertIn('!String.IsEqual(Window(Home).Property(pov_recovery_dismissed),'
