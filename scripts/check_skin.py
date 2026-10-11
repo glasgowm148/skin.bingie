@@ -84,6 +84,22 @@ def broken_references(root=ROOT, allowed_textures=()):
     return sorted(errors)
 
 
+RUNTIME_TEXT = {'.xml', '.xsp', '.po', '.theme', '.txt', '.json'}
+HOUSEHOLD = re.compile(r'markglasgow@|8k-pro-iptvstore|192\.168\.|\b10\.\d{1,3}\.\d{1,3}\.\d{1,3}\b', re.I)
+
+
+def household_identifiers(root=ROOT):
+    """Runtime text that would ship in the ZIP must not carry household addresses or accounts."""
+    found = []
+    for path in sorted(root.rglob('*')):
+        relative = path.relative_to(root)
+        runtime = relative.parts[0] in {'1080i', 'colors', 'extras', 'language', 'shortcuts'} or relative.name == 'addon.xml'
+        if runtime and path.is_file() and path.suffix.lower() in RUNTIME_TEXT:
+            if HOUSEHOLD.search(path.read_text(encoding='utf-8', errors='replace')):
+                found.append(relative.as_posix())
+    return found
+
+
 def check():
     files = list(ROOT.rglob('*.xml'))
     for path in files:
@@ -99,9 +115,9 @@ def check():
     autoplay = unguarded_autoplay()
     if autoplay:
         raise ValueError('Auto-preview without playback guard: ' + '; '.join(autoplay))
-    for path in (ROOT / '1080i').glob('*.xml'):
-        if re.search(r'markglasgow@|8k-pro-iptvstore|192\.168\.', path.read_text(), re.I):
-            raise ValueError('Household configuration in ' + path.name)
+    private = household_identifiers()
+    if private:
+        raise ValueError('Household configuration in ' + ', '.join(private))
     print('Validated %d XML files; no new unresolved includes, broken references or household identifiers' % len(files))
 
 

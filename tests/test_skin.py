@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import broken_references, check, unguarded_autoplay
+from check_skin import broken_references, check, household_identifiers, unguarded_autoplay
 from build_skin import build
 import build_skin
 
@@ -105,6 +105,17 @@ class SkinTests(unittest.TestCase):
                 self.assertIn(expected, errors)
             self.assertEqual(len(broken_references(root)), 6)
             self.assertNotIn('missing.png', '\n'.join(broken_references(root, ['missing.png'])))
+
+    def test_household_scan_covers_all_runtime_text(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'shortcuts').mkdir()
+            (root / 'extras').mkdir()
+            (root / 'tests').mkdir()
+            (root / 'shortcuts/mainmenu.DATA.xml').write_text('<path>smb://192.168.1.20/films</path>')
+            (root / 'extras/clean.xsp').write_text('<smartplaylist/>')
+            (root / 'tests/fixture.xml').write_text('192.168.1.20')
+            self.assertEqual(household_identifiers(root), ['shortcuts/mainmenu.DATA.xml'])
 
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
