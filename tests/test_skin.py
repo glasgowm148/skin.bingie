@@ -60,6 +60,11 @@ class SkinTests(unittest.TestCase):
         self.assertIn('!Player.HasMedia', guard)
         self.assertIn('$EXP[IsPlayingUnrecognizedContent]', guard)
 
+    def test_recovery_prompt_stays_closed_after_back(self):
+        visible = ET.parse(ROOT / '1080i/Custom_1170_StreamRecovery.xml').getroot().findtext('visible')
+        self.assertIn('!String.IsEqual(Window(Home).Property(pov_recovery_dismissed),'
+                      'Window(Home).Property(pov_recovery_session))', visible)
+
     def test_bad_runtime_artifacts_preserve_previous_build(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

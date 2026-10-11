@@ -10,7 +10,7 @@ The toggles under Configure Skin → Experience options default off. Each reload
 
 BBC items also require the helper's `browse-bbc-show` and `mark-bbc-watched` actions. Their experience buttons are disabled if the helper is absent. This skin does not copy cloud history or authorize an account.
 
-Playback recovery is a separate provider integration. It owns `pov_recovery_prompt`, `pov_recovery_session`, `pov_recovery_request` and `pov_recovery_dismissed` on Window(Home). The skin only presents Keep waiting/Try another stream; it never replaces a stream itself. An absent integration leaves the dialog dormant.
+Playback recovery is a separate provider integration. It owns `pov_recovery_prompt`, `pov_recovery_session`, `pov_recovery_request` and `pov_recovery_dismissed` on Window(Home). The skin only presents Keep waiting/Try another stream; it never replaces a stream itself. An absent integration leaves the dialog dormant. The prompt stays hidden while `pov_recovery_dismissed` equals the current session, so Back dismisses it for that session.
 
 The pause cleanup only closes an overlay marked `KM_AutoPauseInfo`; it preserves an overlay opened deliberately.
 
