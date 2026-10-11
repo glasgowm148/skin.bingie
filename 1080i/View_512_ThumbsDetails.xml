@@ -18,7 +18,7 @@
         <orientation>vertical</orientation>
         <onleft>9000</onleft>
 		<onback>CancelAlarm(preview_delay,silent)</onback>
-		<onback condition="!Player.HasAudio + $EXP[IsPlayingUnrecognizedContent] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + Skin.HasSetting(View512_DetailsAutoTrailer)">PlayerControl(Stop)</onback>
+		<onback condition="!Player.HasAudio + $EXP[KM_PreviewPlaying] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + Skin.HasSetting(View512_DetailsAutoTrailer)">PlayerControl(Stop)</onback>
 		<onback>ClearProperty(HideNowPlaying)</onback>
 		<onback>ClearProperty(ListAnimation,home)</onback>
         <onright>60</onright>

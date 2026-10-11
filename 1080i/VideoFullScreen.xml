@@ -3,6 +3,8 @@
 <window>
 	<defaultcontrol/>
 	<onload condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onload>
+	<!-- Video the user watches fullscreen is never an auto-preview, even after leaving fullscreen. -->
+	<onload>ClearProperty(KM_PreviewActive,Home)</onload>
 	<onload condition="Player.HasVideo + !Window.IsVisible(videoosd) + !Player.Paused + !Skin.HasSetting(EnableOSDInfo)">AlarmClock(OpenMPAATopBar,SetProperty(DialogMPAATopBar,1,home),00:00,silent)</onload>
 	<onunload condition="![Player.HasVideo + VideoPlayer.Content(livetv)]">ClearProperty(pvrGuideOnFullscreenVideo,Home)</onunload>
 	<!-- Cast/crew helper windows replace fullscreen while playback continues behind them. -->

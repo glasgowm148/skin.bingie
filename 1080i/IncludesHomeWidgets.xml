@@ -683,7 +683,7 @@
 
     <include name="WidgetBaseBingieIncludes">
         <onunfocus condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunfocus>
-        <onunfocus condition="Skin.HasSetting(BingieAutoTrailer) + $EXP[IsPlayingUnrecognizedContent] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
+        <onunfocus condition="Skin.HasSetting(BingieAutoTrailer) + $EXP[KM_PreviewPlaying] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
         <onfocus condition="!String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">ClearProperty(KeepPlayingPreview,home)</onfocus>
         <include content="ContainerShowInfoOnclick" condition="Skin.HasSetting(ShowInformationBypass)">
             <param name="widgetid" value="$PARAM[widgetid]" />

@@ -7,7 +7,7 @@
     <include>BingieViews_WindowOpen_Fade</include>
 	<onload condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onload>
 	<onload condition="System.HasAlarm(StopPlayback)">CancelAlarm(StopPlayback,silent)</onload>
-	<onunload condition="$EXP[IsPlayingUnrecognizedContent] + Skin.HasSetting(BingieAutoTrailer)">AlarmClock(StopPlayback,PlayerControl(Stop),00:00,silent)</onunload>
+	<onunload condition="$EXP[KM_PreviewPlaying] + Skin.HasSetting(BingieAutoTrailer)">AlarmClock(StopPlayback,PlayerControl(Stop),00:00,silent)</onunload>
 	<onload>SetProperty(DelayTransition,1,Home)</onload>
     <controls>
 	<control type="group">

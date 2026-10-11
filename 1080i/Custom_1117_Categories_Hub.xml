@@ -4,7 +4,7 @@
     <defaultcontrol always="true">117</defaultcontrol>
     <include>CustomBingieWinProps</include>
     <include>BingieViews_WindowOpen_Fade</include>   
-	<onunload condition="$EXP[IsPlayingUnrecognizedContent]">PlayerControl(Stop)</onunload>
+	<onunload condition="$EXP[KM_PreviewPlaying]">PlayerControl(Stop)</onunload>
     <controls>
 		<control type="group">
 	    <include>HideWindowOnStartupAndDialogInfoLoad</include>

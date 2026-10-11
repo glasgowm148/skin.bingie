@@ -102,9 +102,33 @@ class SkinTests(unittest.TestCase):
     def test_auto_previews_never_replace_user_playback(self):
         self.assertEqual(unguarded_autoplay(), [])
         root = ET.parse(ROOT / '1080i/Includes.xml').getroot()
-        guard = next(n for n in root.iter('expression') if n.get('name') == 'KM_PreviewMayStart').text
-        self.assertIn('!Player.HasMedia', guard)
-        self.assertIn('$EXP[IsPlayingUnrecognizedContent]', guard)
+        expressions = {n.get('name'): n.text for n in root.iter('expression')}
+        self.assertEqual(top_level_and_terms(expressions['KM_PreviewPlaying']), [
+            '$EXP[IsPlayingUnrecognizedContent]', '!String.IsEmpty(Window(Home).Property(KM_PreviewActive))'])
+        self.assertEqual(expressions['KM_PreviewMayStart'].replace(' ', ''), '!Player.HasMedia|$EXP[KM_PreviewPlaying]')
+
+    def test_preview_marker_is_set_only_by_preview_arming_and_cleared_by_fullscreen(self):
+        # Only skin-armed previews carry KM_PreviewActive; anything the user watches goes fullscreen,
+        # which clears it, so focus changes can no longer stop user-started streams.
+        clears = [n for n in ET.parse(ROOT / '1080i/VideoFullScreen.xml').getroot().findall('onload')
+                  if (n.text or '').strip() == 'ClearProperty(KM_PreviewActive,Home)']
+        self.assertEqual(len(clears), 1)
+        self.assertIsNone(clears[0].get('condition'))
+        root = ET.parse(ROOT / '1080i/IncludesFunctions.xml').getroot()
+        arming = [n for n in root.iter() if n.tag in ('include', 'control')
+                  and any('AlarmClock(preview_delay' in (h.text or '') for h in n.findall('onfocus'))]
+        self.assertEqual(len(arming), 3)
+        for node in arming:
+            handlers = node.findall('onfocus')
+            marks = [h for h in handlers if (h.text or '').strip() == 'SetProperty(KM_PreviewActive,1,Home)']
+            self.assertEqual(len(marks), 1)
+            self.assertEqual(marks[0].get('condition'), '$EXP[KM_PreviewMayStart]')
+            last_arm = max(i for i, h in enumerate(handlers) if 'AlarmClock(preview_delay' in (h.text or ''))
+            self.assertGreater(handlers.index(marks[0]), last_arm)
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            for node in ET.parse(path).iter():
+                if 'SetProperty(KM_PreviewActive' in (node.text or ''):
+                    self.assertEqual(path.name, 'IncludesFunctions.xml')
 
     def test_cast_click_from_pause_info_keeps_playback(self):
         # VideoOSD resets EnableOSDInfo before the cast helper opens 1191/1190 over playback, so the

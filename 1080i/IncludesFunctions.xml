@@ -72,7 +72,7 @@
         </include>
         <onfocus condition="!String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">ClearProperty(KeepPlayingPreview,Home)</onfocus>
         <onunfocus condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunfocus>
-        <onunfocus condition="$EXP[IsPlayingUnrecognizedContent] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
+        <onunfocus condition="$EXP[KM_PreviewPlaying] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
     </include>
 
     <include name="Bingie_Spotlight_AutoPreview">
@@ -86,7 +86,7 @@
         </include>
         <onfocus condition="!String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">ClearProperty(KeepPlayingPreview,Home)</onfocus>
         <onunfocus condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunfocus>
-        <onunfocus condition="$EXP[IsPlayingUnrecognizedContent] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
+        <onunfocus condition="$EXP[KM_PreviewPlaying] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
         <onunfocus>SetProperty(SpotlightTrailerInterval,$INFO[Skin.String(main_auto_trailer_interval)],Home)</onunfocus>
     </include>
 
@@ -99,6 +99,7 @@
             AlarmClock(preview_delay,RunScript(script.bingie.helper,action=playtrailer,title=$INFO[ListItem.Title]$INFO[ListItem.Year]),00:$PARAM[interval],silent)</onfocus>
         <onfocus condition="[[[String.IsEqual(Skin.String(AutoYoutubeTrailer),true) | !String.Contains(ListItem.Trailer,plugin) + !String.IsEmpty(ListItem.DBID)] + [$EXP[IsTvShowDBTypeNoFallback] | $EXP[IsEpisodeDBTypeNoFallback]]] + !System.IdleTime(1) + String.IsEmpty(ListItem.Trailer) + String.IsEqual(Skin.String(AutoYoutubeTrailer),true) + String.IsEqual(Skin.String(trailersource),youtube)] + $EXP[KM_PreviewMayStart]">
             AlarmClock(preview_delay,RunScript(script.bingie.helper,action=playtrailer,title=$VAR[TVShowTitle]$INFO[ListItem.Year],tvshow=true,youtube=$INFO[Skin.String(AutoYoutubeTrailer)]),00:$PARAM[interval],silent)</onfocus>
+        <onfocus condition="$EXP[KM_PreviewMayStart]">SetProperty(KM_PreviewActive,1,Home)</onfocus>
     </include>
 
     <include name="Bingie_Spotlight_Trailer_Action">
@@ -110,6 +111,7 @@
             AlarmClock(preview_delay,RunScript(script.bingie.helper,action=playtrailer,title=$INFO[ListItem.Title]$INFO[ListItem.Year]),00:$PARAM[interval],silent)</onfocus>
         <onfocus condition="[[[String.IsEqual(Skin.String(AutoYoutubeTrailer),true) | !String.Contains(ListItem.Trailer,plugin) + !String.IsEmpty(ListItem.DBID)] + [$EXP[IsTvShowDBTypeNoFallback] | $EXP[IsEpisodeDBTypeNoFallback]]] + !System.IdleTime(1) + String.IsEmpty(ListItem.Trailer) + String.IsEqual(Skin.String(AutoYoutubeTrailer),true) + String.IsEqual(Skin.String(trailersource),youtube) | !String.IsEmpty(Window(Home).Property(StartupMask) + [[String.IsEqual(Skin.String(AutoYoutubeTrailer),true) | !String.Contains(ListItem.Trailer,plugin)] + [$EXP[IsTvShowDBTypeNoFallback] | $EXP[IsMovieDBTypeNoFallback] | $EXP[IsEpisodeDBTypeNoFallback]]] + String.IsEmpty(ListItem.Trailer) + [String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,episode)] + String.IsEqual(Skin.String(AutoYoutubeTrailer),true) + String.IsEqual(Skin.String(trailersource),youtube)] + $EXP[KM_PreviewMayStart]">
             AlarmClock(preview_delay,RunScript(script.bingie.helper,action=playtrailer,title=$VAR[TVShowTitle]$INFO[ListItem.Year],tvshow=true,youtube=$INFO[Skin.String(AutoYoutubeTrailer)]),00:$PARAM[interval],silent)</onfocus>
+        <onfocus condition="$EXP[KM_PreviewMayStart]">SetProperty(KM_PreviewActive,1,Home)</onfocus>
     </include>
 
     <include name="LibraryAutoTrailerStartButton">
@@ -124,6 +126,7 @@
         <onfocus condition="[[[String.IsEqual(Skin.String(AutoYoutubeTrailer),true) | !String.Contains(ListItem.Trailer,plugin) + !String.IsEmpty(ListItem.DBID)] + [$EXP[IsTvShowDBTypeNoFallback] | $EXP[IsEpisodeDBTypeNoFallback]]] + String.IsEmpty(ListItem.Trailer) + String.IsEqual(Skin.String(AutoYoutubeTrailer),true) + String.IsEqual(Skin.String(trailersource),youtube)] + $EXP[KM_PreviewMayStart]">
             AlarmClock(preview_delay,RunScript(script.bingie.helper,action=playtrailer,title=$VAR[TVShowTitle]$INFO[ListItem.Year],tvshow=true,youtube=$INFO[Skin.String(AutoYoutubeTrailer)]),00:$PARAM[interval],silent)</onfocus>
         <onfocus condition="String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)">SetProperty(HideNowPlaying,1)</onfocus>
+        <onfocus condition="$EXP[KM_PreviewMayStart]">SetProperty(KM_PreviewActive,1,Home)</onfocus>
         </control>
     </include>
 
@@ -132,9 +135,9 @@
         <visible>false</visible>
             <onunfocus>ClearProperty(HideNowPlaying)</onunfocus>
             <onunfocus condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunfocus>
-            <onunfocus condition="$EXP[IsPlayingUnrecognizedContent] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">PlayerControl(Stop)</onunfocus>
+            <onunfocus condition="$EXP[KM_PreviewPlaying] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)]">PlayerControl(Stop)</onunfocus>
             <onfocus condition="String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)">CancelAlarm(preview_delay,silent)</onfocus>
-            <onfocus condition="$EXP[IsPlayingUnrecognizedContent] + [String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">PlayerControl(Stop)</onfocus>
+            <onfocus condition="$EXP[KM_PreviewPlaying] + [String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,episode)]">PlayerControl(Stop)</onfocus>
         </control>
     </include>
 

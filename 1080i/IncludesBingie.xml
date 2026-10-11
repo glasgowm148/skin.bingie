@@ -2259,7 +2259,7 @@
             <onfocus>SetProperty(FullImage,1,Home)</onfocus>
             <onunfocus>ClearProperty(FullImage,home)</onunfocus>
             <onunfocus condition="System.HasAlarm(preview_delay)">CancelAlarm(preview_delay,silent)</onunfocus>
-            <onunfocus condition="Skin.HasSetting(SpotLightTrailers) + $EXP[IsPlayingUnrecognizedContent] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
+            <onunfocus condition="Skin.HasSetting(SpotLightTrailers) + $EXP[KM_PreviewPlaying] + String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">PlayerControl(Stop)</onunfocus>
             <onfocus condition="!String.IsEmpty(Window(Home).Property(KeepPlayingPreview))">ClearProperty(KeepPlayingPreview,home)</onfocus>
             <onfocus condition="!String.IsEmpty(Window(Home).Property(DelayTransition))">ClearProperty(DelayTransition,home)</onfocus>
             <onback>900</onback>

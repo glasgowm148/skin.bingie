@@ -87,8 +87,12 @@
 
     <expression name="IsPlayingUnrecognizedContent">Player.HasVideo + Player.Playing + ![VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(musicvideos) | VideoPlayer.Content(livetv) | Pvr.IsPlayingRecording]</expression>
 
-    <!-- Auto-previews may replace an idle player or a preview, never paused/recognized video or audio. -->
-    <expression name="KM_PreviewMayStart">!Player.HasMedia | $EXP[IsPlayingUnrecognizedContent]</expression>
+    <!-- KM_PreviewActive (Window(Home)) is set when the skin arms an auto-preview and cleared when video
+         enters fullscreen, so user-started playback (which always goes fullscreen) never counts as a preview. -->
+    <expression name="KM_PreviewPlaying">$EXP[IsPlayingUnrecognizedContent] + !String.IsEmpty(Window(Home).Property(KM_PreviewActive))</expression>
+
+    <!-- Auto-previews may replace an idle player or a skin-started preview, never user playback or audio. -->
+    <expression name="KM_PreviewMayStart">!Player.HasMedia | $EXP[KM_PreviewPlaying]</expression>
 
     <expression name="IsPlayingRecognizedContent">Player.Paused + Player.HasVideo | Player.HasVideo + Player.Playing + [VideoPlayer.Content(movies) | VideoPlayer.Content(episodes) | VideoPlayer.Content(livetv) | VideoPlayer.Content(musicvideos) | Pvr.IsPlayingRecording]</expression>
 

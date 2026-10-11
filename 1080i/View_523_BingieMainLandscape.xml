@@ -82,7 +82,7 @@
             <onup>523</onup>
             <ondown>523</ondown>
 			<onback>CancelAlarm(preview_delay,silent)</onback>
-			<onback condition="!Player.HasAudio + $EXP[IsPlayingUnrecognizedContent] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + Skin.HasSetting(View523_DetailsAutoTrailer)">PlayerControl(Stop)</onback>
+			<onback condition="!Player.HasAudio + $EXP[KM_PreviewPlaying] + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow)] + Skin.HasSetting(View523_DetailsAutoTrailer)">PlayerControl(Stop)</onback>
             <onback>ClearProperty(HideNowPlaying)</onback>
 			<itemlayout height="339" width="418">
                 <control type="group">
