@@ -1,0 +1,5 @@
+# Upstream revisions already reviewed and merged into main (see docs/upstream.md).
+# One "<remote>/<branch> <full commit>" per line; update in the same commit as each upstream merge.
+# matke/omega at 9f1c6eb and BigMoco omega at c960cbb were joined in 5d0b828.
+matke/omega 9f1c6eba7a15f63fac05c6f0aa655f55e84dd775
+upstream/omega c960cbb2c7699602610b77527378cf7471d023db
