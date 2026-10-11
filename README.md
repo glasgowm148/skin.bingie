@@ -22,14 +22,14 @@ This development ZIP uses the existing `skin.bingie` ID and **replaces** an inst
 1. Build the ZIP using the commands below, or have your agent build it.
 2. In Kodi, open **Settings → Add-ons → Install from zip file**, select the ZIP and reload the skin.
 3. Check Home, Movies, Shows, an episode view and the guide before enabling optional integrations.
-4. Under **Configure Skin → Experience options**, enable only integrations your installation supports. Reload the skin after changing these options.
+4. Under **Configure Skin → Experience options**, enable only integrations your installation supports, in every profile (skin settings are per profile). Reload the skin after changing these options; the window's Apply button does this when nothing is playing.
 
 For rollback, switch temporarily to Estuary, reinstall the previous Bingie ZIP, then restore the backed-up skin/Skin Shortcuts settings if needed. Reinstalling a skin alone does not restore personal layouts. Do not uninstall Kodi or erase its data.
 
 ## Compatibility
 
 - Base: BigMoco omega `c960cbb`, merged with reviewed Matke omega `9f1c6eb`; BigMoco's keyboard layout is retained.
-- Fork version: **2.0.2.1**. Addon dependencies remain declared in `addon.xml`.
+- Fork version: **2.0.2.2**. Addon dependencies remain declared in `addon.xml`.
 - The originating skin changes were exercised on a Shield with Kodi 22 beta 2. This newly assembled fork and its optional/default branches have source/build validation; they have **not yet been installed and visually tested as a complete package**.
 - The profile restart workaround applies to the tested Android beta build, not every Kodi version. See [NVIDIA MCP's optional source kit](https://github.com/glasgowm148/nvidia-MCP/tree/main/contrib/profile-relaunch).
 - Stock POV does not implement our `manager_*` routes. Merely installing POV is insufficient: leave the provider toggle off unless those routes are available.

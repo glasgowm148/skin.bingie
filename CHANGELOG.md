@@ -1,6 +1,15 @@
 # Changes
 
-## 2.0.2.1 — development
+## 2.0.2.2 — development
+
+- Opening a cast or crew member from the auto-opened pause information no longer stops playback when "Stop playback when leaving fullscreen" is on.
+- A profile named `Kids` never falls back to all-channel, recordings or Recently Watched PVR hub rows; it keeps the `Little Ones` and `Cartoons` group rows.
+- Experience options explain that changes apply after a skin reload and offer an Apply button that is disabled during playback.
+- After upgrading from the earlier patched overlay, enable all three Experience options in every profile (see docs/integrations.md).
+- Validator requires the preview guard ANDed at the top level and scans every shipped folder for household identifiers.
+- Builds refuse to overwrite an existing release ZIP of the same version with different contents.
+
+## 2.0.2.1
 
 - Allow enabled integrations to be turned off after their dependency is removed.
 - Auto-preview trailers no longer start while a paused or recognised video, live TV or music is playing; only an idle player or another preview is replaced.
