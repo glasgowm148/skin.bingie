@@ -10,7 +10,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import RUNTIME_DIRS, broken_references, check, household_identifiers, unguarded_autoplay
+from check_skin import (RUNTIME_DIRS, broken_references, check, household_identifiers, top_level_and_terms,
+                        unguarded_autoplay)
 from build_skin import build
 import build_skin
 
@@ -131,6 +132,15 @@ class SkinTests(unittest.TestCase):
                 (Path(folder) / 'View.xml').write_text(
                     '<window><onfocus condition="%s">%s</onfocus></window>' % (condition, alarm))
                 self.assertEqual(bool(unguarded_autoplay(Path(folder))), unguarded, condition)
+
+    def test_home_menu_rebuild_waits_for_idle_player(self):
+        # Skin Shortcuts may rebuild and reload the skin; Home must not start that over playback.
+        builds = [n for n in ET.parse(ROOT / '1080i/Home.xml').getroot().findall('onload')
+                  if 'script.skinshortcuts,type=buildxml' in (n.text or '')]
+        self.assertEqual(len(builds), 1)
+        terms = top_level_and_terms(builds[0].get('condition') or '')
+        self.assertIn('!Player.HasMedia', terms)
+        self.assertIn('!System.HasAlarm(KodiNavigationSwitch)', terms)
 
     def test_recovery_prompt_stays_closed_after_back(self):
         visible = ET.parse(ROOT / '1080i/Custom_1170_StreamRecovery.xml').getroot().findtext('visible')

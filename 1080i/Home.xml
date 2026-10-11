@@ -13,8 +13,8 @@
     <onload condition="!Skin.HasSetting(EnableRatings)">Skin.SetBool(TMDbBingieHelper.DisableRatings)</onload>
     <onload condition="Skin.HasSetting(EnableRatings)">Skin.Reset(TMDbBingieHelper.DisableRatings)</onload>
 
-    <!-- Build Menu -->
-    <onload condition="!System.HasAlarm(KodiNavigationSwitch)">RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=900&amp;levels=1&amp;group=mainmenu|powermenu|searchmenu|tmdbsearchmenu|moviehub|tvshowhub|newhub|musichub|customhub|somethinghub|mylisthub)</onload>
+    <!-- Build Menu (deferred while anything plays; the next idle Home load rebuilds) -->
+    <onload condition="!System.HasAlarm(KodiNavigationSwitch) + !Player.HasMedia">RunScript(script.skinshortcuts,type=buildxml&amp;mainmenuID=900&amp;levels=1&amp;group=mainmenu|powermenu|searchmenu|tmdbsearchmenu|moviehub|tvshowhub|newhub|musichub|customhub|somethinghub|mylisthub)</onload>
     <onload condition="String.IsEmpty(Window(Home).Property(widgetstyle))">SetProperty(widgetstyle,$INFO[Skin.String(widgetstyle)])</onload>
     <onload>Skin.TimerStart(spotlightanimation)</onload>
 
