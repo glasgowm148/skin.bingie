@@ -35,7 +35,7 @@ For rollback, switch temporarily to Estuary, reinstall the previous Bingie ZIP, 
 - Stock POV does not implement our `manager_*` routes. Merely installing POV is insufficient: leave the provider toggle off unless those routes are available.
 - BBC browse/watched actions additionally require `script.kodi.live.tv`. PVR Simple setup, playlists and EPG registration are outside the skin.
 
-See [integration details](docs/integrations.md) and [changes](CHANGELOG.md).
+See [integration details](docs/integrations.md), [upstream merges](docs/upstream.md) and [changes](CHANGELOG.md).
 
 ## Validate and build
 
@@ -48,6 +48,10 @@ python scripts/build_skin.py
 ```
 
 The deterministic ZIP and SHA-256 file are written to `dist/`. ZIPs contain runtime skin files and the license, never development files or user profiles. GitHub Actions (`.github/workflows/validate.yml`) runs the checker, pytest and unittest on Python 3.9, 3.10 and 3.12 for pushes to `main` and pull requests, and fails if two builds of the ZIP differ; it does not publish releases or automate TV testing.
+
+`.github/workflows/render.yml` (manual, weekly and on `main` pushes touching `1080i/`) runs the built skin in the Flathub Kodi 21 build under Xvfb, with official or stubbed dependencies, and uploads screenshots of Home and several windows plus `kodi.log`. It fails on skin errors in `kodi.log` that are not listed in `tests/render-known-log-errors.txt`; if Kodi cannot be installed it warns and skips. Stubbed Bingie helpers leave widgets empty, so these screenshots do not replace a TV test.
+
+Upstream Bingie updates are reviewed and merged as described in [docs/upstream.md](docs/upstream.md); `python scripts/upstream_report.py` lists pending upstream commits against the revisions recorded in `UPSTREAM_BASE`.
 
 Before publishing: test the complete package on a backed-up TV, inspect both default and enabled integration views, add generic screenshots and review the remaining upstream include warnings. No household screenshots or personal configuration are committed here.
 

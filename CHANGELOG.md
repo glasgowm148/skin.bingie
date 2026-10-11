@@ -2,6 +2,8 @@
 
 ## 2.0.2.3 — development
 
+- Development only (no skin change): `docs/upstream.md` documents reviewing and merging upstream Bingie; `UPSTREAM_BASE` records the merged Matke (`9f1c6eb`) and BigMoco (`c960cbb`) revisions and `scripts/upstream_report.py` lists upstream commits missing from `main`, flagging files the fork also changed.
+- Development only: a separate `render.yml` workflow screenshots the skin in a headless Kodi 21 (Flathub) and fails on new `kodi.log` skin errors; it has not yet run on GitHub.
 - Moving focus, leaving a hub or pressing Back in a view no longer stops a YouTube, IPTV or other add-on stream you started; only auto-previews the skin started (tracked with `KM_PreviewActive`, cleared when video goes fullscreen) are stopped or replaced.
 - Home no longer rebuilds the Skin Shortcuts menu while anything is playing; the next Home load with an idle player rebuilds it.
 - Back from the information dialog's trailer viewer stops only the trailer, never live TV or library video; the startup splash only plays with an idle player.
