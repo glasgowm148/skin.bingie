@@ -1,6 +1,6 @@
 # Optional integrations
 
-The toggles under Configure Skin → Experience options default off. Each reload chooses either the stock or experience include branch; duplicate native guide control IDs are never loaded together.
+The toggles under Configure Skin → Experience options default off and take effect after a skin reload (the window's Apply button, disabled during playback, or a Kodi restart). Each reload chooses either the stock or experience include branch; duplicate native guide control IDs are never loaded together.
 
 | Setting | Additional requirement | Missing/off behavior |
 | --- | --- | --- |

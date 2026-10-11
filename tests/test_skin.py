@@ -87,6 +87,16 @@ class SkinTests(unittest.TestCase):
                 setting = action[len('Skin.ToggleSetting('):-1]
                 self.assertIn('Skin.HasSetting(' + setting + ') | ', control.findtext('enable'))
 
+    def test_experience_options_reload_only_on_request_outside_playback(self):
+        root = ET.parse(ROOT / '1080i/Custom_1171_ExperienceSettings.xml').getroot()
+        reloads = [c for c in root.iter('control') if c.findtext('onclick', '') == 'ReloadSkin()']
+        self.assertEqual(len(reloads), 1)
+        self.assertEqual(reloads[0].findtext('enable'), '!Player.HasMedia')
+        for handler in ('onload', 'onunload'):
+            self.assertFalse(any('ReloadSkin' in (n.text or '') for n in root.iter(handler)))
+        self.assertTrue(any('reload' in (n.findtext('label') or '').lower()
+                            for n in root.iter('control') if n.get('type') == 'label'))
+
     def test_auto_previews_never_replace_user_playback(self):
         self.assertEqual(unguarded_autoplay(), [])
         root = ET.parse(ROOT / '1080i/Includes.xml').getroot()
