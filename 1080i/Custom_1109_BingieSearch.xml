@@ -106,7 +106,7 @@
             </include>
         </control>
 
-        <!-- Auto-Complete &amp; Static Suggestions List -->
+        <!-- Movie/TV titles &amp; Static Suggestions List -->
         <include content="Search_Suggestions_Container">
             <include>No_Circular_Left</include>
             <include>SearchSuggestionsAnim</include>
@@ -118,10 +118,10 @@
             <param name="onitemfocus2" value="SetProperty(CustomSearch,1,home)" />
             <onleft>SetProperty(KeepSuggestions,1)</onleft>
             <onfocus>ClearProperty(KeepSuggestions)</onfocus>
-            <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$INFO[ListItem.Label])</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$VAR[BingieSuggestionTitle])</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm))">noop</onclick>
             <visible>!$EXP[IsActualKeyboardActive]</visible>
-            <content>plugin://plugin.program.autocompletion?info=autocomplete&amp;&amp;id=$INFO[Skin.String(CustomSearchTerm)]</content>
+            <content browse="never" limit="20">$VAR[BingieTitleSuggestions]</content>
             <include condition="[Library.HasContent(Movies) | Library.HasContent(TVShows)] + !Skin.HasSetting(DisableSearchSuggestions)">Search_Suggestions_Content</include>
             <include condition="!Library.HasContent(Movies) + !Library.HasContent(TVShows) + !Skin.HasSetting(DisableSearchSuggestions)">Search_Suggestions_Content_2</include>
         </include>

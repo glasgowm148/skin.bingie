@@ -4,7 +4,7 @@ An independently maintained fork of the Netflix-style **Bingie** skin for Kodi, 
 
 Built on [Matke's Bingie](https://github.com/matke-84/skin.bingie) and [BigMoco's fork](https://github.com/Bigmoco/skin.bingie). Their history, attribution and GPL v2 license are preserved.
 
-**Version 2.0.2.4** · [Download](https://github.com/glasgowm148/skin.bingie/releases/latest) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+**Version 2.0.2.5** · [Download](https://github.com/glasgowm148/skin.bingie/releases/latest) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
 
 ## What we've added
 
@@ -15,6 +15,7 @@ These improvements work with the normal Bingie dependencies:
 - **Episode and season navigation improvements.** Revised views, focus behavior and information presentation.
 - **Widget and artwork refinements.** Layout and artwork-loading adjustments. Skin Shortcuts rebuilds wait until Home is opened with nothing playing.
 - **BigMoco's keyboard layout**, retained alongside reviewed Matke updates.
+- **Movie and TV title suggestions.** The Bingie search screen uses TMDb Bingie Helper's movie/TV results for autocomplete, replacing unrelated Google web suggestions. Selecting a suggestion fills its title into search. The general virtual keyboard retains its own Autocompletion settings.
 
 Optional Experience controls support compatible companion add-ons:
 
@@ -37,7 +38,7 @@ This fork uses the existing **`skin.bingie`** ID and replaces another Bingie ver
 
 1. Back up your current skin, skin settings and Skin Shortcuts data; keep the previous skin ZIP for rollback.
 2. Configure the repositories supplying Bingie's dependencies. [Matke's Bingie repository](https://github.com/matke-84/repository.bingie) is the upstream starting point. [addon.xml](addon.xml) lists required versions of Bingie Helper, Toolbox, Widgets, TMDb Bingie Helper, Skin Shortcuts, studio artwork and Autocompletion.
-3. Download **`skin.bingie-2.0.2.4.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
+3. Download **`skin.bingie-2.0.2.5.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
 4. In Kodi, allow installation from unknown sources if prompted, then use **Settings → Add-ons → Install from zip file**. Select Bingie Experience under **Settings → Interface → Skin**.
 5. Check Home, Movies, Shows, episode/season views, the guide and playback. Enable supported integrations under **Configure Skin → Experience options**. Settings are per profile; use Apply while playback is idle to reload the skin.
 
@@ -50,7 +51,7 @@ To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore b
 ## Compatibility and testing
 
 - Requires the **Kodi 21 / Omega skin API** (`xbmc.gui` 5.17.0) and dependencies in `addon.xml`.
-- The 2.0.2.3 shipped runtime files match the skin running on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. Version 2.0.2.4 keeps that runtime XML, updating metadata, documentation and development checks.
+- The 2.0.2.3 shipped runtime files match the skin running on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. Version 2.0.2.5 changes the search suggestion source; a read-only query through the installed helper returned South Park first for `south`. The updated search screen still needs an idle-TV runtime check.
 - GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
 - Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.
 - A profile literally named **Kids** uses the curated **Little Ones** and **Cartoons** PVR hub groups. Missing groups leave those rows empty; see [integration details](docs/integrations.md).

@@ -2,6 +2,16 @@
 <!-- BINGIE -->
 <includes>
     <!-- VARS -->
+    <variable name="BingieTitleSuggestions">
+        <!-- An empty query opens the helper's input dialog: never resolve it here. -->
+        <value condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">plugin://plugin.video.tmdb.bingie.helper?info=search&amp;tmdb_type=both&amp;nextpage=false&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)]</value>
+    </variable>
+
+    <variable name="BingieSuggestionTitle">
+        <value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
+        <value>$INFO[ListItem.Label]</value>
+    </variable>
+
     <variable name="SearchString">
         <value condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">$INFO[Skin.String(CustomSearchTerm)]</value>
         <value condition="!String.IsEmpty(Window.Property(SuggestionPath)) + [ControlGroup(77777).HasFocus() | Control.HasFocus(1007) | [Control.HasFocus(900) + !String.IsEmpty(Window.Property(KeepSuggestions))]]">$INFO[Container(1007).ListItem.Label]</value>

@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0.2.5 — 2026-10-12
+
+- Bingie's search suggestions use TMDb Bingie Helper's movie/TV search instead of Google web autocomplete. The existing helper returns South Park first for `south` on the maintained Shield.
+- Empty input retains static search categories without opening the helper's input dialog. Queries are URL-escaped, suggestion clicks fill the undecorated title, and paging is disabled.
+- The general virtual keyboard keeps its existing Autocompletion provider setting. Search-screen runtime validation on the Shield remains pending while the TV is in use.
+
 ## 2.0.2.4 — 2026-10-12
 
 - Prepare Bingie Experience for community distribution: rewritten README with the fork's additions, compatibility evidence, dependency installation, rollback and optional integration requirements.
