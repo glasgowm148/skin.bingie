@@ -4,7 +4,7 @@
 
 - Bingie's search suggestions use TMDb Bingie Helper's movie/TV search instead of Google web autocomplete. The existing helper returns South Park first for `south` on the maintained Shield.
 - Empty input retains static search categories without opening the helper's input dialog. Queries are URL-escaped, suggestion clicks fill the undecorated title, and paging is disabled.
-- The general virtual keyboard keeps its existing Autocompletion provider setting. Search-screen runtime validation on the Shield remains pending while the TV is in use.
+- The general virtual keyboard keeps its existing Autocompletion provider setting. Installed on the reference Shield / Kodi 22 RC1: the native search screen displayed South Park first for `sout`, and empty input retained the search categories without opening an input dialog.
 
 ## 2.0.2.4 — 2026-10-12
 

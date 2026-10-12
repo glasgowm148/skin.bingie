@@ -51,7 +51,7 @@ To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore b
 ## Compatibility and testing
 
 - Requires the **Kodi 21 / Omega skin API** (`xbmc.gui` 5.17.0) and dependencies in `addon.xml`.
-- The 2.0.2.3 shipped runtime files match the skin running on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. Version 2.0.2.5 changes the search suggestion source; a read-only query through the installed helper returned South Park first for `south`. The updated search screen still needs an idle-TV runtime check.
+- Version 2.0.2.5 is installed on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. The native search screen displayed South Park first for `sout`; a read-only query through the installed helper also returned it first for `south`. Empty input showed the search categories without opening an input dialog.
 - GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
 - Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.
 - A profile literally named **Kids** uses the curated **Little Ones** and **Cartoons** PVR hub groups. Missing groups leave those rows empty; see [integration details](docs/integrations.md).
