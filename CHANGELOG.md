@@ -5,7 +5,7 @@
 - Director, creator and writer recommendations wait for a usable person ID instead of requesting an empty person from TMDb Bingie Helper.
 - Episodes only request director recommendations when the director menu is selected; other information tabs no longer trigger that request.
 - Person links pass the TMDb ID directly, removing the redundant empty search query. Writer recommendations retain their screenplay-first selection.
-- Added route regression tests covering missing IDs, every supported person slot, media types, menu selection and writer fallback. Local validation is complete; this version has not yet been installed or tested on the reference Shield.
+- Added route regression tests covering missing IDs, every supported person slot, media types, menu selection and writer fallback. Installed and tested on the reference Shield: missing-ID episode details, a valid director query, helper search, profile switching and local-video playback controls passed. A separate BBC-episode trailer lookup error remains outside this fix.
 
 ## 2.0.2.5 — 2026-10-12
 
