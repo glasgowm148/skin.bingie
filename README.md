@@ -4,7 +4,7 @@ An independently maintained fork of the Netflix-style **Bingie** skin for Kodi, 
 
 Built on [Matke's Bingie](https://github.com/matke-84/skin.bingie) and [BigMoco's fork](https://github.com/Bigmoco/skin.bingie). Their history, attribution and GPL v2 license are preserved.
 
-**Version 2.0.2.5** · [Download](https://github.com/glasgowm148/skin.bingie/releases/latest) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+**Version 2.0.2.6** · [Download](https://github.com/glasgowm148/skin.bingie/releases/latest) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
 
 ## What we've added
 
@@ -12,6 +12,7 @@ These improvements work with the normal Bingie dependencies:
 
 - **Playback-safe previews.** Moving focus or leaving a hub stops only a trailer preview started by the skin, preserving videos you started yourself. Previews wait while ordinary media is playing or paused.
 - **Pause and information fixes.** Automatically opened pause information closes when playback resumes. Deliberately opened information stays open; opening cast or crew from the pause screen preserves playback.
+- **Crew recommendations.** Director, creator and writer rows wait for a valid person ID. Episodes no longer request director results from unrelated information tabs.
 - **Episode and season navigation improvements.** Revised views, focus behavior and information presentation.
 - **Widget and artwork refinements.** Layout and artwork-loading adjustments. Skin Shortcuts rebuilds wait until Home is opened with nothing playing.
 - **BigMoco's keyboard layout**, retained alongside reviewed Matke updates.
@@ -38,7 +39,7 @@ This fork uses the existing **`skin.bingie`** ID and replaces another Bingie ver
 
 1. Back up your current skin, skin settings and Skin Shortcuts data; keep the previous skin ZIP for rollback.
 2. Configure the repositories supplying Bingie's dependencies. [Matke's Bingie repository](https://github.com/matke-84/repository.bingie) is the upstream starting point. [addon.xml](addon.xml) lists required versions of Bingie Helper, Toolbox, Widgets, TMDb Bingie Helper, Skin Shortcuts, studio artwork and Autocompletion.
-3. Download **`skin.bingie-2.0.2.5.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
+3. Download **`skin.bingie-2.0.2.6.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
 4. In Kodi, allow installation from unknown sources if prompted, then use **Settings → Add-ons → Install from zip file**. Select Bingie Experience under **Settings → Interface → Skin**.
 5. Check Home, Movies, Shows, episode/season views, the guide and playback. Enable supported integrations under **Configure Skin → Experience options**. Settings are per profile; use Apply while playback is idle to reload the skin.
 
@@ -51,6 +52,7 @@ To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore b
 ## Compatibility and testing
 
 - Requires the **Kodi 21 / Omega skin API** (`xbmc.gui` 5.17.0) and dependencies in `addon.xml`.
+- Version 2.0.2.6 adds crew-route fixes covered by automated tests; on-device validation is pending.
 - Version 2.0.2.5 is installed on our **NVIDIA Shield, Android 11, Kodi 22 RC1**. The native search screen displayed South Park first for `sout`; a read-only query through the installed helper also returned it first for `south`. Empty input showed the search categories without opening an input dialog.
 - GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
 - Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.

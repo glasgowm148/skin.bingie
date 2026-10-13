@@ -1,5 +1,12 @@
 # Changes
 
+## 2.0.2.6 — 2026-10-13
+
+- Director, creator and writer recommendations wait for a usable person ID instead of requesting an empty person from TMDb Bingie Helper.
+- Episodes only request director recommendations when the director menu is selected; other information tabs no longer trigger that request.
+- Person links pass the TMDb ID directly, removing the redundant empty search query. Writer recommendations retain their screenplay-first selection.
+- Added route regression tests covering missing IDs, every supported person slot, media types, menu selection and writer fallback. Local validation is complete; this version has not yet been installed or tested on the reference Shield.
+
 ## 2.0.2.5 — 2026-10-12
 
 - Bingie's search suggestions use TMDb Bingie Helper's movie/TV search instead of Google web autocomplete. The existing helper returns South Park first for `south` on the maintained Shield.
