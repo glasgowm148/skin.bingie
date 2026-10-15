@@ -39,7 +39,7 @@ This fork uses the existing **`skin.bingie`** ID and replaces another Bingie ver
 
 1. Back up your current skin, skin settings and Skin Shortcuts data; keep the previous skin ZIP for rollback.
 2. Configure the repositories supplying Bingie's dependencies. [Matke's Bingie repository](https://github.com/matke-84/repository.bingie) is the upstream starting point. [addon.xml](addon.xml) lists required versions of Bingie Helper, Toolbox, Widgets, TMDb Bingie Helper, Skin Shortcuts, studio artwork and Autocompletion.
-3. Download **`skin.bingie-2.0.2.8.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
+3. Download **`skin.bingie-2.0.2.9.zip`** from [Releases](https://github.com/glasgowm148/skin.bingie/releases/latest). GitHub's automatic **Source code** archives are not the installable package.
 4. In Kodi, allow installation from unknown sources if prompted, then use **Settings → Add-ons → Install from zip file**. Select Bingie Experience under **Settings → Interface → Skin**.
 5. Check Home, Movies, Shows, episode/season views, the guide and playback. Enable supported integrations under **Configure Skin → Experience options**. Settings are per profile; use Apply while playback is idle to reload the skin.
 

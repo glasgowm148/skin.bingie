@@ -12,7 +12,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from check_skin import (CONDITION_ALLOWED, RUNTIME_DIRS, bad_condition_functions, balanced, broken_references, check,
-                        household_identifiers, top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
+                        household_identifiers, removed_infolabels, top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
 from build_skin import build
 import build_skin
 
@@ -302,11 +302,23 @@ class SkinTests(unittest.TestCase):
             self.assertIn('String.IsEqual(Container(5050).ListItem.Path)', found[3])
             allowed = {('Home.xml', 'String.IsEqual(Container(5050).ListItem.Path)')}
             self.assertEqual(len(bad_condition_functions(path, allowed)), 3)
-        # The only one-argument comparisons left in the skin are the allow-listed Play-next ones.
-        self.assertEqual(CONDITION_ALLOWED, {('IncludesDialogVideoInfo.xml', 'String.IsEqual(Container(5050).ListItem.Path)')})
+        # No one-argument comparisons are left in the skin (the dead Play-next folder branch is gone).
+        self.assertEqual(CONDITION_ALLOWED, set())
         for path in sorted((ROOT / '1080i').glob('*.xml')):
             self.assertEqual(bad_condition_functions(path), [], path.name)
-        self.assertEqual(len(bad_condition_functions(ROOT / '1080i/IncludesDialogVideoInfo.xml', set())), 16)
+
+    def test_removed_kodi22_infolabels_are_reported(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'Home.xml'
+            path.write_text(
+                '<window><!-- Player.Cutlist in a comment is ignored -->\n'
+                '<info>Player.Cutlist</info><info>Player.EditList</info>\n'
+                '<label>$INFO[slideshow.exifsoftware]</label><info>VideoPlayer.Cutlistx</info></window>')
+            found = removed_infolabels(path)
+            self.assertEqual(found, ['Home.xml:2: Player.Cutlist was removed in Kodi 22',
+                                     'Home.xml:3: slideshow.exifsoftware was removed in Kodi 22'])
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            self.assertEqual(removed_infolabels(path), [], path.name)
 
     def test_household_scan_covers_all_runtime_text(self):
         with tempfile.TemporaryDirectory() as folder:

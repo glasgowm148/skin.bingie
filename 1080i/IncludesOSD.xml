@@ -231,7 +231,7 @@
 					<height>32</height>
 					<texturebg colordiffuse="00FFFFFF">diffuse/osd_panel_trans.png</texturebg>
 					<midtexture colordiffuse="$INFO[Skin.String(OSDPrimaryTextColor)]">diffuse/osd_range.png</midtexture>
-					<info>Player.Cutlist</info>
+					<info>Player.EditList</info>
 					<visible>Skin.HasSetting(ChapterMarks)</visible>
 				</control>
 				<control type="ranges">
@@ -551,7 +551,7 @@
 					<height>24</height>
 					<texturebg colordiffuse="00FFFFFF">diffuse/panel2.png</texturebg>
 					<midtexture colordiffuse="$INFO[Skin.String(BingieOSDTextColor)]">diffuse/osd_range.png</midtexture>
-					<info>Player.Cutlist</info>
+					<info>Player.EditList</info>
 					<visible>Skin.HasSetting(ChapterMarks)</visible>
 				</control>
 				<control type="ranges">

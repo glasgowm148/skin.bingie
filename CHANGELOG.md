@@ -1,5 +1,10 @@
 # Changes
 
+## 2.0.2.9 — 2026-10-15
+
+- Kodi 22: the OSD edit-list ranges use `Player.EditList` (`Player.Cutlist` was removed); audio flags and labels map Kodi 22's profile codec names (aac_lc, eac3_ddp_atmos, truehd_atmos, dts_es…).
+- The always-false "Play from beginning" folder branch is removed (behaviour unchanged); `check_skin.py` reports labels Kodi 22 removed.
+
 ## 2.0.2.8 — 2026-10-15
 
 - Fix conditions Kodi could never evaluate: the OSD age-rating badge and its colours now use TMDb Bingie Helper's rating property; the ISO "dvd" flag (`String.EmdsWith` typo); subtitle-language names; the TV-show "new episodes" sublabel and set years with the main menu open. Broken always-false terms are removed from the shared DB-type expressions (no behaviour change).

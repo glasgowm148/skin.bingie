@@ -177,12 +177,7 @@ CONDITION_FUNCTIONS = {
     'integer.islessorequal': 2, 'integer.iseven': 1, 'integer.isodd': 1, 'integer.valueof': 1}
 ARG_CHECKED = {'string.isequal', 'string.contains', 'string.startswith', 'string.endswith'}
 # Calls deliberately left as they are: (file name, exact call text).
-CONDITION_ALLOWED = {
-    # "Play next episode" folder/file branch in the information dialog: the one-argument call is
-    # always false, so the file branch is the one that runs on the device; changing it changes
-    # playback behaviour that has not been tested there.
-    ('IncludesDialogVideoInfo.xml', 'String.IsEqual(Container(5050).ListItem.Path)'),
-}
+CONDITION_ALLOWED = set()
 CONDITION_CALL = re.compile(r'(?<![\w.])((?:String|Integer)\.\w+)\(', re.I)
 
 
@@ -226,6 +221,18 @@ def bad_condition_functions(path, allowed=CONDITION_ALLOWED):
     return found
 
 
+# Info labels Kodi 22 removed ("@skinning_v22 [Removed Infolabels]" in GUIInfoManager.cpp); they
+# render empty there, so use the replacement (Player.EditList for Player.Cutlist).
+REMOVED_INFOLABELS = re.compile(r'(?<![\w.])(Player\.Cutlist|Slideshow\.EXIFSoftware)\b', re.I)
+
+
+def removed_infolabels(path):
+    """Uses of info labels that Kodi 22 no longer knows."""
+    text = re.sub(r'<!--.*?-->', lambda m: '\n' * m.group().count('\n'), path.read_text(encoding='utf-8'), flags=re.S)
+    return ['%s:%d: %s was removed in Kodi 22' % (path.name, text.count('\n', 0, m.start()) + 1, m.group(1))
+            for m in REMOVED_INFOLABELS.finditer(text)]
+
+
 def broken_references(root=ROOT, allowed_textures=()):
     """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist,
     conditions, actions and info labels with unbalanced () or [], and misspelt or mis-argued
@@ -262,6 +269,7 @@ def broken_references(root=ROOT, allowed_textures=()):
                 errors.add('%s: texture %s missing from Textures.xbt' % (name, ref))
         errors.update(unbalanced_expressions(folder / name))
         errors.update(bad_condition_functions(folder / name))
+        errors.update(removed_infolabels(folder / name))
     return sorted(errors)
 
 
