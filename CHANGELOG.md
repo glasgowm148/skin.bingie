@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0.2.15 — 2026-10-16
+
+- Voice search hint: more space between the opening message and the hint (they touched).
+
 ## 2.0.2.14 — 2026-10-16
 
 - Voice search hint: the search screen can show a mic icon and "Or press the mic button on your remote and say what to search for" under the opening message, until you start typing. Off by default (the mic button only searches in Kodi with a voice search helper app installed); turn it on in Skin settings → Search ("Show the voice search hint"). Android only.

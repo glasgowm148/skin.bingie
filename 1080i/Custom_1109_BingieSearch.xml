@@ -187,49 +187,47 @@
             </control>
         </control>
 
-        <!-- Initial Msg / No Results Label, and the voice search hint under it -->
-        <control type="grouplist">
+        <!-- Initial Msg / No Results Label -->
+        <control type="label">
             <top>280</top>
             <left>620</left>
             <width>1220</width>
-            <height>400</height>
-            <orientation>vertical</orientation>
-            <itemgap>36</itemgap>
-            <usecontrolcoords>false</usecontrolcoords>
+            <height>auto</height>
+            <font>Reg42</font>
+            <align>center</align>
+            <aligny>top</aligny>
+            <wrapmultiline>true</wrapmultiline>
+            <textcolor>$INFO[Skin.String(BingiePrimaryTextColor)]</textcolor>
+            <label>$VAR[EmptySearchResultsString]</label>
             <visible>!Container(77777).IsUpdating + !Integer.IsGreater(Container(77777).NumItems,0)</visible>
-            <control type="label">
-                <width>1220</width>
-                <height>auto</height>
-                <font>Reg42</font>
-                <align>center</align>
-                <aligny>top</aligny>
-                <wrapmultiline>true</wrapmultiline>
-                <textcolor>$INFO[Skin.String(BingiePrimaryTextColor)]</textcolor>
-                <label>$VAR[EmptySearchResultsString]</label>
+        </control>
+
+        <!-- Voice search hint (opt-in, see VoiceSearchHintVisible) -->
+        <control type="grouplist">
+            <top>392</top>
+            <left>620</left>
+            <width>1220</width>
+            <height>64</height>
+            <orientation>horizontal</orientation>
+            <align>center</align>
+            <itemgap>18</itemgap>
+            <usecontrolcoords>true</usecontrolcoords>
+            <visible>$EXP[VoiceSearchHintVisible] + !Container(77777).IsUpdating + !Integer.IsGreater(Container(77777).NumItems,0)</visible>
+            <control type="image">
+                <top>6</top>
+                <width>52</width>
+                <height>52</height>
+                <aspectratio>keep</aspectratio>
+                <texture>special://skin/extras/media/voice_mic.png</texture>
+                <colordiffuse>$INFO[Skin.String(ViewDetailsTextColor)]</colordiffuse>
             </control>
-            <control type="grouplist">
-                <width>1220</width>
-                <height>56</height>
-                <orientation>horizontal</orientation>
-                <align>center</align>
-                <itemgap>14</itemgap>
-                <visible>$EXP[VoiceSearchHintVisible]</visible>
-                <control type="image">
-                    <width>48</width>
-                    <height>48</height>
-                    <top>4</top>
-                    <aspectratio>keep</aspectratio>
-                    <texture>special://skin/extras/media/voice_mic.png</texture>
-                    <colordiffuse>$INFO[Skin.String(ViewDetailsTextColor)]</colordiffuse>
-                </control>
-                <control type="label">
-                    <width min="10" max="1150">auto</width>
-                    <height>56</height>
-                    <font>Reg32</font>
-                    <aligny>center</aligny>
-                    <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
-                    <label>$LOCALIZE[31582]</label>
-                </control>
+            <control type="label">
+                <width min="10" max="1140">auto</width>
+                <height>64</height>
+                <font>Reg32</font>
+                <aligny>center</aligny>
+                <textcolor>$INFO[Skin.String(ViewDetailsTextColor)]</textcolor>
+                <label>$LOCALIZE[31582]</label>
             </control>
         </control>
 
