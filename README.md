@@ -52,7 +52,7 @@ To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore b
 ## Compatibility and testing
 
 - Requires the **Kodi 21 / Omega skin API** (`xbmc.gui` 5.17.0) and dependencies in `addon.xml`.
-- Version 2.0.2.6 is installed on the reference NVIDIA Shield (Android 11, Kodi 22 RC1). Episode details with missing director IDs, a valid director query, helper search, profile switching and local-video playback controls passed. A separate BBC-episode trailer lookup failed; this release does not claim to fix all helper/provider errors.
+- Version 2.0.2.7 is installed on the reference NVIDIA Shield (15 Oct: loads with no condition-parse errors). Version 2.0.2.6 was installed on the reference NVIDIA Shield (Android 11, Kodi 22 RC1). Episode details with missing director IDs, a valid director query, helper search, profile switching and local-video playback controls passed. A separate BBC-episode trailer lookup failed; this release does not claim to fix all helper/provider errors.
 - Earlier testing of 2.0.2.5 on that Shield confirmed the search behavior: The native search screen displayed South Park first for `sout`; a read-only query through the installed helper also returned it first for `south`. Empty input showed the search categories without opening an input dialog.
 - GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
 - Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.
