@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0.2.14 — 2026-10-16
+
+- Voice search hint: the search screen can show a mic icon and "Or press the mic button on your remote and say what to search for" under the opening message, until you start typing. Off by default (the mic button only searches in Kodi with a voice search helper app installed); turn it on in Skin settings → Search ("Show the voice search hint"). Android only.
+
 ## 2.0.2.13 — 2026-10-16
 
 - A search left open when Kodi quit no longer makes Kodi try to open the search term as a folder at the next start ("GetDirectory - Error getting …" in the log): the term is cleared before Home loads.

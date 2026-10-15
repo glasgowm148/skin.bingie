@@ -56,6 +56,10 @@
 
     <expression name="SearchHistoryEnabled">System.AddonIsEnabled(service.kodi.addonadmin) + !Skin.HasSetting(DisableSearchHistory)</expression>
 
+    <!-- The mic button hint: Android only, switched on in Skin settings (the remote's mic button
+         needs a voice search helper app, so the skin cannot tell whether it works). -->
+    <expression name="VoiceSearchHintVisible">Skin.HasSetting(ShowVoiceSearchHint) + System.Platform.Android + String.IsEmpty(Skin.String(CustomSearchTerm)) + !Control.HasFocus(1007)</expression>
+
     <!-- A search worth recording in Kodi Manager's search history (it ignores one letter). -->
     <expression name="SearchHistoryRecordable">$EXP[SearchHistoryEnabled] + !String.IsEmpty(Skin.String(CustomSearchTerm))</expression>
 

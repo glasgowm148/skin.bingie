@@ -2385,3 +2385,11 @@ msgstr ""
 msgctxt "#31581"
 msgid "recent"
 msgstr ""
+
+msgctxt "#31582"
+msgid "Or press the mic button on your remote and say what to search for"
+msgstr ""
+
+msgctxt "#31583"
+msgid "Show the voice search hint (remote mic button)"
+msgstr ""

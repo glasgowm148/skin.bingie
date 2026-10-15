@@ -350,6 +350,19 @@ class SkinTests(unittest.TestCase):
         replace = next(i for i, (_c, text) in enumerate(loads) if text.startswith('ReplaceWindow('))
         self.assertLess(reset, replace)
 
+    def test_voice_search_hint_is_opt_in(self):
+        # The hint is only true where a helper app makes the mic button search in Kodi, which the
+        # skin cannot detect: it stays behind a setting that is off by default, on Android only.
+        includes = (ROOT / '1080i/IncludesBingieSearch.xml').read_text(encoding='utf-8')
+        self.assertIn('<expression name="VoiceSearchHintVisible">Skin.HasSetting(ShowVoiceSearchHint) + '
+                      'System.Platform.Android + ', includes)
+        window = (ROOT / '1080i/Custom_1109_BingieSearch.xml').read_text(encoding='utf-8')
+        self.assertEqual(window.count('$EXP[VoiceSearchHintVisible]'), 1)
+        self.assertTrue((ROOT / 'extras/media/voice_mic.png').is_file())
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            if path.name != 'IncludesSkinSettings.xml':
+                self.assertNotIn('Skin.SetBool(ShowVoiceSearchHint', path.read_text(encoding='utf-8'), path.name)
+
     def test_kodi_manager_search_history_is_optional(self):
         # Every use of Kodi Manager's plugin sits behind SearchHistoryEnabled (installed, enabled
         # and not switched off), so the stock skin behaves as before without it.

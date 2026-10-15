@@ -657,6 +657,14 @@
             <selected>Skin.HasSetting(DisableSearchHistory)</selected>
             <visible>System.HasAddon(service.kodi.addonadmin)</visible>
         </control>
+        <control type="radiobutton" id="31583">
+            <description>voice search hint on the search screen</description>
+            <include>SkinSettings_Button</include>
+            <label>$LOCALIZE[31583]</label>
+            <onclick>Skin.ToggleSetting(ShowVoiceSearchHint)</onclick>
+            <selected>Skin.HasSetting(ShowVoiceSearchHint)</selected>
+            <visible>System.Platform.Android</visible>
+        </control>
         <control type="radiobutton" id="31550">
             <description>enable keyboard option</description>
             <include>SkinSettings_Button</include>
