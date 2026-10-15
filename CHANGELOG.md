@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0.2.13 — 2026-10-16
+
+- A search left open when Kodi quit no longer makes Kodi try to open the search term as a folder at the next start ("GetDirectory - Error getting …" in the log): the term is cleared before Home loads.
+
 ## 2.0.2.12 — 2026-10-15
 
 - Picking a search suggestion keeps titles with commas whole ("Love, Death & Robots", a remembered "the office, us"); they were cut at the comma.

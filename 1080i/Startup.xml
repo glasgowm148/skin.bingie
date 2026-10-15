@@ -4,6 +4,9 @@
     <defaultcontrol always="true">10</defaultcontrol>
     <include>DefaultSkinSettings</include>
     <onload>SetProperty(Random,$INFO[System.Time(ss)],Home)</onload>
+    <!-- A search term left from the last session (Kodi quit with the search open) would be
+         loaded as a directory by the search widgets before Home resets it. -->
+    <onload condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.Reset(CustomSearchTerm)</onload>
     <!-- start up mask - preload -->
     <onload condition="String.IsEmpty(Skin.String(SplashScreen))">SetProperty(StartupMask,1,home)</onload>
     <onload condition="String.IsEmpty(Skin.String(SplashScreen))">ReplaceWindow($VAR[StartUpWindow])</onload>

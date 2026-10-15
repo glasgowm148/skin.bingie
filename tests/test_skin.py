@@ -341,6 +341,15 @@ class SkinTests(unittest.TestCase):
         keys = (ROOT / '1080i/IncludesBingieSearch.xml').read_text(encoding='utf-8')
         self.assertNotIn('Skin.SetString(CustomSearchTerm,$INFO[', keys)
 
+    def test_leftover_search_term_is_cleared_before_home(self):
+        # The search widgets build their path from the term; a term saved when Kodi quit
+        # would be opened as a directory while Home loads, before its own reset runs.
+        root = ET.parse(ROOT / '1080i/Startup.xml').getroot()
+        loads = [(e.get('condition') or '', e.text) for e in root.findall('onload')]
+        reset = loads.index(('!String.IsEmpty(Skin.String(CustomSearchTerm))', 'Skin.Reset(CustomSearchTerm)'))
+        replace = next(i for i, (_c, text) in enumerate(loads) if text.startswith('ReplaceWindow('))
+        self.assertLess(reset, replace)
+
     def test_kodi_manager_search_history_is_optional(self):
         # Every use of Kodi Manager's plugin sits behind SearchHistoryEnabled (installed, enabled
         # and not switched off), so the stock skin behaves as before without it.
