@@ -1109,7 +1109,7 @@
         <value condition="!String.IsEmpty(Container(17195).ListItem.Property(Set.Years)) + $EXP[IsSetDBType]">$INFO[Container(17195).ListItem.Property(Set.Years)]</value>
         <value condition="[!String.IsEmpty(ListItem.Property(Birthday)) | !String.IsEmpty(ListItem.Property(Deathday))] + $EXP[Exp_IsPersonInfo]">$INFO[ListItem.Property(Birthday),$LOCALIZE[21893]: ]$INFO[ListItem.Property(Deathday),  •  $LOCALIZE[21897]: ] $INFO[ListItem.Property(Age), ($LOCALIZE[31241] ,) ]</value>
         <value condition="!String.IsEmpty(ListItem.Year) + !$EXP[IsSetDBType]">$INFO[ListItem.Year]</value>
-        <value condition="$EXP[IsMainMenuOpened] + !String.IsEmpty(Window(Home).Property(ListItem.Year)) + !$EXP[IsSetDBType]">$INFO[Window(Home).Property(ListItem.Year)]</value>
+        <value condition="$EXP[IsMainMenuOpened] + !String.IsEmpty(Window(Home).Property(ListItem.Year)) + !String.IsEqual(Window(Home).Property(ListItem.DBTYPE),set)">$INFO[Window(Home).Property(ListItem.Year)]</value>
         <value condition="!String.IsEmpty(Container(17195).ListItem.Year) + $EXP[EXP_TMDbBingieHelper_Metadata]">$INFO[Container(17195).ListItem.Year]</value>
     </variable>
 
@@ -1424,7 +1424,7 @@
     <!-- Bingie Sublabel - tagline/watch now/album or song/pvr -->
     <variable name="BingieSublabel">
         <value condition="$EXP[IsTvShowDBTypeNoFallback] + $EXP[IsTVShowInLastEpisodes]">$VAR[GetNewEpisodesTVShowSeason,$LOCALIZE[31070] , $LOCALIZE[19030]]</value>
-        <value condition="$EXP[IsMainMenuOpened] + $EXP[IsTvShowDBType] + $EXP[IsTVShowInLastEpisodesBasedOnProps]">$VAR[GetNewEpisodesTVShowSeasonBasedOnProps,$LOCALIZE[31070] , $LOCALIZE[19030]]</value>
+        <value condition="$EXP[IsMainMenuOpened] + String.IsEqual(Window(Home).Property(ListItem.DBTYPE),tvshow) + $EXP[IsTVShowInLastEpisodesBasedOnProps]">$VAR[GetNewEpisodesTVShowSeasonBasedOnProps,$LOCALIZE[31070] , $LOCALIZE[19030]]</value>
         <value condition="$EXP[IsTvShowDBTypeNoFallback] + !String.IsEmpty(ListItem.Property(TotalSeasons)) + !Integer.IsEqual(ListItem.Property(TotalSeasons),0) + !Integer.IsEqual(ListItem.Property(TotalSeasons),1) + String.IsEqual(ListItem.Property(UnWatchedEpisodes),ListItem.Property(TotalEpisodes))">$LOCALIZE[31161]</value>
         <value condition="$EXP[IsMainMenuOpened] + !String.IsEmpty(Window(Home).Property(ListItem.TotalSeasons)) + !Integer.IsEqual(Window(Home).Property(ListItem.TotalSeasons),0) + !Integer.IsEqual(Window(Home).Property(ListItem.TotalSeasons),1) + String.IsEqual(Window(Home).Property(ListItem.UnWatchedEpisodes),Window(Home).Property(ListItem.TotalEpisodes))">$LOCALIZE[31161]</value>
         <value condition="[String.IsEqual(ListItem.DBTYPE,album)  | String.IsEqual(Window(Home).Property(ListItem.DBTYPE),album)]">$INFO[ListItem.Album]</value>

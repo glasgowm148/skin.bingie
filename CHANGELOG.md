@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0.2.8 — 2026-10-15
+
+- Fix conditions Kodi could never evaluate: the OSD age-rating badge and its colours now use TMDb Bingie Helper's rating property; the ISO "dvd" flag (`String.EmdsWith` typo); subtitle-language names; the TV-show "new episodes" sublabel and set years with the main menu open. Broken always-false terms are removed from the shared DB-type expressions (no behaviour change).
+- The large watched indicator uses an existing font.
+- `check_skin.py` flags unknown `String.*`/`Integer.*` functions and wrong argument counts.
+
 ## 2.0.2.7 — 2026-10-15
 
 - Fix malformed conditions and paths that Kodi could not parse: crew/director/writer rows in the information dialog now close the dialog before opening the helper; the Spotlight TV/episode trailer condition (and its preview guard) parses; the version manager poster shows; the white studio footer logo path, the PVR channels OSD alarm and the cast-number setting label are well-formed; a stray `)` is removed from the Trakt watchlist path.

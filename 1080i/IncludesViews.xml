@@ -1360,7 +1360,7 @@
 		<include content="WatchedIndicatorLayout">
             <param name="width" value="120" />
             <param name="height" value="120" />
-            <param name="font" value="indicator_big" />
+            <param name="font" value="indicator_large" />
             <param name="overlay" value="big" />
             <param name="overlay_texture" value="diffuse/icon_overlay_large.png" />
         </include>

@@ -168,9 +168,68 @@ def unbalanced_expressions(path, allowed=BALANCE_ALLOWED):
     return found
 
 
+# Kodi's String.*/Integer.* boolean conditions (names are case-insensitive), with their exact
+# argument count. A misspelt name or a wrong argument count is silently always false in Kodi.
+CONDITION_FUNCTIONS = {
+    'string.isempty': 1, 'string.isequal': 2, 'string.contains': 2, 'string.startswith': 2,
+    'string.endswith': 2,
+    'integer.isequal': 2, 'integer.isgreater': 2, 'integer.isgreaterorequal': 2, 'integer.isless': 2,
+    'integer.islessorequal': 2, 'integer.iseven': 1, 'integer.isodd': 1, 'integer.valueof': 1}
+ARG_CHECKED = {'string.isequal', 'string.contains', 'string.startswith', 'string.endswith'}
+# Calls deliberately left as they are: (file name, exact call text).
+CONDITION_ALLOWED = {
+    # "Play next episode" folder/file branch in the information dialog: the one-argument call is
+    # always false, so the file branch is the one that runs on the device; changing it changes
+    # playback behaviour that has not been tested there.
+    ('IncludesDialogVideoInfo.xml', 'String.IsEqual(Container(5050).ListItem.Path)'),
+}
+CONDITION_CALL = re.compile(r'(?<![\w.])((?:String|Integer)\.\w+)\(', re.I)
+
+
+def call_arguments(text, start):
+    """Top-level arguments of the call whose '(' is at text[start - 1], and the index after its ')'."""
+    depth, args, current, index = 0, [], '', start
+    while index < len(text):
+        char = text[index]
+        if char in '([':
+            depth += 1
+        elif char in ')]':
+            if depth == 0 and char == ')':
+                return args + [current], index + 1
+            depth -= 1
+        if char == ',' and depth == 0:
+            args.append(current)
+            current = ''
+        else:
+            current += char
+        index += 1
+    return args + [current], index
+
+
+def bad_condition_functions(path, allowed=CONDITION_ALLOWED):
+    """Unknown String.*/Integer.* functions (typos like String.EmdsWith) and String comparisons
+    that do not have exactly two top-level arguments (e.g. a misplaced ')' swallowing the second)."""
+    text = re.sub(r'<!--.*?-->', lambda m: '\n' * m.group().count('\n'), path.read_text(encoding='utf-8'), flags=re.S)
+    found = []
+    for match in CONDITION_CALL.finditer(text):
+        name = match.group(1).lower()
+        line = text.count('\n', 0, match.start()) + 1
+        args, end = call_arguments(text, match.end())
+        call = text[match.start():end]
+        if (path.name, call) in allowed:
+            continue
+        if name not in CONDITION_FUNCTIONS:
+            found.append('%s:%d: unknown function %s' % (path.name, line, match.group(1)))
+        elif name in ARG_CHECKED and len(args) != CONDITION_FUNCTIONS[name]:
+            found.append('%s:%d: %s takes %d arguments, got %d: %s'
+                         % (path.name, line, match.group(1), CONDITION_FUNCTIONS[name], len(args), call[:80]))
+    return found
+
+
 def broken_references(root=ROOT, allowed_textures=()):
     """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist,
-    plus conditions, actions and info labels with unbalanced () or []."""
+    conditions, actions and info labels with unbalanced () or [], and misspelt or mis-argued
+    String.*/Integer.* conditions."""
     folder = root / '1080i'
     texts = {path.name: path.read_text(encoding='utf-8') for path in sorted(folder.glob('*.xml'))}
     po = (root / 'language/resource.language.en_gb/strings.po').read_text(encoding='utf-8')
@@ -202,6 +261,7 @@ def broken_references(root=ROOT, allowed_textures=()):
             if ref.lower() not in textures:
                 errors.add('%s: texture %s missing from Textures.xbt' % (name, ref))
         errors.update(unbalanced_expressions(folder / name))
+        errors.update(bad_condition_functions(folder / name))
     return sorted(errors)
 
 

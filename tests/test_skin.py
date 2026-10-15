@@ -11,8 +11,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import (RUNTIME_DIRS, balanced, broken_references, check, household_identifiers,
-                        top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
+from check_skin import (CONDITION_ALLOWED, RUNTIME_DIRS, bad_condition_functions, balanced, broken_references, check,
+                        household_identifiers, top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
 from build_skin import build
 import build_skin
 
@@ -282,6 +282,31 @@ class SkinTests(unittest.TestCase):
             self.assertIn('<visible>', found[1])
             allowed = {('Home.xml', '$INFO[ListItem.Year,(,]')}
             self.assertEqual(len(unbalanced_expressions(path, allowed)), 2)
+
+    def test_condition_check_flags_typos_and_wrong_argument_counts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'Home.xml'
+            path.write_text(
+                '<window><!-- String.Bogus(x) in a comment is ignored -->'
+                '<onload condition="String.IsEqual(Window(Home).Property(ListItem.DBTYPE,tvshow))">Close</onload>'
+                '<visible>String.EmdsWith(Player.FileNameAndPath,.iso) | Skin.String(X)</visible>'
+                '<visible>String.Contains(Window(Home).Property(P,X)) + string.isempty(ListItem.Label)</visible>'
+                '<visible>String.IsEqual(Window(Home).Property(ListItem.DBTYPE),tvshow) + Integer.IsGreater(A,1)'
+                ' + String.StartsWith(ListItem.Path,$INFO[X,a,b]) + String.EndsWith(A,[B,C])</visible>'
+                '<visible>String.IsEqual(Container(5050).ListItem.Path)</visible></window>')
+            found = bad_condition_functions(path)
+            self.assertEqual(len(found), 4, found)
+            self.assertIn('Home.xml:1: String.IsEqual takes 2 arguments, got 1', found[0])
+            self.assertIn('unknown function String.EmdsWith', found[1])
+            self.assertIn('String.Contains takes 2 arguments, got 1', found[2])
+            self.assertIn('String.IsEqual(Container(5050).ListItem.Path)', found[3])
+            allowed = {('Home.xml', 'String.IsEqual(Container(5050).ListItem.Path)')}
+            self.assertEqual(len(bad_condition_functions(path, allowed)), 3)
+        # The only one-argument comparisons left in the skin are the allow-listed Play-next ones.
+        self.assertEqual(CONDITION_ALLOWED, {('IncludesDialogVideoInfo.xml', 'String.IsEqual(Container(5050).ListItem.Path)')})
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            self.assertEqual(bad_condition_functions(path), [], path.name)
+        self.assertEqual(len(bad_condition_functions(ROOT / '1080i/IncludesDialogVideoInfo.xml', set())), 16)
 
     def test_household_scan_covers_all_runtime_text(self):
         with tempfile.TemporaryDirectory() as folder:
