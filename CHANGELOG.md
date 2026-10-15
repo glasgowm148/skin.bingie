@@ -1,5 +1,9 @@
 # Changes
 
+## 2.0.2.11 — 2026-10-15
+
+- Search remembers what you searched: with Kodi Manager installed, earlier searches matching what you type are listed first in the suggestions (tagged "recent"), and before typing the most recent ones are shown. Searches are recorded when you move into the results, pick a suggestion or leave the search screen. Turn it off in Skin settings → Search ("Disable search history").
+
 ## 2.0.2.10 — 2026-10-15
 
 - Library and widget audio flags map Kodi 22's codec names (truehd_atmos, eac3_ddp_atmos, dtshd_ma_x, dts_es, aac_lc, pcm_dvd…) to the flag images the skin ships, as the player overlay already did; codec labels check Atmos and DTS:X before Dolby, TrueHD and DTS-HD.

@@ -2377,3 +2377,11 @@ msgstr ""
 msgctxt "#31579"
 msgid "color for play icon"
 msgstr ""
+
+msgctxt "#31580"
+msgid "Disable search history (Kodi Manager)"
+msgstr ""
+
+msgctxt "#31581"
+msgid "recent"
+msgstr ""

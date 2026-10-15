@@ -8,6 +8,7 @@
     <onunload condition="!String.IsEmpty(Window(Home).Property(BaseWindow)) + String.IsEmpty(Window(Home).Property(ListItem.TVShowID)) + !Player.HasVideo">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
     <onunload condition="!ControlGroup(77777).HasFocus()">SetFocus(101)</onunload>
     <onunload>ClearProperty(KeepSuggestions)</onunload>
+    <onunload condition="$EXP[SearchHistoryRecordable]">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)])</onunload>
     <backgroundcolor>$VAR[BingiePanelColor]</backgroundcolor>
     <include>CustomBingieWinProps</include>
     <onload condition="String.IsEmpty(Skin.String(CustomSearchTerm))">SetProperty(CustomSearch,1,home)</onload>
@@ -119,8 +120,13 @@
             <onleft>SetProperty(KeepSuggestions,1)</onleft>
             <onfocus>ClearProperty(KeepSuggestions)</onfocus>
             <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$VAR[BingieSuggestionTitle])</onclick>
+            <!-- An earlier search picked before typing anything: search for it. -->
+            <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm)) + !String.IsEmpty(ListItem.Property(search_history))">Skin.SetString(CustomSearchTerm,$ESCINFO[ListItem.Label])</onclick>
+            <onclick condition="!String.IsEmpty(ListItem.Property(search_history))">SetProperty(CustomSearch,1,home)</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm))">noop</onclick>
+            <onclick condition="$EXP[SearchHistoryRecordable]">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)])</onclick>
             <visible>!$EXP[IsActualKeyboardActive]</visible>
+            <content browse="never" limit="5">$VAR[BingieSearchHistory]</content>
             <content browse="never" limit="20">$VAR[BingieTitleSuggestions]</content>
             <include condition="[Library.HasContent(Movies) | Library.HasContent(TVShows)] + !Skin.HasSetting(DisableSearchSuggestions)">Search_Suggestions_Content</include>
             <include condition="!Library.HasContent(Movies) + !Library.HasContent(TVShows) + !Skin.HasSetting(DisableSearchSuggestions)">Search_Suggestions_Content_2</include>

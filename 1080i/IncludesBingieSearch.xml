@@ -7,6 +7,11 @@
         <value condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">plugin://plugin.video.tmdb.bingie.helper?info=search&amp;tmdb_type=both&amp;nextpage=false&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)]</value>
     </variable>
 
+    <!-- Earlier searches (Kodi Manager's search history), listed above the title suggestions. -->
+    <variable name="BingieSearchHistory">
+        <value condition="$EXP[SearchHistoryEnabled]">plugin://service.kodi.addonadmin/?mode=search_history&amp;limit=5&amp;target=plugin%3A%2F%2Fplugin.video.tmdb.bingie.helper%3Finfo%3Dsearch%26tmdb_type%3Dboth%26nextpage%3Dfalse%26query%3D&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)]</value>
+    </variable>
+
     <variable name="BingieSuggestionTitle">
         <value condition="!String.IsEmpty(ListItem.Title)">$INFO[ListItem.Title]</value>
         <value>$INFO[ListItem.Label]</value>
@@ -48,6 +53,11 @@
         <value condition="Control.HasFocus(1007)">$INFO[Skin.String(ViewDetailsBorderFocusColor)]</value>
         <value>$INFO[Skin.String(BingieSecondaryTextColor)]</value>
     </variable>
+
+    <expression name="SearchHistoryEnabled">System.AddonIsEnabled(service.kodi.addonadmin) + !Skin.HasSetting(DisableSearchHistory)</expression>
+
+    <!-- A search worth recording in Kodi Manager's search history (it ignores one letter). -->
+    <expression name="SearchHistoryRecordable">$EXP[SearchHistoryEnabled] + !String.IsEmpty(Skin.String(CustomSearchTerm))</expression>
 
     <!-- INCLUDES -->
     <!-- Static Search Suggestions -->
@@ -429,6 +439,7 @@
             <orientation>horizontal</orientation>
             <itemgap>-10</itemgap>
             <onleft>$PARAM[onleft]</onleft>
+            <onright condition="$EXP[SearchHistoryRecordable]">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)])</onright>
             <onright>$PARAM[onright]</onright>
             <include>$PARAM[row_include]</include>
         </control>
@@ -731,6 +742,20 @@
     </include>
 
     <!-- Search Suggestions Container -->
+    <include name="SearchHistoryTag">
+        <control type="label">
+            <left>25</left>
+            <width>380</width>
+            <height>100%</height>
+            <aligny>center</aligny>
+            <align>right</align>
+            <font>Reg22</font>
+            <textcolor>$INFO[Skin.String(BingieSecondaryTextColor)]</textcolor>
+            <label>$LOCALIZE[31581]</label>
+            <visible>!String.IsEmpty(ListItem.Property(search_history))</visible>
+        </control>
+    </include>
+
     <include name="Search_Suggestions_Container">
         <param name="visibility" default="true" />
         <param name="left" default="75" />
@@ -766,6 +791,7 @@
                         <scroll>false</scroll>
                         <label>$INFO[ListItem.Label]</label>
                     </control>
+                    <include>SearchHistoryTag</include>
                 </itemlayout>
                 <focusedlayout width="$PARAM[width]" height="65" condition="Control.HasFocus($PARAM[id])">
                     <control type="group">
@@ -791,6 +817,7 @@
                             <scroll>true</scroll>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
+                        <include>SearchHistoryTag</include>
                         <control type="button">
                             <visible>false</visible>
                             <onfocus condition="String.IsEmpty(Skin.String(CustomSearchTerm))">$PARAM[onitemfocus]</onfocus>
@@ -822,6 +849,7 @@
                             <textcolor>$INFO[Skin.String(BingieButtonTextColor)]</textcolor>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
+                        <include>SearchHistoryTag</include>
                     </control>
                 </focusedlayout>
             </control>

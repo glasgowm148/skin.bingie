@@ -331,6 +331,23 @@ class SkinTests(unittest.TestCase):
         for path in sorted((ROOT / '1080i').glob('*.xml')):
             self.assertEqual(raw_audio_flags(path), [], path.name)
 
+    def test_kodi_manager_search_history_is_optional(self):
+        # Every use of Kodi Manager's plugin sits behind SearchHistoryEnabled (installed, enabled
+        # and not switched off), so the stock skin behaves as before without it.
+        uses = []
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            for line in path.read_text(encoding='utf-8').splitlines():
+                if 'plugin://service.kodi.addonadmin/?mode=search_history' in line:
+                    uses.append((path.name, line.strip()))
+        self.assertEqual(len(uses), 4, uses)
+        for name, line in uses:
+            self.assertTrue('$EXP[SearchHistoryRecordable]' in line or '$EXP[SearchHistoryEnabled]' in line, (name, line))
+        text = (ROOT / '1080i/IncludesBingieSearch.xml').read_text(encoding='utf-8')
+        self.assertIn('<expression name="SearchHistoryEnabled">System.AddonIsEnabled(service.kodi.addonadmin) + '
+                      '!Skin.HasSetting(DisableSearchHistory)</expression>', text)
+        self.assertIn('<expression name="SearchHistoryRecordable">$EXP[SearchHistoryEnabled] + '
+                      '!String.IsEmpty(Skin.String(CustomSearchTerm))</expression>', text)
+
     def test_household_scan_covers_all_runtime_text(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

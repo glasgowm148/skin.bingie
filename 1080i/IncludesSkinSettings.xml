@@ -649,6 +649,14 @@
             <onclick>Skin.ToggleSetting(DisableSearchSuggestions)</onclick>
             <selected>Skin.HasSetting(DisableSearchSuggestions)</selected>
         </control>
+        <control type="radiobutton" id="31580">
+            <description>search history from Kodi Manager</description>
+            <include>SkinSettings_Button</include>
+            <label>$LOCALIZE[31580]</label>
+            <onclick>Skin.ToggleSetting(DisableSearchHistory)</onclick>
+            <selected>Skin.HasSetting(DisableSearchHistory)</selected>
+            <visible>System.HasAddon(service.kodi.addonadmin)</visible>
+        </control>
         <control type="radiobutton" id="31550">
             <description>enable keyboard option</description>
             <include>SkinSettings_Button</include>
