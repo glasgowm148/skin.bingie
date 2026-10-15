@@ -1805,6 +1805,6 @@
     </variable>
 	<variable name="ViewsStudioLogoImg3">
         <value condition="!String.IsEmpty(ListItem.Studio) + !Skin.HasSetting(PreferWhiteFooter)">resource://resource.images.studios.coloured/$INFO[ListItem.Studio].png</value>
-		<value condition="!String.IsEmpty(ListItem.Studio) + Skin.HasSetting(PreferWhiteFooter)">resource://resource.images.studios.white/$INFO[ListItem.Studio].png]</value>
+		<value condition="!String.IsEmpty(ListItem.Studio) + Skin.HasSetting(PreferWhiteFooter)">resource://resource.images.studios.white/$INFO[ListItem.Studio].png</value>
     </variable>
 </includes>

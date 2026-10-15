@@ -11,8 +11,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from check_skin import (RUNTIME_DIRS, broken_references, check, household_identifiers, top_level_and_terms,
-                        unguarded_autoplay, unguarded_playback_actions)
+from check_skin import (RUNTIME_DIRS, balanced, broken_references, check, household_identifiers,
+                        top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
 from build_skin import build
 import build_skin
 
@@ -265,6 +265,23 @@ class SkinTests(unittest.TestCase):
                 self.assertIn(expected, errors)
             self.assertEqual(len(broken_references(root)), 6)
             self.assertNotIn('missing.png', '\n'.join(broken_references(root, ['missing.png'])))
+
+    def test_balance_check_flags_malformed_conditions_and_actions(self):
+        self.assertTrue(balanced('[A | String.IsEmpty(B)] + $EXP[C]'))
+        for text in ('String.IsEmpty(Window(Home).Property(X)', '[A + B(C))] | D', 'AlarmClock(a,b,00:01],silent)', ')('):
+            self.assertFalse(balanced(text), text)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'Home.xml'
+            path.write_text(
+                '<window><onload condition="!String.IsEmpty(Window(Home).Property(X)">Close</onload><controls>'
+                '<control type="button"><visible>[A | B</visible><onclick>Close</onclick>'
+                '<label>$INFO[ListItem.Year,(,]</label></control></controls></window>')
+            found = unbalanced_expressions(path)
+            self.assertEqual(len(found), 3)
+            self.assertIn('<condition>', found[0])
+            self.assertIn('<visible>', found[1])
+            allowed = {('Home.xml', '$INFO[ListItem.Year,(,]')}
+            self.assertEqual(len(unbalanced_expressions(path, allowed)), 2)
 
     def test_household_scan_covers_all_runtime_text(self):
         with tempfile.TemporaryDirectory() as folder:

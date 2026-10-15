@@ -130,8 +130,47 @@ def xbt_names(path):
     return names
 
 
+# Elements whose text Kodi parses as a condition, an action or an info label; any condition= attribute too.
+BALANCED_TAGS = {
+    'visible', 'enable', 'selected', 'usealttexture', 'expression', 'autoscroll', 'hidden',
+    'onclick', 'onfocus', 'onunfocus', 'onload', 'onunload', 'onback', 'onup', 'ondown', 'onleft', 'onright',
+    'oninfo', 'onnext', 'onprev', 'altclick', 'onaltclick',
+    'value', 'label', 'label2', 'altlabel', 'hinttext', 'texture', 'info', 'info2'}
+# Upstream text deliberately left unbalanced: (file name, stripped text). Prefer fixing over listing here.
+BALANCE_ALLOWED = set()
+
+
+def balanced(text):
+    """True when () and [] each close in order (Kodi nests them independently)."""
+    depth = {'(': 0, '[': 0}
+    for char in text:
+        if char in '([':
+            depth[char] += 1
+        elif char in ')]':
+            depth['(' if char == ')' else '['] -= 1
+            if min(depth.values()) < 0:
+                return False
+    return not any(depth.values())
+
+
+def unbalanced_expressions(path, allowed=BALANCE_ALLOWED):
+    """Conditions, actions and info labels in one skin file whose brackets or parentheses do not match."""
+    found = []
+    for node in ET.parse(path).getroot().iter():
+        texts = [('condition', node.get('condition'))] if node.get('condition') else []
+        if node.tag in BALANCED_TAGS and (node.text or '').strip():
+            texts.append((node.tag, node.text))
+        if node.tag == 'param' and node.get('value'):
+            texts.append(('param', node.get('value')))
+        for kind, text in texts:
+            if not balanced(text) and (path.name, text.strip()) not in allowed:
+                found.append('%s: unbalanced () or [] in <%s>: %s' % (path.name, kind, text.strip()[:80]))
+    return found
+
+
 def broken_references(root=ROOT, allowed_textures=()):
-    """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist."""
+    """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist,
+    plus conditions, actions and info labels with unbalanced () or []."""
     folder = root / '1080i'
     texts = {path.name: path.read_text(encoding='utf-8') for path in sorted(folder.glob('*.xml'))}
     po = (root / 'language/resource.language.en_gb/strings.po').read_text(encoding='utf-8')
@@ -162,6 +201,7 @@ def broken_references(root=ROOT, allowed_textures=()):
         for ref in re.findall(r'[>"]\s*([\w\-/ ]+\.(?:png|jpg|gif))\s*[<"]', text, re.I):
             if ref.lower() not in textures:
                 errors.add('%s: texture %s missing from Textures.xbt' % (name, ref))
+        errors.update(unbalanced_expressions(folder / name))
     return sorted(errors)
 
 

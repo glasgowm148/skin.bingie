@@ -333,8 +333,12 @@ def rpc_main(args):
 # ---------------------------------------------------------------- kodi.log
 
 LOG_LINE = re.compile(r'^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+ T:\d+\s+(\w+) <[^>]+>: (.*)$')
-SKIN_ERROR = re.compile(r'error loading|skin has invalid include|failed to load|invalid include', re.I)
+SKIN_ERROR = re.compile(r'error loading|skin has invalid include|failed to load|invalid include'
+                        r'|unable to load window xml', re.I)
 SKIN_CONTEXT = re.compile(r'skin|\.xml\b|include|window', re.I)
+# Kodi's condition parser (InfoExpression) logs these without naming a file, so they skip SKIN_CONTEXT.
+CONDITION_ERROR = re.compile(r'error parsing boolean expression|malformed expression'
+                             r'|^(?:[\w:]+(?: -)?:? )?(?:misplaced|unmatched|missing) [\[\]()]', re.I)
 
 
 def skin_errors(log_text):
@@ -347,7 +351,8 @@ def skin_errors(log_text):
         # The install folder depends on the machine and Kodi packaging; the baseline names skin files
         # as special://skin/<path>.
         message = re.sub(r'\S*/addons/skin\.bingie/', 'special://skin/', message)
-        if SKIN_ERROR.search(message) and SKIN_CONTEXT.search(message) and message not in found:
+        skin = SKIN_ERROR.search(message) and SKIN_CONTEXT.search(message) or CONDITION_ERROR.search(message)
+        if skin and message not in found:
             found.append(message)
     return found
 

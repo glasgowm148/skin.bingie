@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0.2.7 — 2026-10-15
+
+- Fix malformed conditions and paths that Kodi could not parse: crew/director/writer rows in the information dialog now close the dialog before opening the helper; the Spotlight TV/episode trailer condition (and its preview guard) parses; the version manager poster shows; the white studio footer logo path, the PVR channels OSD alarm and the cast-number setting label are well-formed; a stray `)` is removed from the Trakt watchlist path.
+- Provider watchlist/rating actions no longer fall back to an episode's or season's own TMDb id as the show id.
+- `check_skin.py` now rejects unbalanced brackets and parentheses in conditions, actions and labels; the render check reports Kodi condition-parser errors.
+
 ## 2.0.2.6 — 2026-10-13
 
 - Director, creator and writer recommendations wait for a usable person ID instead of requesting an empty person from TMDb Bingie Helper.

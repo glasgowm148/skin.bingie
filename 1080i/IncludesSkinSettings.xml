@@ -814,7 +814,7 @@
         <control type="button" id="31031">
             <include>SkinSettings_Button</include>
             <label>$LOCALIZE[31031]</label>
-            <label2>$INFO[Skin.String(cast_number,, [LOWERCASE]$LOCALIZE[29994][/LOWERCASE]]</label2>
+            <label2>$INFO[Skin.String(cast_number),, [LOWERCASE]$LOCALIZE[29994][/LOWERCASE]]</label2>
             <onclick>Skin.SetNumeric(cast_number)</onclick>
         </control>
         <!-- Replace Add to My List with Add/Remove Trakt Watchlist -->

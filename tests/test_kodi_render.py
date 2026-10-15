@@ -140,6 +140,14 @@ class LogTests(TempDir):
             self.assertEqual(kr.skin_errors(line), [
                 'Error loading include file special://skin/1080i/x.xml: Failed to open file (row: 0, col: 0)'])
 
+    def test_condition_parser_errors_are_reported(self):
+        log = '\n'.join('2026-10-11 10:00:02.%03d T:124    error <general>: %s' % (i, m) for i, m in enumerate([
+            'Misplaced ]', 'Unmatched [', 'Missing )', 'Error parsing boolean expression [a | b',
+            'Unable to load window XML: Custom_1.xml. Line 3', 'Unmatched track id 5', 'Missing subtitle']))
+        self.assertEqual(kr.skin_errors(log), [
+            'Misplaced ]', 'Unmatched [', 'Missing )', 'Error parsing boolean expression [a | b',
+            'Unable to load window XML: Custom_1.xml. Line 3'])
+
     def test_only_new_errors_fail(self):
         log, baseline = self.tmp / 'kodi.log', self.tmp / 'baseline.txt'
         log.write_text(self.LOG)

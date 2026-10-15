@@ -133,7 +133,7 @@
 
     <variable name="Path_MyList">
         <value condition="!Skin.HasSetting(AddToFavorites) + [Library.HasContent(Movies) | Library.HasContent(TVShows)]">plugin://script.bingie.widgets/?action=mylist&amp;mediatype=media&amp;limit=100&amp;reload=$INFO[Window(Home).Property(widgetreload)]</value>
-        <value condition="Skin.HasSetting(AddToFavorites) | !Library.HasContent(Movies) + !Library.HasContent(TVShows)">plugin://plugin.video.tmdb.bingie.helper?info=trakt_watchlist&amp;tmdb_type=both&amp;widget=true&amp;sort_by=added&amp;sort_how=desc&amp;reload=$INFO[Window(Home).Property(TMDbBingieHelper.Widgets.Reload)])</value>
+        <value condition="Skin.HasSetting(AddToFavorites) | !Library.HasContent(Movies) + !Library.HasContent(TVShows)">plugin://plugin.video.tmdb.bingie.helper?info=trakt_watchlist&amp;tmdb_type=both&amp;widget=true&amp;sort_by=added&amp;sort_how=desc&amp;reload=$INFO[Window(Home).Property(TMDbBingieHelper.Widgets.Reload)]</value>
     </variable>
 
     <variable name="Path_CastInMovies">
@@ -656,7 +656,7 @@
         <value condition="!String.IsEmpty(ListItem.Property(km_tmdb_id))">$INFO[ListItem.Property(km_tmdb_id)]</value>
         <value condition="[$EXP[IsEpisodeDBType] | $EXP[IsSeasonDBType]] + !String.IsEmpty(ListItem.UniqueID(tvshow.tmdb))">$INFO[ListItem.UniqueID(tvshow.tmdb)]</value>
         <value condition="!String.IsEmpty(ListItem.Property(tmdb_id))">$INFO[ListItem.Property(tmdb_id)]</value>
-        <value condition="!String.IsEmpty(ListItem.UniqueID(tmdb))">$INFO[ListItem.UniqueID(tmdb)]</value>
+        <value condition="!String.IsEmpty(ListItem.UniqueID(tmdb)) + ![$EXP[IsEpisodeDBType] | $EXP[IsSeasonDBType]]">$INFO[ListItem.UniqueID(tmdb)]</value>
         <value>$INFO[Container(17195).ListItem.Property(tmdb_id)]</value>
     </variable>
     <variable name="KM_Watchlist_Label">

@@ -58,7 +58,7 @@
 				<top>170</top>
 				<texture fallback="DefaultVideo.png">$VAR[VideoListPosterVar]</texture>
 				<aspectratio align="center" aligny="center" scalediffuse="true">stretch</aspectratio>
-				<visible>[!String.IsEmpty(Container(50).ListItem.Art(poster)) | !String.IsEmpty(ListItem.Art(Container(6).ListItem.Art(poster))]</visible>
+				<visible>[!String.IsEmpty(Container(50).ListItem.Art(poster)) | !String.IsEmpty(Container(6).ListItem.Art(poster))]</visible>
 			</control>
 			<control type="image">
 				<left>125</left>
@@ -67,7 +67,7 @@
 				<top>170</top>
 				<texture fallback="DefaultVideo.png">$VAR[VideoListPosterVar]</texture>
 				<aspectratio align="center" aligny="top" scalediffuse="true">keep</aspectratio>
-				 <visible>[String.IsEmpty(Container(50).ListItem.Art(poster)) | String.IsEmpty(ListItem.Art(Container(6).ListItem.Art(poster))]</visible>
+				 <visible>[String.IsEmpty(Container(50).ListItem.Art(poster)) + String.IsEmpty(Container(6).ListItem.Art(poster))]</visible>
 			</control>
 			<control type="label">
 				<description>Path label</description>

@@ -1845,7 +1845,7 @@
 					<visible>VideoPlayer.Content(livetv)</visible>
 					<onclick condition="Skin.HasSetting(small_pvrchannelsosd)">ActivateWindow(PVROSDChannels)</onclick>
 					<onclick condition="!Skin.HasSetting(small_pvrchannelsosd)">Dialog.Close(VideoOSD)</onclick>
-					<onclick condition="!Skin.HasSetting(small_pvrchannelsosd)">AlarmClock(ActivetePVRChanels,ActivateWindow(PVROSDChannels),00:01],silent)</onclick>					
+					<onclick condition="!Skin.HasSetting(small_pvrchannelsosd)">AlarmClock(ActivetePVRChanels,ActivateWindow(PVROSDChannels),00:01,silent)</onclick>					
 					<visible>Skin.HasSetting(bingie_osd_buttons_channellist)</visible>
 				</control>
 				<control type="button" id="807">
