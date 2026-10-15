@@ -1,5 +1,10 @@
 # Changes
 
+## 2.0.2.10 — 2026-10-15
+
+- Library and widget audio flags map Kodi 22's codec names (truehd_atmos, eac3_ddp_atmos, dtshd_ma_x, dts_es, aac_lc, pcm_dvd…) to the flag images the skin ships, as the player overlay already did; codec labels check Atmos and DTS:X before Dolby, TrueHD and DTS-HD.
+- `check_skin.py` refuses audio flag textures built from the raw codec name.
+
 ## 2.0.2.9 — 2026-10-15
 
 - Kodi 22: the OSD edit-list ranges use `Player.EditList` (`Player.Cutlist` was removed); audio flags and labels map Kodi 22's profile codec names (aac_lc, eac3_ddp_atmos, truehd_atmos, dts_es…).

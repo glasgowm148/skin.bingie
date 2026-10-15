@@ -48,7 +48,7 @@
             </control>
             <control type="image">
                 <include>mediaflags_large_layout</include>
-                <texture background="true">$VAR[mediaflags_large_path]$INFO[ListItem.AudioCodec,/audio/,.png]</texture>
+                <texture background="true">$VAR[mediaflags_large_path]$VAR[ListItemAudioFlagVar,/audio/,.png]</texture>
                 <visible>!String.IsEmpty(ListItem.AudioCodec)</visible>
             </control>
             <control type="image">
@@ -566,23 +566,39 @@
     </variable>
 
     <variable name="VideoPlayerAudioFlagVar">
+        <!-- Kodi 22 names (StreamUtils::GetCodecName) mapped to the flag images both flag styles ship -->
         <value condition="String.Contains(VideoPlayer.AudioCodec,atmos)">atmos</value>
         <value condition="String.StartsWith(VideoPlayer.AudioCodec,dtshd_ma_x)">dts_x</value>
-        <value condition="String.StartsWith(VideoPlayer.AudioCodec,dts_)">dts</value>
+        <value condition="String.IsEqual(VideoPlayer.AudioCodec,dtshd_ma) | String.IsEqual(VideoPlayer.AudioCodec,dtshd_hra)">$INFO[VideoPlayer.AudioCodec]</value>
+        <value condition="String.IsEqual(VideoPlayer.AudioCodec,dtshd) | String.StartsWith(VideoPlayer.AudioCodec,dts_)">dts</value>
         <value condition="String.Contains(VideoPlayer.AudioCodec,aac)">aac</value>
+        <value condition="String.StartsWith(VideoPlayer.AudioCodec,pcm_) + !String.IsEqual(VideoPlayer.AudioCodec,pcm_bluray) + !String.IsEqual(VideoPlayer.AudioCodec,pcm_s16le) + !String.IsEqual(VideoPlayer.AudioCodec,pcm_s16be) + !String.IsEqual(VideoPlayer.AudioCodec,pcm_s24le) + !String.IsEqual(VideoPlayer.AudioCodec,pcm_u8)">pcm</value>
+        <value condition="String.IsEqual(VideoPlayer.AudioCodec,wmav2)">wma</value>
         <value>$INFO[VideoPlayer.AudioCodec]</value>
+    </variable>
+
+    <variable name="ListItemAudioFlagVar">
+        <!-- Kodi 22 names (StreamUtils::GetCodecName) mapped to the flag images both flag styles ship -->
+        <value condition="String.Contains(ListItem.AudioCodec,atmos)">atmos</value>
+        <value condition="String.StartsWith(ListItem.AudioCodec,dtshd_ma_x)">dts_x</value>
+        <value condition="String.IsEqual(ListItem.AudioCodec,dtshd_ma) | String.IsEqual(ListItem.AudioCodec,dtshd_hra)">$INFO[ListItem.AudioCodec]</value>
+        <value condition="String.IsEqual(ListItem.AudioCodec,dtshd) | String.StartsWith(ListItem.AudioCodec,dts_)">dts</value>
+        <value condition="String.Contains(ListItem.AudioCodec,aac)">aac</value>
+        <value condition="String.StartsWith(ListItem.AudioCodec,pcm_) + !String.IsEqual(ListItem.AudioCodec,pcm_bluray) + !String.IsEqual(ListItem.AudioCodec,pcm_s16le) + !String.IsEqual(ListItem.AudioCodec,pcm_s16be) + !String.IsEqual(ListItem.AudioCodec,pcm_s24le) + !String.IsEqual(ListItem.AudioCodec,pcm_u8)">pcm</value>
+        <value condition="String.IsEqual(ListItem.AudioCodec,wmav2)">wma</value>
+        <value>$INFO[ListItem.AudioCodec]</value>
     </variable>
 
     <variable name="AudioCodecVar">
         <value condition="!String.Contains(ListItem.Title,atmos) + String.Contains(ListItem.Filenameandpath,atmos)">ATMOS</value>
         <value condition="!String.Contains(ListItem.Title,dts-x) + String.Contains(ListItem.Filenameandpath,dts-x) | !String.Contains(ListItem.Title,dtsx) + String.Contains(ListItem.Filenameandpath,dtsx)">DTS-X</value>
 
+        <value condition="String.Contains(ListItem.AudioCodec,atmos)">ATMOS</value>
+        <value condition="String.IsEqual(ListItem.AudioCodec,dtsx) | String.StartsWith(ListItem.AudioCodec,dtshd_ma_x)">DTS-X</value>
         <value condition="String.Contains(ListItem.AudioCodec,ac3)">DOLBY</value>
         <value condition="String.Contains(ListItem.AudioCodec,truehd)">TRUEHD</value>
-        <value condition="String.Contains(ListItem.AudioCodec,atmos)">ATMOS</value>
-        <value condition="String.IsEqual(ListItem.AudioCodec,dtsx)">DTS-X</value>
         <value condition="String.IsEqual(ListItem.AudioCodec,dca)">DTS</value>
-        <value condition="String.IsEqual(ListItem.AudioCodec,dts)">DTS</value>
+        <value condition="String.IsEqual(ListItem.AudioCodec,dts) | String.StartsWith(ListItem.AudioCodec,dts_)">DTS</value>
         <value condition="String.Contains(ListItem.AudioCodec,dts-hd)">DTS HD</value>
         <value condition="String.Contains(ListItem.AudioCodec,dtshd)">DTS HD</value>
         <value condition="String.Contains(ListItem.AudioCodec,pcm)">PCM</value>
@@ -595,19 +611,23 @@
         <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,atmos)">ATMOS</value>
         <value condition="Window.IsActive(fullscreenvideo) + String.StartsWith(VideoPlayer.AudioCodec,dtshd_ma_x)">DTS-X</value>
         <value condition="Window.IsActive(fullscreenvideo) + [String.IsEqual(VideoPlayer.AudioCodec,dts) | String.StartsWith(VideoPlayer.AudioCodec,dts_)]">DTS</value>
+        <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,ac3)">DOLBY</value>
+        <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,truehd)">TRUEHD</value>
         <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,aac)">AAC</value>
         <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,dts-hd)">DTS HD</value>
         <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,dtshd)">DTS HD</value>
         <value condition="Window.IsActive(fullscreenvideo) + String.Contains(VideoPlayer.AudioCodec,pcm)">PCM</value>
         <value condition="Window.IsActive(fullscreenvideo) + !String.IsEmpty(VideoPlayer.AudioCodec)">$INFO[VideoPlayer.AudioCodec]</value>
 
-        <value condition="String.IsEqual(Window(Home).Property(ListItem.AudioCodec),ac3)">DOLBY</value>
-        <value condition="String.IsEqual(Window(Home).Property(ListItem.AudioCodec),dca)">DTS</value>
+        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),atmos)">ATMOS</value>
+        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),dtsx) | String.StartsWith(Window(Home).Property(ListItem.AudioCodec),dtshd_ma_x)">DTS-X</value>
+        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),ac3)">DOLBY</value>
+        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),truehd)">TRUEHD</value>
+        <value condition="String.IsEqual(Window(Home).Property(ListItem.AudioCodec),dca) | String.IsEqual(Window(Home).Property(ListItem.AudioCodec),dts) | String.StartsWith(Window(Home).Property(ListItem.AudioCodec),dts_)">DTS</value>
         <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),dts-hd)">DTS HD</value>
         <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),dtshd)">DTS HD</value>
         <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),pcm)">PCM</value>
-        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),atmos)">ATMOS</value>
-        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),dtsx)">DTS-X</value>
+        <value condition="String.Contains(Window(Home).Property(ListItem.AudioCodec),aac)">AAC</value>
         <value condition="!String.IsEmpty(Window(Home).Property(ListItem.AudioCodec))">$INFO[Window(Home).Property(ListItem.AudioCodec)]</value>
     </variable>
 

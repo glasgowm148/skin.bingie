@@ -233,6 +233,20 @@ def removed_infolabels(path):
             for m in REMOVED_INFOLABELS.finditer(text)]
 
 
+# Kodi 22 reports codec names such as truehd_atmos, eac3_ddp_atmos and dtshd_ma_x
+# (StreamUtils::GetCodecName) that have no flag image: audio flag textures must go through
+# ListItemAudioFlagVar / VideoPlayerAudioFlagVar, which map them to images the skin ships.
+RAW_AUDIO_FLAG = re.compile(r'\$INFO\[(?:ListItem|VideoPlayer)\.AudioCodec\s*,\s*/audio/', re.I)
+
+
+def raw_audio_flags(path):
+    """Audio flag textures built straight from the codec name."""
+    text = path.read_text(encoding='utf-8')
+    return ['%s:%d: audio flag texture uses the raw codec name; use ListItemAudioFlagVar or '
+            'VideoPlayerAudioFlagVar' % (path.name, text.count('\n', 0, m.start()) + 1)
+            for m in RAW_AUDIO_FLAG.finditer(text)]
+
+
 def broken_references(root=ROOT, allowed_textures=()):
     """Skin strings, variables, expressions, fonts, custom windows and packed textures that do not exist,
     conditions, actions and info labels with unbalanced () or [], and misspelt or mis-argued
@@ -270,6 +284,7 @@ def broken_references(root=ROOT, allowed_textures=()):
         errors.update(unbalanced_expressions(folder / name))
         errors.update(bad_condition_functions(folder / name))
         errors.update(removed_infolabels(folder / name))
+        errors.update(raw_audio_flags(folder / name))
     return sorted(errors)
 
 

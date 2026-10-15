@@ -12,7 +12,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from check_skin import (CONDITION_ALLOWED, RUNTIME_DIRS, bad_condition_functions, balanced, broken_references, check,
-                        household_identifiers, removed_infolabels, top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
+                        household_identifiers, raw_audio_flags, removed_infolabels, top_level_and_terms, unbalanced_expressions, unguarded_autoplay, unguarded_playback_actions)
 from build_skin import build
 import build_skin
 
@@ -319,6 +319,17 @@ class SkinTests(unittest.TestCase):
                                      'Home.xml:3: slideshow.exifsoftware was removed in Kodi 22'])
         for path in sorted((ROOT / '1080i').glob('*.xml')):
             self.assertEqual(removed_infolabels(path), [], path.name)
+
+    def test_audio_flag_textures_go_through_the_kodi22_mapping(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'Flags.xml'
+            path.write_text('<window>\n<texture>$VAR[p]$INFO[ListItem.AudioCodec,/audio/,.png]</texture>\n'
+                            '<texture>$VAR[p]$VAR[ListItemAudioFlagVar,/audio/,.png]</texture>\n'
+                            '<label>$INFO[ListItem.AudioCodec]</label></window>')
+            self.assertEqual(raw_audio_flags(path), ['Flags.xml:2: audio flag texture uses the raw codec name; '
+                                                     'use ListItemAudioFlagVar or VideoPlayerAudioFlagVar'])
+        for path in sorted((ROOT / '1080i').glob('*.xml')):
+            self.assertEqual(raw_audio_flags(path), [], path.name)
 
     def test_household_scan_covers_all_runtime_text(self):
         with tempfile.TemporaryDirectory() as folder:
