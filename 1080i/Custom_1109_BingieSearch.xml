@@ -8,7 +8,6 @@
     <onunload condition="!String.IsEmpty(Window(Home).Property(BaseWindow)) + String.IsEmpty(Window(Home).Property(ListItem.TVShowID)) + !Player.HasVideo">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
     <onunload condition="!ControlGroup(77777).HasFocus()">SetFocus(101)</onunload>
     <onunload>ClearProperty(KeepSuggestions)</onunload>
-    <onunload condition="$EXP[SearchHistoryRecordable]">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)])</onunload>
     <backgroundcolor>$VAR[BingiePanelColor]</backgroundcolor>
     <include>CustomBingieWinProps</include>
     <onload condition="String.IsEmpty(Skin.String(CustomSearchTerm))">SetProperty(CustomSearch,1,home)</onload>
@@ -119,12 +118,15 @@
             <param name="onitemfocus2" value="SetProperty(CustomSearch,1,home)" />
             <onleft>SetProperty(KeepSuggestions,1)</onleft>
             <onfocus>ClearProperty(KeepSuggestions)</onfocus>
-            <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$VAR[BingieSuggestionTitle])</onclick>
+            <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$ESCVAR[BingieSuggestionTitle])</onclick>
             <!-- An earlier search picked before typing anything: search for it. -->
             <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm)) + !String.IsEmpty(ListItem.Property(search_history))">Skin.SetString(CustomSearchTerm,$ESCINFO[ListItem.Label])</onclick>
             <onclick condition="!String.IsEmpty(ListItem.Property(search_history))">SetProperty(CustomSearch,1,home)</onclick>
             <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm))">noop</onclick>
+            <!-- Kodi checks every condition before running the actions: with no term yet, an
+                 earlier search picked from the list is recorded from its own label. -->
             <onclick condition="$EXP[SearchHistoryRecordable]">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[Skin.String(CustomSearchTerm)])</onclick>
+            <onclick condition="$EXP[SearchHistoryEnabled] + String.IsEmpty(Skin.String(CustomSearchTerm)) + !String.IsEmpty(ListItem.Property(search_history))">RunPlugin(plugin://service.kodi.addonadmin/?mode=search_history_add&amp;query=$ESCINFO[ListItem.Label])</onclick>
             <visible>!$EXP[IsActualKeyboardActive]</visible>
             <content browse="never" limit="5">$VAR[BingieSearchHistory]</content>
             <content browse="never" limit="20">$VAR[BingieTitleSuggestions]</content>

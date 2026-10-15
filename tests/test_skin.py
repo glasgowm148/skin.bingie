@@ -331,6 +331,16 @@ class SkinTests(unittest.TestCase):
         for path in sorted((ROOT / '1080i').glob('*.xml')):
             self.assertEqual(raw_audio_flags(path), [], path.name)
 
+    def test_suggestion_titles_are_escaped_for_skin_setstring(self):
+        # A title with a comma ("Love, Death & Robots", a remembered "the office, us") would
+        # otherwise be cut at the comma by Kodi's builtin parameter splitting.
+        text = (ROOT / '1080i/Custom_1109_BingieSearch.xml').read_text(encoding='utf-8')
+        self.assertNotIn('Skin.SetString(CustomSearchTerm,$VAR[', text)
+        self.assertNotIn('Skin.SetString(CustomSearchTerm,$INFO[', text)
+        self.assertIn('Skin.SetString(CustomSearchTerm,$ESCVAR[BingieSuggestionTitle])', text)
+        keys = (ROOT / '1080i/IncludesBingieSearch.xml').read_text(encoding='utf-8')
+        self.assertNotIn('Skin.SetString(CustomSearchTerm,$INFO[', keys)
+
     def test_kodi_manager_search_history_is_optional(self):
         # Every use of Kodi Manager's plugin sits behind SearchHistoryEnabled (installed, enabled
         # and not switched off), so the stock skin behaves as before without it.
@@ -339,6 +349,8 @@ class SkinTests(unittest.TestCase):
             for line in path.read_text(encoding='utf-8').splitlines():
                 if 'plugin://service.kodi.addonadmin/?mode=search_history' in line:
                     uses.append((path.name, line.strip()))
+        # Listing (suggestions), and recording on moving into the results or picking a
+        # suggestion; never on window unload, which also runs while Kodi quits.
         self.assertEqual(len(uses), 4, uses)
         for name, line in uses:
             self.assertTrue('$EXP[SearchHistoryRecordable]' in line or '$EXP[SearchHistoryEnabled]' in line, (name, line))

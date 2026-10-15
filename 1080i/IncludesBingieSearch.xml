@@ -385,7 +385,9 @@
                 <ondown>$PARAM[ondown]</ondown>
                 <include>SearchKeyDefs</include>
                 <label>$PARAM[key]</label>
-                <onclick>Skin.SetString(CustomSearchTerm,$INFO[Skin.String(CustomSearchTerm)]$PARAM[key])</onclick>
+                <!-- Escaped: a term from voice search or the history may hold a comma. -->
+                <onclick condition="!String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$ESCINFO[Skin.String(CustomSearchTerm),,$PARAM[key]])</onclick>
+                <onclick condition="String.IsEmpty(Skin.String(CustomSearchTerm))">Skin.SetString(CustomSearchTerm,$PARAM[key])</onclick>
                 <onclick>SetProperty(CustomSearch,1,home)</onclick>
             </control>
         </definition>

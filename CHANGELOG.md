@@ -1,5 +1,10 @@
 # Changes
 
+## 2.0.2.12 — 2026-10-15
+
+- Picking a search suggestion keeps titles with commas whole ("Love, Death & Robots", a remembered "the office, us"); they were cut at the comma.
+- Searches are no longer recorded when the search window closes (that also ran while Kodi quits, and re-recorded the previous search on every visit); moving into the results or picking a suggestion still records them.
+
 ## 2.0.2.11 — 2026-10-15
 
 - Search remembers what you searched: with Kodi Manager installed, earlier searches matching what you type are listed first in the suggestions (tagged "recent"), and before typing the most recent ones are shown. Searches are recorded when you move into the results, pick a suggestion or leave the search screen. Turn it off in Skin settings → Search ("Disable search history").
