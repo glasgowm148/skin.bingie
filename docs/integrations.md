@@ -1,14 +1,51 @@
 # Optional integrations
 
-The toggles under Configure Skin → Experience options default off and take effect after a skin reload (the window's Apply button, disabled during playback, or a Kodi restart). Each reload chooses either the stock or experience include branch; duplicate native guide control IDs are never loaded together.
+The legacy integration toggles under Configure Skin → Experience options default off and take effect after a skin reload (the window's Apply button, disabled during playback, or a Kodi restart). Each reload chooses either the stock or experience include branch; duplicate native guide control IDs are never loaded together.
 
 | Setting | Additional requirement | Missing/off behavior |
 | --- | --- | --- |
 | `KM_EnableProviderActions` | Patched POV with `manager_watchlist_status`, `manager_watchlist`, `manager_show`, `manager_seen`, `manager_rating_status`, `manager_rating` | Stock Bingie information controls; no manager-route initializers |
-| `KM_EnableLiveTV` | `script.kodi.live.tv` supporting `home` and `day`, configured PVR client; the PVR hub rows expect channel groups `TV Guide`, `Sky Sports` and `TNT Sports` (`Little Ones` and `Cartoons` for a profile named `Kids`) | Stock guide and stock PVR hub rows (Recently Watched, Channels, Recordings, Live & Radio); a profile named `Kids` gets only the `Little Ones` and `Cartoons` group rows (hidden when the group is absent), never all channels, recordings or Recently Watched |
-| `KM_EnableDirectSwitch` | `script.kodi.live.tv` supporting `switch-account` and its guarded two-profile restart integration where needed | Native profile picker |
+| `KM_EnableLiveTV` | Bingie Companion or existing `script.kodi.live.tv` supporting `home` and `day`, with a configured PVR client | Stock guide. Stock PVR rows are used unless custom rows or family mode are explicitly enabled |
+| `KM_EnableDirectSwitch` | Bingie Companion or existing `script.kodi.live.tv` supporting `switch-account`; Kodi 22 requires a compatible guarded coordinator | Native profile picker |
 
-Skin settings are stored per profile. When an installation that ran the earlier patched overlay (where these features were always on) is upgraded to this build, switch `KM_EnableProviderActions`, `KM_EnableLiveTV` and `KM_EnableDirectSwitch` on in **every** profile, including `Kids`, then reload the skin; otherwise the Trakt actions, integrated guide and PVR hub rows, and direct profile switching revert to stock. With Experience Live TV enabled, the `Kids` PVR hub hides Recently Watched.
+## Per-profile channel rows and family mode
+
+`KM_CustomPVRRows` uses up to three explicit `KM_PVRRow1Path`/`KM_PVRRow1Label` pairs (and rows 2/3).
+Choose them through **Experience options → Choose channel rows** with Bingie Companion installed.
+The picker uses the PVR directory paths returned by Kodi; it never guesses group IDs from labels.
+Cancelling the picker leaves all rows unchanged. `KM_PVRShowRecent` optionally adds Recently Watched
+for unrestricted custom-row profiles. The standard PVR rows remain the default for ordinary installs.
+
+`KM_FamilyMode` is an explicit per-profile choice. It hides stock all-channel, recording and history
+rows regardless of companion availability, displaying only the chosen group paths. Missing rows stay
+empty. Provider season filtering also requires enabled Kodi Manager; without it the family provider
+route is absent instead of falling back to an unfiltered route. Family mode is a presentation filter,
+`KM_FamilyGuideAllowed` separately permits guide shortcuts only when the owner has restricted the PVR client itself; it defaults off. Family mode is not an authentication boundary; use Kodi profile locks and backend access controls as appropriate.
+
+Older custom installs must prepare these explicit settings before upgrading from 2.0.2.15 or earlier.
+Keep the old skin/settings backups. The private reference installation has a separate stopped-Kodi,
+additive settings migration; its names, group paths and user settings are not shipped in this skin.
+The new keys are ignored by older skin versions, preserving rollback behavior.
+
+## Voice and reusable companions
+
+[Bingie Companion](https://github.com/glasgowm148/bingie-companion) installs separately. Existing
+`script.kodi.live.tv` keeps navigation precedence. Enable `KM_EnableVoiceSearch` under Search only
+after installing/configuring the companion and its Android voice app. The on-screen button is visible
+only on Android with the enabled Kodi companion; its Up/Down navigation connects to the typed keyboard.
+It is disabled during playback. **Set up voice search** explains the requirements and can open the
+Android app's private configuration screen. `ShowVoiceSearchHint` remains a separate opt-in for owners
+who configured their remote's physical mic button.
+
+The Android app handles listening, partial recognition, errors and microphone permission; recognized
+text goes through Kodi Manager 0.7.42+'s authenticated local voice API into the existing search.
+The on-screen action never takes the system assistant role. The remote mic requires a separate owner
+choice. Audio may be sent to the Android speech provider; no local-only recognition claim is made.
+
+For a provider-neutral Continue Watching widget, configure sources in the companion's current-profile
+settings and use `plugin://script.bingie.companion/?mode=continue`. There are no default providers or
+cross-profile fallback sources. See the companion README for setup and validation limits.
+
 
 BBC items also require the helper's `browse-bbc-show` and `mark-bbc-watched` actions. Their experience buttons are disabled if the helper is absent. This skin does not copy cloud history or authorize an account.
 

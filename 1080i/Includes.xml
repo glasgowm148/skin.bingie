@@ -58,6 +58,8 @@
     <include file="script-skinshortcuts-includes.xml"/>
     <include file="IncludesDebugInfo.xml" condition="Skin.HasSetting(DebugGrid) | Skin.HasSetting(DebugInfo)" />
 
+    <include file="IncludesExperience.xml" />
+
     <!-- Constants -->
     <constant name="bingie_no_circular_posx">131</constant>
     <constant name="search_widget_height">420</constant>

@@ -5,7 +5,7 @@
     <menucontrol>9000</menucontrol>
     <onunload>ClearProperty(pvrGuideOnFullscreenVideo,Home)</onunload>
     <controls>
-        <include condition="Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)">Experience_PVR_Guide</include>
-        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)]">Stock_PVR_Guide</include>
+        <include condition="Skin.HasSetting(KM_EnableLiveTV) + $EXP[KM_HasNavigation]">Experience_PVR_Guide</include>
+        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + $EXP[KM_HasNavigation]]">Stock_PVR_Guide</include>
     </controls>
 </window>

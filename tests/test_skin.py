@@ -21,7 +21,12 @@ def pvr_hub_paths(root, livetv, addon, kids):
     """Widget paths the PVR hub include tree resolves to for one profile/setting combination."""
     atoms = {'Skin.HasSetting(KM_EnableLiveTV)': livetv,
              'System.HasAddon(script.kodi.live.tv)': addon,
-             'String.IsEqual(System.ProfileName,Kids)': kids}
+             'Skin.HasSetting(KM_FamilyMode)': kids,
+             'Skin.HasSetting(KM_CustomPVRRows)': livetv,
+             'Skin.HasSetting(KM_PVRShowRecent)': True,
+             'Skin.HasSetting(KM_FamilyGuideAllowed)': False,
+             '$EXP[KM_HasNavigation]': addon,
+             **{'String.IsEmpty(Skin.String(KM_PVRRow%dPath))' % i: False for i in range(1,4)}}
     includes = {n.get('name'): n for n in root.findall('include') if n.get('name')}
 
     def holds(condition):
@@ -47,7 +52,11 @@ def pvr_hub_paths(root, livetv, addon, kids):
                 paths += walk(includes[child.text.strip()])
         return paths
 
-    return walk(includes['bingie_items_pvr'])
+    paths = walk(includes['bingie_items_pvr'])
+    for index in range(1, 4):
+        paths = [p.replace('$INFO[Skin.String(KM_PVRRow%dPath)]' % index,
+                           'pvr://channels/tv/Example%d@7/' % index) for p in paths]
+    return paths
 
 
 class SkinTests(unittest.TestCase):
@@ -68,7 +77,7 @@ class SkinTests(unittest.TestCase):
     def test_guide_defaults_to_stock_without_helper(self):
         nodes = ET.parse(ROOT / '1080i/MyPVRGuide.xml').findall('controls/include')
         self.assertEqual(len(nodes), 2)
-        self.assertIn('System.HasAddon(script.kodi.live.tv)', nodes[0].get('condition'))
+        self.assertIn('$EXP[KM_HasNavigation]', nodes[0].get('condition'))
         self.assertEqual(nodes[1].get('condition'), '![' + nodes[0].get('condition') + ']')
         self.assertEqual(nodes[1].text, 'Stock_PVR_Guide')
 
@@ -86,7 +95,7 @@ class SkinTests(unittest.TestCase):
         root = ET.parse(ROOT / '1080i/Custom_1171_ExperienceSettings.xml').getroot()
         for control in root.iter('control'):
             action = control.findtext('onclick', '')
-            if action.startswith('Skin.ToggleSetting(KM_'):
+            if any(action == 'Skin.ToggleSetting(%s)' % key for key in ('KM_EnableProviderActions', 'KM_EnableLiveTV', 'KM_EnableDirectSwitch')):
                 setting = action[len('Skin.ToggleSetting('):-1]
                 self.assertIn('Skin.HasSetting(' + setting + ') | ', control.findtext('enable'))
 
@@ -216,7 +225,7 @@ class SkinTests(unittest.TestCase):
         root = ET.parse(ROOT / '1080i/IncludesHomeWidgets.xml').getroot()
         wrapper = next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr')
         branches = wrapper.findall('include')
-        self.assertIn('Skin.HasSetting(KM_EnableLiveTV)', branches[0].get('condition'))
+        self.assertIn('Skin.HasSetting(KM_CustomPVRRows)', branches[0].get('condition'))
         self.assertEqual(branches[0].text, 'bingie_items_pvr_Experience')
         stock = ET.tostring(next(n for n in root.findall('include') if n.get('name') == 'bingie_items_pvr_Stock')).decode()
         self.assertNotIn('System.ProfileName', stock)
@@ -226,7 +235,7 @@ class SkinTests(unittest.TestCase):
             for addon in (True, False):
                 adult = pvr_hub_paths(root, livetv, addon, kids=False)
                 self.assertTrue(adult)
-                if not (livetv and addon):
+                if not livetv:
                     self.assertIn('pvr://channels/tv/*', adult)
 
     def test_kids_pvr_hub_never_lists_all_channels(self):
@@ -362,6 +371,42 @@ class SkinTests(unittest.TestCase):
         for path in sorted((ROOT / '1080i').glob('*.xml')):
             if path.name != 'IncludesSkinSettings.xml':
                 self.assertNotIn('Skin.SetBool(ShowVoiceSearchHint', path.read_text(encoding='utf-8'), path.name)
+
+    def test_voice_button_is_optional_reachable_and_preserves_typed_search(self):
+        root = ET.parse(ROOT / '1080i/Custom_1109_BingieSearch.xml').getroot()
+        button = next(n for n in root.iter('control') if n.get('id') == '1009')
+        self.assertIn('$EXP[KM_VoiceAvailable]', button.findtext('visible'))
+        self.assertEqual(button.findtext('enable'), '!Player.HasMedia')
+        self.assertEqual(button.findtext('onclick'), 'RunScript(script.bingie.companion,voice)')
+        self.assertEqual(button.findtext('ondown'), '101')
+        self.assertTrue(any(n.text == 'SetFocus(1009)' for n in root.iter('onup')))
+        self.assertFalse(any('CustomSearchTerm' in (n.text or '') for n in button.iter('onclick')))
+        expressions = ET.parse(ROOT / '1080i/IncludesExperience.xml').getroot()
+        condition = next(n.text for n in expressions.findall('expression') if n.get('name') == 'KM_VoiceAvailable')
+        self.assertEqual(top_level_and_terms(condition), ['System.Platform.Android',
+                         'Skin.HasSetting(KM_EnableVoiceSearch)',
+                         'System.AddonIsEnabled(script.bingie.companion)'])
+
+    def test_existing_navigation_coordinator_keeps_precedence(self):
+        root = ET.parse(ROOT / '1080i/IncludesExperience.xml').getroot()
+        navigation = next(n for n in root.findall('variable') if n.get('name') == 'KM_NavigationAddon')
+        self.assertEqual([n.text for n in navigation.findall('value')],
+                         ['script.kodi.live.tv', 'script.bingie.companion'])
+
+    def test_family_navigation_requires_manager_and_has_no_unfiltered_provider_fallback(self):
+        root = ET.parse(ROOT / '1080i/View_525_Bingie_Episodes.xml').getroot()
+        values = next(n for n in root.findall('variable') if n.get('name') == 'View525SeasonsContent').findall('value')
+        family = next(n for n in values if 'mode=family' in (n.text or ''))
+        self.assertIn('System.AddonIsEnabled(service.kodi.addonadmin)', family.get('condition'))
+        self.assertIn('Skin.HasSetting(KM_FamilyMode)', family.get('condition'))
+        direct = next(n for n in values if (n.text or '').startswith('plugin://plugin.video.pov/'))
+        self.assertIn('!Skin.HasSetting(KM_FamilyMode)', direct.get('condition'))
+
+    def test_community_skin_has_no_implicit_household_profile_or_group_names(self):
+        for name in ('IncludesHomeWidgets.xml', 'View_525_Bingie_Episodes.xml'):
+            text = (ROOT / '1080i' / name).read_text()
+            for term in ('System.ProfileName,Kids', 'Little Ones', 'Cartoons@', 'Sky Sports', 'TNT Sports'):
+                self.assertNotIn(term, text, name)
 
     def test_kodi_manager_search_history_is_optional(self):
         # Every use of Kodi Manager's plugin sits behind SearchHistoryEnabled (installed, enabled

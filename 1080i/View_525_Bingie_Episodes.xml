@@ -3,8 +3,8 @@
 <includes>
     <!-- seasons content for view525 -->
     <variable name="View525SeasonsContent">
-        <value condition="Container(525).Content(episodes) + !String.IsEmpty(Container(525).ListItem.Property(km_tmdb_id)) + String.IsEqual(System.ProfileName,Kids)">plugin://service.kodi.addonadmin/?mode=family&amp;source=plugin%3A%2F%2Fplugin.video.pov%2F%3Fmode%3Dbuild_season_list%26tmdb_id%3D$INFO[Container(525).ListItem.Property(km_tmdb_id)]&amp;max_rating=12A&amp;family_only=false</value>
-        <value condition="Container(525).Content(episodes) + !String.IsEmpty(Container(525).ListItem.Property(km_tmdb_id))">plugin://plugin.video.pov/?mode=build_season_list&amp;tmdb_id=$INFO[Container(525).ListItem.Property(km_tmdb_id)]</value>
+        <value condition="Container(525).Content(episodes) + !String.IsEmpty(Container(525).ListItem.Property(km_tmdb_id)) + Skin.HasSetting(KM_FamilyMode) + System.AddonIsEnabled(service.kodi.addonadmin)">plugin://service.kodi.addonadmin/?mode=family&amp;source=plugin%3A%2F%2Fplugin.video.pov%2F%3Fmode%3Dbuild_season_list%26tmdb_id%3D$INFO[Container(525).ListItem.Property(km_tmdb_id)]&amp;max_rating=12A&amp;family_only=false</value>
+        <value condition="Container(525).Content(episodes) + !String.IsEmpty(Container(525).ListItem.Property(km_tmdb_id)) + !Skin.HasSetting(KM_FamilyMode)">plugin://plugin.video.pov/?mode=build_season_list&amp;tmdb_id=$INFO[Container(525).ListItem.Property(km_tmdb_id)]</value>
         <value condition="[String.IsEqual(ListItem.DBType,episode) | Container.Content(episodes)] + !String.IsEmpty(ListItem.DBID) + !String.IsEmpty(Window(Home).Property(ListItem.TVShowID))">$INFO[Window(Home).Property(ListItem.TVShowID),videodb://tvshows/titles/,/]</value>
         <value/>
     </variable>

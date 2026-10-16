@@ -8,6 +8,7 @@
     <onunload condition="!String.IsEmpty(Window(Home).Property(BaseWindow)) + String.IsEmpty(Window(Home).Property(ListItem.TVShowID)) + !Player.HasVideo">AlarmClock(loadinfo,Action(Info),00:00,silent)</onunload>
     <onunload condition="!ControlGroup(77777).HasFocus()">SetFocus(101)</onunload>
     <onunload>ClearProperty(KeepSuggestions)</onunload>
+    <onload condition="$EXP[KM_VoiceAvailable]">RunScript(script.bingie.companion,voice-status)</onload>
     <backgroundcolor>$VAR[BingiePanelColor]</backgroundcolor>
     <include>CustomBingieWinProps</include>
     <onload condition="String.IsEmpty(Skin.String(CustomSearchTerm))">SetProperty(CustomSearch,1,home)</onload>
@@ -35,8 +36,22 @@
                 <width>auto</width>
                 <font>Reg32</font>
                 <label>$LOCALIZE[31230]</label>
-                <visible>Skin.HasSetting(EnableBingieSearchFullKeyboard) + !$EXP[IsActualKeyboardActive]</visible>
+                <visible>Skin.HasSetting(EnableBingieSearchFullKeyboard) + !$EXP[IsActualKeyboardActive] + !$EXP[KM_VoiceAvailable]</visible>
             </control>
+        </control>
+        <control type="button" id="1009">
+            <left>65</left><top>0</top><width>460</width><height>64</height><font>Reg32</font>
+            <label>$LOCALIZE[31584]</label><textoffsetx>80</textoffsetx>
+            <texturefocus colordiffuse="FF0066FF">colors/color_white.png</texturefocus>
+            <texturenofocus colordiffuse="FF20232B">colors/color_white.png</texturenofocus>
+            <visible>$EXP[KM_VoiceAvailable] + !$EXP[IsActualKeyboardActive]</visible>
+            <enable>!Player.HasMedia</enable><onclick>RunScript(script.bingie.companion,voice)</onclick>
+            <onup>900</onup><onleft>900</onleft><ondown>101</ondown><onright>77777</onright>
+        </control>
+        <control type="image">
+            <left>85</left><top>10</top><width>44</width><height>44</height>
+            <aspectratio>keep</aspectratio><texture>special://skin/extras/media/voice_mic.png</texture>
+            <visible>$EXP[KM_VoiceAvailable] + !$EXP[IsActualKeyboardActive]</visible>
         </control>
         <!-- Pseudo-Keyboard Layout -->
         <control type="grouplist" id="9000">
@@ -49,8 +64,9 @@
             <orientation>vertical</orientation>
             <itemgap>-10</itemgap>
             <defaultcontrol>101</defaultcontrol>
-            <onup condition="Skin.HasSetting(EnableBingieSearchFullKeyboard)">Skin.SetString(CustomSearchTerm)</onup>
-            <onup condition="Skin.HasSetting(EnableBingieSearchFullKeyboard)">SetProperty(CustomSearch,1,home)</onup>
+            <onup condition="Skin.HasSetting(EnableBingieSearchFullKeyboard) + !$EXP[KM_VoiceAvailable]">Skin.SetString(CustomSearchTerm)</onup>
+            <onup condition="Skin.HasSetting(EnableBingieSearchFullKeyboard) + !$EXP[KM_VoiceAvailable]">SetProperty(CustomSearch,1,home)</onup>
+            <onup condition="$EXP[KM_VoiceAvailable]">SetFocus(1009)</onup>
             <ondown>1007</ondown>
             <onright condition="!Integer.IsGreater(Container(77777).NumItems,0)">9900</onright>
             <onback>900</onback>

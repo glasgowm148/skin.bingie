@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<includes>
+    <!-- Existing installations retain their coordinator; the public companion supplies new installs. -->
+    <variable name="KM_NavigationAddon">
+        <value condition="System.AddonIsEnabled(script.kodi.live.tv)">script.kodi.live.tv</value>
+        <value condition="System.AddonIsEnabled(script.bingie.companion)">script.bingie.companion</value>
+    </variable>
+    <expression name="KM_HasNavigation">System.AddonIsEnabled(script.kodi.live.tv) | System.AddonIsEnabled(script.bingie.companion)</expression>
+    <expression name="KM_VoiceAvailable">System.Platform.Android + Skin.HasSetting(KM_EnableVoiceSearch) + System.AddonIsEnabled(script.bingie.companion)</expression>
+</includes>

@@ -1,5 +1,13 @@
 # Changes
 
+## 2.0.2.16 beta — 2026-10-16
+
+- Add an optional, remote-reachable Search by voice action and private helper setup integration. Typed search remains available.
+- Support the separately released Bingie Companion for guide/day navigation; retain existing navigation-helper precedence.
+- Replace implicit household profile/group names with explicit per-profile family mode and up to three chosen channel rows. Family mode never falls back to unrestricted channel/history rows.
+- Guard the family season route on enabled Kodi Manager; do not fall back to an unfiltered provider route in family mode.
+- Document reusable voice/navigation/Continue Watching companions, setup, privacy and runtime-validation limits. No household settings, provider defaults or credentials are packaged.
+
 ## 2.0.2.15 — 2026-10-16
 
 - Voice search hint: more space between the opening message and the hint (they touched).

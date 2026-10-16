@@ -2393,3 +2393,15 @@ msgstr ""
 msgctxt "#31583"
 msgid "Show the voice search hint (remote mic button)"
 msgstr ""
+
+msgctxt "#31584"
+msgid "Search by voice"
+msgstr ""
+
+msgctxt "#31585"
+msgid "Show voice search button (Bingie Companion)"
+msgstr ""
+
+msgctxt "#31586"
+msgid "Set up voice search"
+msgstr ""

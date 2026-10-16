@@ -3,7 +3,7 @@
 <includes>
     <variable name="SwitchAccountLabel">
         <value condition="!String.IsEmpty(Window(Home).Property(KodiNavigation.SwitchTarget))">Switching to $INFO[Window(Home).Property(KodiNavigation.SwitchTarget)]…</value>
-        <value condition="![Skin.HasSetting(KM_EnableDirectSwitch) + System.HasAddon(script.kodi.live.tv)]">$LOCALIZE[31076]</value>
+        <value condition="![Skin.HasSetting(KM_EnableDirectSwitch) + $EXP[KM_HasNavigation]]">$LOCALIZE[31076]</value>
         <value>Switch Account</value>
     </variable>
     <!-- includes -->
@@ -1671,8 +1671,8 @@
                         <onback>77777</onback>
                         <onright>ClearProperty(ShowViewSubMenu,Home)</onright>
                         <onright>77777</onright>
-                        <onclick condition="Skin.HasSetting(KM_EnableDirectSwitch) + System.HasAddon(script.kodi.live.tv)">RunScript(script.kodi.live.tv,switch-account)</onclick>
-<onclick condition="![Skin.HasSetting(KM_EnableDirectSwitch) + System.HasAddon(script.kodi.live.tv)]">System.LogOff</onclick>
+                        <onclick condition="Skin.HasSetting(KM_EnableDirectSwitch) + $EXP[KM_HasNavigation]">RunScript($VAR[KM_NavigationAddon],switch-account)</onclick>
+<onclick condition="![Skin.HasSetting(KM_EnableDirectSwitch) + $EXP[KM_HasNavigation]]">System.LogOff</onclick>
                     </control>
                     <!-- Profile Name -->
                     <control type="label">

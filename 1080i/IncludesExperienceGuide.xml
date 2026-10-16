@@ -48,7 +48,7 @@
             <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
             <textoffsetx>22</textoffsetx>
             <align>left</align>
-            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <onback>RunScript($VAR[KM_NavigationAddon],home)</onback>
             <ondown>10</ondown>
             <onleft>35</onleft>
             <onright>33</onright>
@@ -66,7 +66,7 @@
             <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
             <textoffsetx>22</textoffsetx>
             <align>left</align>
-            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <onback>RunScript($VAR[KM_NavigationAddon],home)</onback>
             <ondown>10</ondown>
             <onclick>ActivateWindow(tvsearch)</onclick>
             <onleft>28</onleft>
@@ -87,7 +87,7 @@
                 <ondown>10</ondown>
                 <onleft>28</onleft>
                 <onright>10</onright>
-                <onback>RunScript(script.kodi.live.tv,home)</onback>
+                <onback>RunScript($VAR[KM_NavigationAddon],home)</onback>
                 <include>EpgProgressIndicatorNormal</include>
                 <rulerlayout height="35" width="60">
                     <control type="label" id="2">
@@ -133,9 +133,9 @@
             <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
             <textoffsetx>22</textoffsetx>
             <align>left</align>
-            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <onback>RunScript($VAR[KM_NavigationAddon],home)</onback>
             <ondown>10</ondown>
-            <onclick>RunScript(script.kodi.live.tv,day)</onclick>
+            <onclick>RunScript($VAR[KM_NavigationAddon],day)</onclick>
             <onclick>SetFocus(10)</onclick>
             <onleft>34</onleft>
             <onright>28</onright>
@@ -153,7 +153,7 @@
             <texturenofocus colordiffuse="FF20232B" border="10">diffuse/panel.png</texturenofocus>
             <textoffsetx>22</textoffsetx>
             <align>left</align>
-            <onback>RunScript(script.kodi.live.tv,home)</onback>
+            <onback>RunScript($VAR[KM_NavigationAddon],home)</onback>
             <ondown>10</ondown>
             <onclick>PVR.EpgGridControl(currentprogramme)</onclick>
             <onclick>SetFocus(10)</onclick>

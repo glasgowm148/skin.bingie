@@ -770,70 +770,28 @@
 
     <!-- Bingie Items PVR Hub -->
     <include name="bingie_items_pvr">
-        <!-- Household channel-group rows are opt-in; stock Bingie rows remain the default. -->
-        <include condition="Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)">bingie_items_pvr_Experience</include>
-        <!-- The Kids profile never falls back to all-channel or unfiltered recently watched rows. -->
-        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)] + String.IsEqual(System.ProfileName,Kids)">bingie_items_pvr_Kids</include>
-        <include condition="![Skin.HasSetting(KM_EnableLiveTV) + System.HasAddon(script.kodi.live.tv)] + !String.IsEqual(System.ProfileName,Kids)">bingie_items_pvr_Stock</include>
+        <include condition="Skin.HasSetting(KM_CustomPVRRows) | Skin.HasSetting(KM_FamilyMode)">bingie_items_pvr_Experience</include>
+        <include condition="!Skin.HasSetting(KM_CustomPVRRows) + !Skin.HasSetting(KM_FamilyMode)">bingie_items_pvr_Stock</include>
     </include>
 
-    <!-- Curated channel groups only; a row stays hidden when its group does not exist. -->
-    <include name="bingie_items_pvr_Kids">
-        <include content="widget_header_multi">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
-        </include>
-        <include content="widget_base_normal">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
-            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
-            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
-            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Little%20Ones@1/"/>
-            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
-            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
-        </include>
-        <include content="widget_header_multi">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
-        </include>
-        <include content="widget_base_normal">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
-            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
-            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
-            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Cartoons@1/"/>
-            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
-            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
-        </include>
-    </include>
-
+    <!-- Per-profile rows. Family mode never falls back to unrestricted channels/history. -->
     <include name="bingie_items_pvr_Experience">
-        <include content="widget_header_multi" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="UK Channels"/>
+        <include content="widget_header_multi" condition="!String.IsEmpty(Skin.String(KM_PVRRow1Path))">
+            <param name="widgetid" value="1510"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow1Label)]"/>
         </include>
-        <include content="widget_base_normal" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="UK Channels"/>
+        <include content="widget_base_normal" condition="!String.IsEmpty(Skin.String(KM_PVRRow1Path))">
+            <param name="widgetid" value="1510"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow1Label)]"/>
             <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
             <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/TV%20Guide@1/"/>
+            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="$INFO[Skin.String(KM_PVRRow1Path)]"/>
             <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
         </include>
-        <include content="widget_header_multi" condition="String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
-        </include>
-        <include content="widget_base_normal" condition="String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1510"/><param name="widgetName" value="Little Ones"/>
-            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
-            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
-            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Little%20Ones@1/"/>
-            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
-            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
-        </include>
-        <include content="widget_header_multi">
+        <include content="widget_header_multi" condition="[!Skin.HasSetting(KM_FamilyMode) | Skin.HasSetting(KM_FamilyGuideAllowed)] + Skin.HasSetting(KM_EnableLiveTV) + $EXP[KM_HasNavigation]">
             <param name="widgetid" value="1540"/><param name="widgetName" value="TV Guide &amp; Channels"/>
         </include>
-        <include content="widget_base_normal">
+        <include content="widget_base_normal" condition="[!Skin.HasSetting(KM_FamilyMode) | Skin.HasSetting(KM_FamilyGuideAllowed)] + Skin.HasSetting(KM_EnableLiveTV) + $EXP[KM_HasNavigation]">
             <param name="widgetid" value="1540"/><param name="widgetName" value="TV Guide &amp; Channels"/>
             <param name="contentStyle" value="pvr"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
@@ -842,46 +800,34 @@
             <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
         </include>
-        <include content="widget_header_multi" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Sky Sports"/>
+        <include content="widget_header_multi" condition="!String.IsEmpty(Skin.String(KM_PVRRow2Path))">
+            <param name="widgetid" value="1520"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow2Label)]"/>
         </include>
-        <include content="widget_base_normal" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Sky Sports"/>
+        <include content="widget_base_normal" condition="!String.IsEmpty(Skin.String(KM_PVRRow2Path))">
+            <param name="widgetid" value="1520"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow2Label)]"/>
             <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
             <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Sky%20Sports@1/"/>
+            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="$INFO[Skin.String(KM_PVRRow2Path)]"/>
             <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
         </include>
-        <include content="widget_header_multi" condition="String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
+        <include content="widget_header_multi" condition="!String.IsEmpty(Skin.String(KM_PVRRow3Path))">
+            <param name="widgetid" value="1530"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow3Label)]"/>
         </include>
-        <include content="widget_base_normal" condition="String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1520"/><param name="widgetName" value="Cartoons"/>
+        <include content="widget_base_normal" condition="!String.IsEmpty(Skin.String(KM_PVRRow3Path))">
+            <param name="widgetid" value="1530"/><param name="widgetName" value="$INFO[Skin.String(KM_PVRRow3Label)]"/>
             <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
             <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/Cartoons@1/"/>
+            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="$INFO[Skin.String(KM_PVRRow3Path)]"/>
             <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
         </include>
-        <include content="widget_header_multi" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1530"/><param name="widgetName" value="TNT Sports"/>
-        </include>
-        <include content="widget_base_normal" condition="!String.IsEqual(System.ProfileName,Kids)">
-            <param name="widgetid" value="1530"/><param name="widgetName" value="TNT Sports"/>
-            <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
-            <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
-            <param name="widgetStyle" value="widget_layout_square"/><param name="visibility" value="true"/>
-            <param name="widgetTarget" value="tvchannels"/><param name="widgetPath" value="pvr://channels/tv/TNT%20Sports@1/"/>
-            <param name="widgetSortBy" value=""/><param name="widgetSortOrder" value=""/>
-            <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]"/>
-        </include>
-        <include content="widget_header_multi" condition="!String.IsEqual(System.ProfileName,Kids)">
+        <include content="widget_header_multi" condition="!Skin.HasSetting(KM_FamilyMode) + Skin.HasSetting(KM_PVRShowRecent)">
             <param name="widgetid" value="1550"/><param name="widgetName" value="Recently Watched"/>
         </include>
-        <include content="widget_base_normal" condition="!String.IsEqual(System.ProfileName,Kids)">
+        <include content="widget_base_normal" condition="!Skin.HasSetting(KM_FamilyMode) + Skin.HasSetting(KM_PVRShowRecent)">
             <param name="widgetid" value="1550"/><param name="widgetName" value="Recently Watched"/>
             <param name="contentStyle" value="normal"/><param name="container">fixedlist</param>
             <param name="position">horizontal</param><param name="width">100%</param><param name="height">341</param>
