@@ -60,6 +60,13 @@ def pvr_hub_paths(root, livetv, addon, kids):
 
 
 class SkinTests(unittest.TestCase):
+    def test_release_documentation_matches_the_packaged_version(self):
+        version = ET.parse(ROOT / 'addon.xml').getroot().get('version')
+        readme = (ROOT / 'README.md').read_text()
+        self.assertIn('**Version %s beta**' % version, readme)
+        self.assertIn('`skin.bingie-%s.zip`' % version, readme)
+        self.assertIn('/releases/tag/v' + version, readme)
+
     def test_complete_xml_and_include_tree(self):
         check()
 

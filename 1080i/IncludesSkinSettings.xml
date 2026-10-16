@@ -667,6 +667,7 @@
         </control>
         <control type="radiobutton" id="31585">
             <include>SkinSettings_Button</include><label>$LOCALIZE[31585]</label>
+            <onfocus condition="System.Platform.Android + System.AddonIsEnabled(script.bingie.companion)">RunScript(script.bingie.companion,voice-status)</onfocus>
             <onclick>Skin.ToggleSetting(KM_EnableVoiceSearch)</onclick>
             <selected>Skin.HasSetting(KM_EnableVoiceSearch)</selected>
             <enable>Skin.HasSetting(KM_EnableVoiceSearch) | System.AddonIsEnabled(script.bingie.companion)</enable>
@@ -677,6 +678,11 @@
             <param name="action" value="RunScript(script.bingie.companion,voice-setup)"/>
             <param name="visible" value="System.Platform.Android + System.AddonIsEnabled(script.bingie.companion)"/>
         </include>
+        <control type="label">
+            <left>80</left><width>1500</width><height>48</height><font>Reg26</font>
+            <label>$INFO[Window(Home).Property(Bingie.VoiceStatus)]</label>
+            <visible>System.Platform.Android + System.AddonIsEnabled(script.bingie.companion)</visible>
+        </control>
         <control type="radiobutton" id="31550">
             <description>enable keyboard option</description>
             <include>SkinSettings_Button</include>

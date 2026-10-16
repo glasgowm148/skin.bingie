@@ -62,6 +62,7 @@ To roll back, switch to Estuary, reinstall the previous Bingie ZIP and restore b
 - Earlier testing of 2.0.2.5 on that Shield confirmed the search behavior: The native search screen displayed South Park first for `sout`; a read-only query through the installed helper also returned it first for `south`. Empty input showed the search categories without opening an input dialog.
 - GitHub CI checks XML, includes, textures, stock fallbacks and playback guards on Python 3.9, 3.10 and 3.12, plus reproducible ZIP builds.
 - Headless Kodi 21 rendering has passed. Stubbed Bingie helpers leave widgets empty; this checks skin loading and screens rather than provider/account behavior. Other devices and companion combinations need runtime testing.
+- [Beta acceptance checks](docs/beta-acceptance.md) cover the remaining on-TV voice, integration and rollback scenarios.
 - Family mode is explicitly enabled per profile. Choose suitable PVR groups before using that profile; missing groups/configuration remain empty. This UI filter does not replace Kodi profile locks or backend access controls. Existing custom installations must migrate their explicit settings before upgrading; see [integration details](docs/integrations.md).
 
 Both tracked upstream `omega` branches were fully merged on 2026-10-12: Matke `9f1c6eb` and BigMoco `c960cbb`. [UPSTREAM_BASE](UPSTREAM_BASE) records revisions; [upstream maintenance](docs/upstream.md) describes future reviews.
