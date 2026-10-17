@@ -1,5 +1,10 @@
 # Changes
 
+## 2.0.2.17 beta — 2026-10-17
+
+- Search: with the voice button shown, the full keyboard is still reachable (Up from the voice button opens it when "full keyboard" is on), and during playback, when the voice button is disabled, Up from the keyboard opens the full keyboard again instead of doing nothing.
+- Search no longer starts a Python interpreter every time it opens to refresh the voice status; Skin settings refreshes it when that label is focused.
+
 ## 2.0.2.16 beta — 2026-10-16
 
 - Add an optional, remote-reachable Search by voice action and private helper setup integration. Typed search remains available.

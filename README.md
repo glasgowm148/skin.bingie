@@ -4,7 +4,7 @@ An independently maintained fork of the Netflix-style **Bingie** skin for Kodi, 
 
 Built on [Matke's Bingie](https://github.com/matke-84/skin.bingie) and [BigMoco's fork](https://github.com/Bigmoco/skin.bingie). Their history, attribution and GPL v2 license are preserved.
 
-**Version 2.0.2.16 beta** · [Download beta](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.16) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+**Version 2.0.2.17 beta** · [Download beta](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.17) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
 
 ## What we've added
 
@@ -28,7 +28,7 @@ Optional Experience controls support compatible companion add-ons:
 | --- | --- |
 | Add/Remove Watchlist controls, `+` indicator, Browse Show and rating actions | POV with the companion `manager_*` routes; ordinary POV does not provide them |
 | Integrated Live TV guide and day navigation | [Bingie Companion](https://github.com/glasgowm148/bingie-companion) or an existing compatible navigation helper; configured PVR |
-| Voice search button | Bingie Companion, its separate Android voice app, and Kodi Manager 0.7.42+ |
+| Voice search button | Bingie Companion, its separate Android voice app, and Kodi Manager 0.7.43+ with **Enable writes** on |
 | Combined Continue Watching widget | Bingie Companion, with video-folder sources explicitly configured per profile |
 | Profile controls and existing switch-progress overlay | Compatible navigation helper; unsupported Kodi 22 direct switches are refused |
 | Keep waiting / Try another stream prompt | Playback-recovery add-on supplying the documented window properties |
@@ -45,7 +45,7 @@ This fork uses the existing **`skin.bingie`** ID and replaces another Bingie ver
 
 1. Back up your current skin, skin settings and Skin Shortcuts data; keep the previous skin ZIP for rollback.
 2. Configure the repositories supplying Bingie's dependencies. [Matke's Bingie repository](https://github.com/matke-84/repository.bingie) is the upstream starting point. [addon.xml](addon.xml) lists required versions of Bingie Helper, Toolbox, Widgets, TMDb Bingie Helper, Skin Shortcuts, studio artwork and Autocompletion.
-3. Download **`skin.bingie-2.0.2.16.zip`** from [the beta release](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.16). GitHub's automatic **Source code** archives are not the installable package.
+3. Download **`skin.bingie-2.0.2.17.zip`** from [the beta release](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.17). GitHub's automatic **Source code** archives are not the installable package.
 4. In Kodi, allow installation from unknown sources if prompted, then use **Settings → Add-ons → Install from zip file**. Select Bingie Experience under **Settings → Interface → Skin**.
 5. Check Home, Movies, Shows, episode/season views, the guide and playback. Enable supported integrations under **Configure Skin → Experience options**. Settings are per profile; use Apply while playback is idle to reload the skin.
 
