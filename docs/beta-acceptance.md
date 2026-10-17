@@ -30,3 +30,8 @@ Keep existing companion/voice app versions. Test only when the TV is idle and av
 For the reference installation, the stopped-Kodi settings migration remains private. It adds explicit
 family/channel choices without overwriting existing settings and keeps backups before either profile
 is written. Do not copy that installation's settings into a community release.
+
+The 2026-10-17 reference Shield beta observations are recorded in
+[Bingie Companion's runtime validation](https://github.com/glasgowm148/bingie-companion/blob/main/docs/runtime-validation.md).
+Those observations distinguish native UI/API checks from spoken-recognition acceptance and retain
+all device-specific evidence privately.
