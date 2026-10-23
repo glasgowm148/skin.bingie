@@ -1112,7 +1112,7 @@
 			<animation effect="fade" time="350">WindowClose</animation>
 			<animation effect="fade" time="350" delay="300">Visible</animation>
 			<animation effect="fade" time="350">Hidden</animation>
-			<visible>Skin.HasSetting(EnableOSDInfo) + !VideoPlayer.Content(livetv)</visible>			
+			<visible>[Skin.HasSetting(EnableOSDInfo) | [Skin.HasSetting(KM_EnableProviderActions) + Player.HasVideo + Player.Paused + !String.IsEmpty(Window(Home).Property(pov_source_session))]] + !VideoPlayer.Content(livetv)</visible>
 			<align>center</align>
 			<bottom>326</bottom>
 			<width>100%</width>
@@ -1120,10 +1120,12 @@
 			<itemgap>15</itemgap>
 			<onup condition="Skin.HasSetting(EnableOSDInfo) + !Skin.HasSetting(EnableOSDCrewInfo)">50</onup>
 			<onup condition="Skin.HasSetting(EnableOSDCrewInfo)">51</onup>
+			<onup condition="!Skin.HasSetting(EnableOSDInfo)">200</onup>
 			<ondown>87</ondown>
 			<orientation>horizontal</orientation>			
 			
 			<control type="togglebutton" id="3001">
+              <visible>Skin.HasSetting(EnableOSDInfo)</visible>
 			  <width>224</width>
 			  <height>50</height>
 			  <label>$LOCALIZE[31089]</label>
@@ -1138,6 +1140,19 @@
 			  <onclick>Skin.ToggleSetting(EnableOSDCrewInfo)</onclick>
 			  <onclick>Skin.Reset(EnableOSDCastInfo)</onclick>
 			</control>
+            <control type="button" id="219">
+                <description>Switch stream</description>
+                <width>280</width><height>50</height>
+                <font>Reg26</font><label>[B]Switch stream[/B]</label>
+                <textwidth>260</textwidth><align>center</align><aligny>center</aligny>
+                <textoffsetx>0</textoffsetx><textcolor>FF071A1C</textcolor>
+                <focusedcolor>FF071A1C</focusedcolor>
+                <texturefocus colordiffuse="FFFFFFFF">colors/color_white.png</texturefocus>
+                <texturenofocus colordiffuse="FF39D9CF">colors/color_white.png</texturenofocus>
+                <visible>Skin.HasSetting(KM_EnableProviderActions) + Player.HasVideo + Player.Paused + !String.IsEmpty(Window(Home).Property(pov_source_session))</visible>
+                <onclick>SetProperty(pov_source_request,$INFO[Window(Home).Property(pov_source_session)],home)</onclick>
+            </control>
+
 		</control>
 		
 		<include content="OSDInfoWidget">
@@ -1729,6 +1744,7 @@
 				<ondown condition="![Skin.HasSetting(EnableOSDCastInfo) | Skin.HasSetting(EnableOSDCrewInfo)]">200</ondown>
                 <orientation>horizontal</orientation>
 
+
 				<control type="button" id="204">
 					<description>Exit</description>
 					<width>$PARAM[topsize]</width>
@@ -1991,7 +2007,7 @@
 			<onup condition="Skin.HasSetting(EnableOSDCrewInfo)">51</onup>
 			<onup condition="![Skin.HasSetting(EnableOSDCastInfo) | Skin.HasSetting(EnableOSDCrewInfo)]">300</onup>
 			<ondown condition="Player.HasAudio">2000</ondown>
-			<ondown condition="Skin.HasSetting(EnableOSDInfo)">3000</ondown>
+			<ondown condition="Skin.HasSetting(EnableOSDInfo) | [Skin.HasSetting(KM_EnableProviderActions) + Player.HasVideo + Player.Paused + !String.IsEmpty(Window(Home).Property(pov_source_session))]">3000</ondown>
 			<orientation>horizontal</orientation>			
 			<control type="togglebutton" id="203">
 				<altlabel>$LOCALIZE[208]</altlabel>
@@ -2096,7 +2112,7 @@
 				<effect type="slide" start="0,0" end="0,400" tween="cubic" easing="out" delay="0" time="450" reversible="false"/>
 				<effect type="fade" start="100" end="0" delay="0" time="350" reversible="false"/>
 			</animation>
-			<visible>Skin.HasSetting(EnableOSDInfo) + !VideoPlayer.Content(livetv)</visible>
+			<visible>[Skin.HasSetting(EnableOSDInfo) | [Skin.HasSetting(KM_EnableProviderActions) + Player.HasVideo + Player.Paused + !String.IsEmpty(Window(Home).Property(pov_source_session))]] + !VideoPlayer.Content(livetv)</visible>
 			
 			<align>center</align>
 			<bottom>30</bottom>
@@ -2140,6 +2156,19 @@
 			  <onclick>Skin.ToggleSetting(EnableOSDCrewInfo)</onclick>
 			  <onclick>Skin.Reset(EnableOSDCastInfo)</onclick>
 			</control>
+            <control type="button" id="219">
+                <description>Switch stream</description>
+                <width>280</width><height>50</height>
+                <font>Reg26</font><label>[B]Switch stream[/B]</label>
+                <textwidth>260</textwidth><align>center</align><aligny>center</aligny>
+                <textoffsetx>0</textoffsetx><textcolor>FF071A1C</textcolor>
+                <focusedcolor>FF071A1C</focusedcolor>
+                <texturefocus colordiffuse="FFFFFFFF">colors/color_white.png</texturefocus>
+                <texturenofocus colordiffuse="FF39D9CF">colors/color_white.png</texturenofocus>
+                <visible>Skin.HasSetting(KM_EnableProviderActions) + Player.HasVideo + Player.Paused + !String.IsEmpty(Window(Home).Property(pov_source_session))</visible>
+                <onclick>SetProperty(pov_source_request,$INFO[Window(Home).Property(pov_source_session)],home)</onclick>
+            </control>
+
 		</control>
 		
 		<include content="OSDInfoWidget">

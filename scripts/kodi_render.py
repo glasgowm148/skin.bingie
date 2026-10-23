@@ -10,6 +10,7 @@ Subcommands:
 Only the standard library is used so the module runs on any runner Python and in the unit tests.
 """
 import argparse
+import codecs
 import gzip
 import io
 import json
@@ -231,11 +232,13 @@ class JsonRpc:
         with socket.create_connection(self.address, timeout=self.timeout) as connection:
             connection.sendall(json.dumps(request).encode('utf-8'))
             buffer, decoder = '', json.JSONDecoder()
+            # TCP may split a Unicode character across recv() calls.
+            utf8 = codecs.getincrementaldecoder('utf-8')()
             while True:
                 chunk = connection.recv(65536)
                 if not chunk:
                     raise ConnectionError('Kodi closed the connection before answering ' + method)
-                buffer += chunk.decode('utf-8', errors='replace')
+                buffer += utf8.decode(chunk)
                 while buffer.strip():
                     try:
                         message, end = decoder.raw_decode(buffer.lstrip())

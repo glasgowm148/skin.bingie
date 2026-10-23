@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0.2.18 beta candidate — 2026-10-23
+
+- Add an optional paused-playback Switch stream action when the provider exposes a source session.
+- Decode split UTF-8 characters correctly in TCP JSON-RPC render replies.
+- Document deterministic build and runtime-validation limits.
+
 ## 2.0.2.17 beta — 2026-10-17
 
 - Search: with the voice button shown, the full keyboard is still reachable (Up from the voice button opens it when "full keyboard" is on), and during playback, when the voice button is disabled, Up from the keyboard opens the full keyboard again instead of doing nothing.

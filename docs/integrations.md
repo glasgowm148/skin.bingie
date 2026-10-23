@@ -62,3 +62,10 @@ The source validator permits the inherited include references recorded in `tests
 Changes to Kodi, POV, iPlayer, TMDb Bingie Helper, PVR or the Android helper stay outside this repository. Do not enable an optional integration solely because an addon with the same ID is installed: confirm its required routes are implemented.
 
 An enabled Experience option can always be turned off, including after its helper add-on is removed. Enabling an inactive option still requires its dependency.
+
+Manual stream selection uses `pov_source_session` and `pov_source_request` on Window(Home).
+With provider actions enabled, both pause-control layouts show a turquoise **Switch stream** button beside Cast/Crew only while
+video is paused and the provider publishes a live session. Clicking copies the session token
+into the request property. The provider owns its source picker, decoder shutdown, cancellation
+and resume position; the skin does not start or stop playback. Without the integration the
+button is absent. This is separate from the buffering recovery prompt above.

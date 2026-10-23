@@ -4,7 +4,9 @@ An independently maintained fork of the Netflix-style **Bingie** skin for Kodi, 
 
 Built on [Matke's Bingie](https://github.com/matke-84/skin.bingie) and [BigMoco's fork](https://github.com/Bigmoco/skin.bingie). Their history, attribution and GPL v2 license are preserved.
 
-**Version 2.0.2.17 beta** · [Download beta](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.17) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+**Version 2.0.2.18 beta** (source candidate; unpublished) · Released beta: 2.0.2.17 · [Download beta](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.17) · [Issues](https://github.com/glasgowm148/skin.bingie/issues) · [Changelog](CHANGELOG.md)
+
+Building this checkout produces `skin.bingie-2.0.2.18.zip`. The [candidate release page](https://github.com/glasgowm148/skin.bingie/releases/tag/v2.0.2.18) is reserved for publication; use the released beta link above for an existing download.
 
 ## What we've added
 
@@ -79,6 +81,8 @@ python scripts/build_skin.py
 ```
 
 The installable ZIP and SHA-256 file go into `dist/`. Development tools, screenshots, user profiles and generated Skin Shortcuts menus are excluded. Checks reject private LAN addresses, emails and URL credentials in shipped text.
+
+Builds are reproducible: the ZIP entries are sorted and use a fixed timestamp. To verify an artifact before installing it, run `shasum -a 256 -c skin.bingie-2.0.2.17.zip.sha256` from `dist/`. `build_skin.py` refuses to overwrite an existing version with different bytes, so bump `addon.xml` before rebuilding a changed release.
 
 Bug reports should include Kodi/device/skin versions, enabled Experience options, reproduction steps and relevant redacted logs. Pull requests are welcome: retain credits, keep integrations optional with stock fallbacks, and run the checks. Provider/account and Android patches belong in separate projects.
 

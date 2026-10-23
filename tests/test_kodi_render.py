@@ -170,6 +170,18 @@ class LogTests(TempDir):
 
 
 class RemoteTests(unittest.TestCase):
+    def test_json_rpc_preserves_unicode_across_every_byte_boundary(self):
+        label = 'Café 日本 🎬'
+        notification = json.dumps({'jsonrpc': '2.0', 'method': 'GUI.OnNotification',
+                                   'params': {'label': label}}, ensure_ascii=False)
+        reply = json.dumps({'jsonrpc': '2.0', 'id': 1, 'result': {'label': label}}, ensure_ascii=False)
+        wire = (notification + reply).encode('utf-8')
+        connection = mock.MagicMock()
+        connection.__enter__.return_value = connection
+        connection.recv.side_effect = [wire[i:i + 1] for i in range(len(wire))] + [b'']
+        with mock.patch.object(kr.socket, 'create_connection', return_value=connection):
+            self.assertEqual(kr.JsonRpc().call('GUI.GetProperties'), {'label': label})
+
     def test_eventserver_packet_layout(self):
         packet = kr.eventserver_packet(0x0A, b'\x01ActivateWindow(1171)\x00')
         self.assertEqual(packet[:6], b'XBMC\x02\x00')
